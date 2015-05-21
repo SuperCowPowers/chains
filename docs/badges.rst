@@ -7,16 +7,16 @@
     :target: https://readthedocs.org/projects/chains
     :alt: Documentation Status
 
-.. |travis| image:: http://img.shields.io/travis/supercowpowers/chains/master.png?style=flat
+.. |travis| image:: http://img.shields.io/travis/SuperCowPowers/chains/master.png?style=flat
     :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/supercowpowers/chains
+    :target: https://travis-ci.org/SuperCowPowers/chains
 
-.. |coveralls| image:: http://img.shields.io/coveralls/supercowpowers/chains/master.png?style=flat
+.. |coveralls| image:: http://img.shields.io/coveralls/SuperCowPowers/chains/master.png?style=flat
     :alt: Coverage Status
-    :target: https://coveralls.io/r/supercowpowers/chains
+    :target: https://coveralls.io/r/SuperCowPowers/chains
 
-.. |landscape| image:: https://landscape.io/github/supercowpowers/chains/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/supercowpowersupercowpowers/chains/master
+.. |landscape| image:: https://landscape.io/github/SuperCowPowers/chains/master/landscape.svg?style=flat
+    :target: https://landscape.io/github/SuperCowPowers/chains/master
     :alt: Code Quality Status
 
 .. |version| image:: http://img.shields.io/pypi/v/chains.png?style=flat
