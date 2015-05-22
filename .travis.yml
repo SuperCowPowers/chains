@@ -9,6 +9,7 @@ env:
     - TOXENV=pypy,coveralls
     - TOXENV=docs
 before_install:
+  - sudo apt-get install python-pypcap
   - python --version
   - virtualenv --version
   - pip --version
