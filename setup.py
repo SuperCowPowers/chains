@@ -13,7 +13,7 @@ author_email ='brifordwylie@gmail.com'
 scripts = []
 packages = ['chains']
 
-requirements = ['pycapy', 'dpkt']
+requirements = ['pypcap', 'dpkt']
 test_requirements = []
 
 # Pull in the version from the package

@@ -1,6 +1,3 @@
-============
-Contributing
-============
 
 Report a Bug or Make a Feature Request
 --------------------------------------

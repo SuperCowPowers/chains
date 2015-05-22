@@ -1,26 +1,24 @@
-chains
-====
+Chains
+======
 .. include:: badges.rst
-The chains is an exploration of using Python generators on security data
+The Chains project is an exploration of using Python generators on security data
 
-
-Getting Started
-===============
+Examples
+========
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
-    installation
     examples
 
-API Reference
-=============
+Module Reference
+================
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 3
 
-    api/index
+    module_reference/index
 
-About chains
-==========
+Contributing
+============
 .. toctree::
     :maxdepth: 2
 
