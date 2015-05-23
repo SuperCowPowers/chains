@@ -2,13 +2,14 @@
 Examples
 ========
 We present a set of examples that hopefully show how you can use Chains to build
-flexible pipeline of streaming data.
+flexible pipelines of streaming data.
 
-packet_stream.py
+print_packets.py
 ================
 Print packets is about the simplest chain you could have. It takes a stream_packet
 source and prints out the packets. It's a 'sink' meaning that it
 cannot be an input into another chain. 
+
 stream_packets -> print_packet
 
 .. automodule:: chains.print_packets
