@@ -1,7 +1,16 @@
+================
+Module Reference
+================
 
-The chains module reference section
+Stream Packets
+--------------
+.. automodule:: chains.stream_packets
 
-.. toctree::
-    :maxdepth: 4
+Print Packets
+-------------
+.. automodule:: chains.print_packets
 
-    modules
+Utils
+-----
+.. automodule:: chains.utils
+

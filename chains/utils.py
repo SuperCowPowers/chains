@@ -3,7 +3,13 @@ import os
 
 # Just a little helper function for the test
 def all_files_in_directory(path):
-    """ Recursively list all files under a directory """
+    """ Recursively list all files under a directory
+
+        Args:
+            path: the path of the directory to traverse
+        Returns:
+            a list of all the files contained withint the directory
+    """
     file_list = []
     for dirname, _dirnames, filenames in os.walk(path):
         for filename in filenames:
@@ -12,17 +18,28 @@ def all_files_in_directory(path):
                 file_list.append(os.path.join(dirname, filename))
     return file_list
 
-def root_dir(python_file):
-    """ Root directory for the python file"""
-    return os.path.dirname(os.path.realpath(python_file))
+def file_dir(file_path):
+    """ Root directory for a file_path
+        Args:
+            file_path: a fully qualified file path
+        Returns:
+            the directory which contains the file
+    """
+    return os.path.dirname(os.path.realpath(file_path))
 
-def relative_path(python_file, rel_dir):
-    """ Relative path for the python file"""
-    return os.path.join(root_dir(python_file), rel_dir)
+def relative_dir(file_path, rel_dir):
+    """ Relative directory to the file_path
+
+        Args:
+            file_path: a fully qualified file path
+        Returns:
+            the relative directory
+    """
+    return os.path.join(file_dir(file_path), rel_dir)
 
 def test():
     """Test the Utility methods"""
-    path = relative_path(__file__, '.')
+    path = relative_dir(__file__, '.')
     print 'Path: %s' % path
     for my_file in all_files_in_directory(path):
         print '\t%s' % my_file

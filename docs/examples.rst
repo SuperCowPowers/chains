@@ -1,3 +1,8 @@
+========
+Examples
+========
+We present a set of examples that hopefully show how you can use Chains to build
+flexible pipeline of streaming data.
 
 packet_stream.py
 ================

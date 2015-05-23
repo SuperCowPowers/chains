@@ -68,7 +68,7 @@ def print_packets(packet_stream):
 
 def test():
     """Get a packet stream source and give it to print_packets :) """
-    data_path = utils.relative_path(__file__, '../data/http.pcap')
+    data_path = utils.relative_dir(__file__, '../data/http.pcap')
     packet_stream = stream_packets.stream_packets(iface_name = data_path, max_packets=10)
     print_packets(packet_stream)
 

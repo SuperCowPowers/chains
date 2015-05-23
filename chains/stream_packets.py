@@ -30,7 +30,7 @@ def stream_packets(iface_name=None, max_packets=None):
 
 def test():
     """Open up a test pcap file and print out the packets"""
-    data_path = utils.relative_path(__file__, '../data/http.pcap')
+    data_path = utils.relative_dir(__file__, '../data/http.pcap')
     for packet in stream_packets(iface_name = data_path, max_packets=10):
         print packet
 
