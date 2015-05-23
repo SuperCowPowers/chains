@@ -4,16 +4,18 @@
 """
 import pcap
 
-def stream_packets(max_packets=None):
+def stream_packets(iface_name=None, max_packets=None):
     """Stream out the packets from the given network interface
 
        Args:
-           net_iface: the network interface to capture packets from
+           iface_name: the network interface to capture packets from (defaults to None)
+                       Note: None (not setting it) will open the first available network interface
+                             You can also set this to a filename (iface_name = 'test.pcap')
            max_packets: set the maximum number of packets to yield (default to None)
     """
 
     # Spin up the packet capture
-    pc = pcap.pcap(promisc=True, immediate=True)
+    pc = pcap.pcap(name=iface_name, promisc=True, immediate=True)
 
     # For each packet in the pcap process the contents
     _packets = 0
@@ -25,7 +27,7 @@ def stream_packets(max_packets=None):
 
 def test():
     """Open up a test pcap file and print out the packets"""
-    for packet in stream_packets(max_packets=10):
+    for packet in stream_packets(iface_name = 'data/http.pcap', max_packets=10):
         print packet
 
 if __name__ == '__main__':

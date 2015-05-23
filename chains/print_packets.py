@@ -67,7 +67,7 @@ def print_packets(packet_stream):
 
 def test():
     """Get a packet stream source and give it to print_packets :) """
-    packet_stream = stream_packets.stream_packets(max_packets=10)
+    packet_stream = stream_packets.stream_packets(iface_name = 'data/http.pcap', max_packets=10)
     print_packets(packet_stream)
 
 if __name__ == '__main__':
