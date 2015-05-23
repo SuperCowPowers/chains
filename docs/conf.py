@@ -23,10 +23,15 @@ sys.path.insert(0, os.path.abspath('..'))
 
 
 # Mock any objects that we might need to
-foo = mock.Mock()
-foo.__version__ = '0.1.1'
-sys.modules['foo'] = foo
+from mock import Mock as MagicMock
 
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return Mock()
+
+MOCK_MODULES = ['pcap']
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ----------------------------------------------------
 needs_sphinx = '1.0'
