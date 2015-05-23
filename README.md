@@ -1,5 +1,5 @@
 # Chains
-Python Chained Generators for Security Data [https://chains.rtfd.org](https://chains.rtfd.org)
+Python Chained Generators for Security Data [http://chains.rtfd.org](http://chains.rtfd.org)
 
 [![docs](https://readthedocs.org/projects/chains/badge/?style=flat)](https://readthedocs.org/projects/chains)
 [![travis](http://img.shields.io/travis/SuperCowPowers/chains/master.png?style=flat)](https://travis-ci.org/SuperCowPowers/chains)
