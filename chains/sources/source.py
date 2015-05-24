@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-    Source Class
+   Sources provide an output_stream but do not take in input stream,
 """
 
 # Local imports

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
-    Link Class
+   Links take an input_stream and provides an output_stream. 
+   All streams are enforced to a generator that yields python dictionaries.
 """
 
 # Local imports
@@ -8,7 +9,7 @@ from chains.utils import log_utils
 log_utils.log_defaults()
 
 class Link(object):
-    """Links take an input_stream and provide an output_stream. All streams
+    """Links take an input_stream and provides an output_stream. All streams
        are enforced to a generator that yields python dictionaries.
     """
     def __init__(self):

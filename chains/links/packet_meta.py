@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""
-    PacketMeta Class
-"""
+"""PacketMeta: Use dpkt to pull out packet information"""
 import dpkt
 import datetime
 import logging
@@ -12,7 +10,7 @@ from chains.utils import file_utils, log_utils
 log_utils.log_defaults()
 
 class PacketMeta(link.Link):
-    """Print packet information"""
+    """Use dpkt to pull out packet information"""
 
     def __init__(self):
         """Initialize PacketMeta Class"""

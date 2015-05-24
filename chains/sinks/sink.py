@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """
-    Sink Class
+   Sinks take an input_stream and provide a process() method.
+   Note: Sinks do not provide an output_stream.
 """
 
 # Local imports

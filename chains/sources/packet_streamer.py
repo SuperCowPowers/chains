@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""
-    Use pypcap to read in packets from the network interface and yield the raw buffers
-"""
+""" PacketStreamer: Use pcapy to stream packets from a network interface """
 import pcap
 
 # Local imports

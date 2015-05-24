@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""
-    PacketPrinter Class
-"""
+""" PacketPrinter: Prints out packet information """
 from colorama import init
 init()
 from colorama import Fore, Back, Style
