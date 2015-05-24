@@ -1,8 +1,4 @@
-#!/usr/bin/env python
 """ PacketPrinter: Prints out packet information """
-from colorama import init
-init()
-from colorama import Fore, Back, Style
 
 # Local imports
 from chains.sinks import sink
@@ -33,7 +29,7 @@ class PacketPrinter(sink.Sink):
             # Print out the IP info (it's possible it's not there)
             if 'ip' in item:
                 ip = item['ip']
-                print 'IP: %s --> %s (len:%d ttl:%d) -- Frag(df:%d mf:%d offset:%d)' % \
+                print 'IP: %s --> %s (len:%d ttl:%d) -- Frag(df:%d mf:%d offset:%d)\n' % \
                       (net_utils.ip_to_str(ip['src']), net_utils.ip_to_str(ip['dst']), ip['len'], ip['ttl'], ip['df'], ip['mf'], ip['offset'])
 
 def test():

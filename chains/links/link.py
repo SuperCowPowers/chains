@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
    Links take an input_stream and provides an output_stream. 
    All streams are enforced to a generator that yields python dictionaries.

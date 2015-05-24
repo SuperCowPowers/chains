@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-""" PacketStreamer: Use pcapy to stream packets from a network interface """
+""" PacketStreamer: Stream packets from a network interface """
 import pcap
 
 # Local imports

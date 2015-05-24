@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """PacketMeta: Use dpkt to pull out packet information"""
 import dpkt
 import datetime

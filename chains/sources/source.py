@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
    Sources provide an output_stream but do not take in input stream,
 """

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
    Sinks take an input_stream and provides a pull() method.
    Note: Sinks do not provide an output_stream.

@@ -13,7 +13,7 @@ author_email ='brifordwylie@gmail.com'
 scripts = []
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
-requirements = ['pypcap', 'dpkt', 'colorama']
+requirements = ['pypcap', 'dpkt']
 test_requirements = []
 
 # Pull in the version from the package
