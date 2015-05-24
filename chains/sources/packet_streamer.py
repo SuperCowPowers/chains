@@ -1,4 +1,5 @@
 """ PacketStreamer: Stream packets from a network interface """
+import os
 import pcap
 
 # Local imports
@@ -24,18 +25,47 @@ class PacketStreamer(source.Source):
 
         self.iface_name = iface_name
         self.max_packets = max_packets
+        self.pcap = None
         self._output_stream = self._read_interface()
+
+    def get_interface(self):
+        """Get the current interface being captured
+
+           Returns:
+               The interface name as a str
+        """
+        return self.pcap.name
+
+    def get_filter(self):
+        """Get the current filter (BSP) being used (if any)
+
+           Returns:
+               The BSP filter specification
+        """
+        return self.pcap.filter
+
+    def _iface_is_file(self):
+        """Check if the iterface given is a file
+
+           Returns:
+                Boolean
+        """
+        return self.iface_name and os.path.isfile(self.iface_name)
 
     def _read_interface(self):
         """Read Packets from the packet capture interface"""
 
         # Spin up the packet capture
-        pc = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
+        if self._iface_is_file():
+            self.pcap = pcap.pcap(name=self.iface_name)
+        else:
+            self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
+        print 'listening on %s: %s' % (self.pcap.name, self.pcap.filter)
 
         # For each packet in the pcap process the contents
         _packets = 0
-        for timestamp, raw_buf in pc:
-            yield {'timestamp': timestamp, 'raw_buf': raw_buf}
+        for timestamp, raw_buf in self.pcap:
+            yield {'timestamp': timestamp, 'raw_buf': raw_buf, 'packet_num': _packets}
             _packets += 1
             if self.max_packets and _packets >= self.max_packets:
                 raise StopIteration
