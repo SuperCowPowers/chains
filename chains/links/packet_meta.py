@@ -48,6 +48,7 @@ class PacketMeta(link.Link):
                 output['warning'] = 'Non IP Packet type not supported %s\n' % eth.data.__class__.__name__
                 logging.warning(output['warning'])
                 yield output
+                continue
 
             # Now unpack the data within the Ethernet frame (the IP packet)
             # Pulling out src, dst, length, fragment info, TTL, and Protocol
@@ -69,7 +70,7 @@ def test():
     from chains.sources import packet_streamer
 
     # Create a PacketStreamer and set its output to PacketMeta input
-    data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
+    data_path = file_utils.relative_dir(__file__, '../data/http.pcap')
 
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
     meta = PacketMeta()
