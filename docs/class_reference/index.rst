@@ -2,10 +2,11 @@
 Class Reference
 ===============
 The Chains packets is split into following sub-packages
-* Sources
-* Links
-* Sinks
-* Utils
+
+* Sources: Classes with produce data (they have an outputi_stream but NOT an input_stream)
+* Links: Classes that consume an input_stream and produce an output_stream
+* Sinks: Classes that consume an input_stream but do NOT produce an output_stream
+* Utils: Helpful utility methods (HHAC/IP to str, file helpers, log utils)
 
 .. toctree::
      :maxdepth: 3

@@ -1,6 +1,11 @@
 =======
 Sources
 =======
-.. autoclass:: chains.sources.source.Source
-.. autoclass:: chains.sources.packet_streamer.PacketStreamer
 
+PacketStreamer
+--------------
+.. automodule:: chains.sources.packet_streamer
+
+Source BaseClass
+----------------
+.. automodule:: chains.sources.source
