@@ -20,22 +20,22 @@ source, a PacketMeta() link, and a PacketPrinter() sink. It links those together
 
 .. code-block:: python
 
-    """Test for PacketPrinter class"""
+    # Import the classes we want
     from chains.sources import packet_streamer
     from chains.links import packet_meta
     from chains.utils import file_utils
 
-    # Create a PacketStreamer and set its output to PacketPrinter input
-    data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    # Create the classes
+    streamer = packet_streamer.PacketStreamer()
     meta = packet_meta.PacketMeta()
     printer = PacketPrinter()
 
     # Set up the chain
     meta.input_stream = streamer.output_stream
     printer.input_stream = meta.output_stream
-    printer.process()
+
+    # Pull the chain
+    printer.pull()
 
 
 **Example Output**

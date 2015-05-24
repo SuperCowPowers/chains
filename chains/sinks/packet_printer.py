@@ -17,7 +17,7 @@ class PacketPrinter(sink.Sink):
         # Call super class init
         super(PacketPrinter, self).__init__()
 
-    def process(self):
+    def pull(self):
         """Print out information about each packet from the input_stream"""
 
         # For each packet in the pcap process the contents
@@ -52,7 +52,7 @@ def test():
     # Set up the chain
     meta.input_stream = streamer.output_stream
     printer.input_stream = meta.output_stream
-    printer.process()
+    printer.pull()
 
 if __name__ == '__main__':
     test()

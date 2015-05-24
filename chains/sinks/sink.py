@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-   Sinks take an input_stream and provide a process() method.
+   Sinks take an input_stream and provides a pull() method.
    Note: Sinks do not provide an output_stream.
 """
 
@@ -10,7 +10,7 @@ from chains.utils import log_utils
 log_utils.log_defaults()
 
 class Sink(link.Link):
-    """Sinks take an input_stream and provide a process() method
+    """Sinks take an input_stream and provides a pull() method
        Note: Sinks do not provide an output_stream.
     """
     def __init__(self):
@@ -24,7 +24,7 @@ class Sink(link.Link):
         """The output stream property"""
         log_utils.panic_and_throw('Sinks do not provice output streams')
 
-    def process(self):
+    def pull(self):
         """Process the input stream"""
         raise NotImplementedError("Please Implement this method")
 
