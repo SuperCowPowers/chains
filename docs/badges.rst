@@ -11,9 +11,8 @@
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/SuperCowPowers/chains
 
-.. |coveralls| image:: http://img.shields.io/coveralls/SuperCowPowers/chains/master.png?style=flat
-    :alt: Coverage Status
-    :target: https://coveralls.io/r/SuperCowPowers/chains
+.. |coveralls| image:: https://coveralls.io/repos/SuperCowPowers/chains/badge.svg?branch=HEAD
+  :target: https://coveralls.io/r/SuperCowPowers/chains?branch=HEAD
 
 .. |landscape| image:: https://landscape.io/github/SuperCowPowers/chains/master/landscape.svg?style=flat
     :target: https://landscape.io/github/SuperCowPowers/chains/master

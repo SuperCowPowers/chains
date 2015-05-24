@@ -3,7 +3,7 @@ Python Chained Generators for Security Data [http://chains.rtfd.org](http://chai
 
 [![docs](https://readthedocs.org/projects/chains/badge/?style=flat)](https://readthedocs.org/projects/chains)
 [![travis](http://img.shields.io/travis/SuperCowPowers/chains/master.png?style=flat)](https://travis-ci.org/SuperCowPowers/chains)
-[![coveralls](http://img.shields.io/coveralls/SuperCowPowers/chains/master.png?style=flat)](https://coveralls.io/r/SuperCowPowers/chains)
+[![Coverage Status](https://coveralls.io/repos/SuperCowPowers/chains/badge.svg?branch=HEAD)](https://coveralls.io/r/SuperCowPowers/chains?branch=HEAD)
 [![landscape](https://landscape.io/github/SuperCowPowers/chains/master/landscape.svg?style=flat)](https://landscape.io/github/SuperCowPowers/chains/master)
 [![version](http://img.shields.io/pypi/v/chains.png?style=flat)](https://pypi.python.org/pypi/chains)
 
