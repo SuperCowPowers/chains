@@ -2,6 +2,8 @@
 Utils
 =====
 
+Just a set of helpful utility methods (HHAC/IP to str, file helpers, log utils).
+
 Network Utils
 -------------
 .. automodule:: chains.utils.net_utils

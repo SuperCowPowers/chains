@@ -1,6 +1,7 @@
 =======
 Sources
 =======
+Sources are classes with produce data (they have an output_stream but NOT an input_stream)
 
 PacketStreamer
 --------------
