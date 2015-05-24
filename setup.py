@@ -29,7 +29,7 @@ setup(
       author=package.__author__,
       url=package.__url__,
       description=description,
-      packages=['chains'],
+      packages=packages,
       install_requires=requirements,
       license='MIT',
       classifiers=[

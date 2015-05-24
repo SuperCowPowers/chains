@@ -44,3 +44,7 @@ source, a PacketMeta() link, and a PacketPrinter() sink. It links those together
     IP: 192.168.1.9 --> 192.168.1.3 (len:52 ttl:64) -- Frag(df:1 mf:0 offset:0)
 
 
+Example Reference
+=================
+.. automodule:: examples.simple_packet_print
+

@@ -77,5 +77,5 @@ htmlhelp_basename = 'chains'
 
 # -- Options for extlink extension --------------------------------------------
 extlinks = {
-    'issue': ('https://github.com/kbandla/chains/issues/%s', '#'),
+    'issue': ('https://github.com/SuperCowPowers/chains/issues/%s', '#'),
 }

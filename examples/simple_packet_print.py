@@ -26,7 +26,7 @@ def test():
 
     # For the test we grab a file, but if you don't specify a
     # it will grab from the first active interface
-    data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
+    data_path = file_utils.relative_dir(__file__, '../data/http.pcap')
     run(data_path)
 
 if __name__ == '__main__':

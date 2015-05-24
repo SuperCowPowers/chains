@@ -19,3 +19,8 @@ The Chains project is an exploration of using Python generators on security data
 
     contributing
 
+Indices and tables
+==================
+ 
+ * :ref:`genindex`
+ * :ref:`modindex`
