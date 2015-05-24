@@ -11,9 +11,9 @@ author = 'Brian Wylie'
 author_email ='brifordwylie@gmail.com'
 
 scripts = []
-packages = ['chains']
+packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
-requirements = ['pypcap', 'dpkt']
+requirements = ['pypcap', 'dpkt', 'colorama']
 test_requirements = []
 
 # Pull in the version from the package

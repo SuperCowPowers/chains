@@ -12,7 +12,7 @@ The Chains project is an exploration of using Python generators on security data
 .. toctree::
     :maxdepth: 3
 
-    module_reference/index
+    class_reference/index
 
 .. toctree::
     :maxdepth: 2

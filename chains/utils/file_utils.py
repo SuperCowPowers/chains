@@ -1,9 +1,8 @@
-"""Utilities that might be useful"""
+"""File utilities that might be useful"""
 import os
 
-# Just a little helper function for the test
 def all_files_in_directory(path):
-    """ Recursively list all files under a directory
+    """Recursively list all files under a directory
 
         Args:
             path: the path of the directory to traverse
@@ -19,7 +18,8 @@ def all_files_in_directory(path):
     return file_list
 
 def file_dir(file_path):
-    """ Root directory for a file_path
+    """Root directory for a file_path
+
         Args:
             file_path: a fully qualified file path
         Returns:
@@ -28,7 +28,7 @@ def file_dir(file_path):
     return os.path.dirname(os.path.realpath(file_path))
 
 def relative_dir(file_path, rel_dir):
-    """ Relative directory to the file_path
+    """Relative directory to the file_path
 
         Args:
             file_path: a fully qualified file path
@@ -37,13 +37,12 @@ def relative_dir(file_path, rel_dir):
     """
     return os.path.join(file_dir(file_path), rel_dir)
 
-def test():
-    """Test the Utility methods"""
+def test_utils():
+    """Test the utility methods"""
     path = relative_dir(__file__, '.')
     print 'Path: %s' % path
     for my_file in all_files_in_directory(path):
         print '\t%s' % my_file
-    print 'Success!'
 
 if __name__ == '__main__':
-    test()
+    test_utils()

@@ -4,23 +4,38 @@ Examples
 We present a set of examples that hopefully show how you can use Chains to build
 flexible pipelines of streaming data.
 
-print_packets.py
-================
-Print packets is about the simplest chain you could have. It takes a stream_packet
-source and prints out the packets. It's a 'sink' meaning that it
-cannot be an input into another chain. 
+Lets Print some Packets 
+=======================
+Printing packets is about the simplest chain you could have. It takes a PacketStreamer()
+source, a PacketMeta() link, and a PacketPrinter() sink. It links those together in a chain
+(see what I did there) and prints out the packets. 
 
-stream_packets -> print_packet
+**See these classes**
 
-.. automodule:: chains.print_packets
+.. autosummary:: chains.sources.packet_streamer
+.. autosummary:: chains.links.packet_meta
+.. autosummary:: chains.sinks.packet_printer
 
-**Code Excerpt**
+**Code**
 
 .. code-block:: python
 
-    """Get a packet stream source and give it to print_packets :) """
-    packet_stream = stream_packets.stream_packets(max_packets=10)
-    print_packets(packet_stream)
+    """Test for PacketPrinter class"""
+    from chains.sources import packet_streamer
+    from chains.links import packet_meta
+    from chains.utils import file_utils
+
+    # Create a PacketStreamer and set its output to PacketPrinter input
+    data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
+
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    meta = packet_meta.PacketMeta()
+    printer = PacketPrinter()
+
+    # Set up the chain
+    meta.input_stream = streamer.output_stream
+    printer.input_stream = meta.output_stream
+    printer.process()
 
 
 **Example Output**
