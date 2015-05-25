@@ -1,4 +1,5 @@
 """ PacketPrinter: Prints out packet information """
+import pprint
 
 # Local imports
 from chains.sinks import sink
@@ -26,11 +27,26 @@ class PacketPrinter(sink.Sink):
             print 'Ethernet Frame: %s --> %s  (type: %d)' % \
                   (net_utils.mac_addr(item['eth']['src']), net_utils.mac_addr(item['eth']['dst']), item['eth']['type'])
 
-            # Print out the IP info (it's possible it's not there)
-            if 'ip' in item:
-                ip = item['ip']
-                print 'IP: %s --> %s (len:%d ttl:%d) -- Frag(df:%d mf:%d offset:%d)\n' % \
-                      (net_utils.ip_to_str(ip['src']), net_utils.ip_to_str(ip['dst']), ip['len'], ip['ttl'], ip['df'], ip['mf'], ip['offset'])
+            # Print out the Packet info (it's possible it's not there)
+            '''
+            packet_type = item['packet_type']
+            print packet_type + ': ',
+            if packet_type in item:
+                packet = item[packet_type]
+                print '%s --> %s (len:%d ttl:%d) -- Frag(df:%d mf:%d offset:%d)' % \
+                      (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']), packet['len'], packet['ttl'], packet['df'], packet['mf'], ip['offset'])
+            '''
+
+            # Print out transport and application
+            print 'Packet: %s' % item['packet_type']
+            if item['packet_type']:
+                pprint.pprint(item[item['packet_type']])
+            print 'Transport: %s' % item['transport_type']
+            if item['transport_type']:
+                pprint.pprint(item[item['transport_type']])
+            print 'Application: %s' % item['application_type']
+            if item['application_type'] != 'UNKNOWN':
+                pprint.pprint(item[item['application_type']])
 
 def test():
     """Test for PacketPrinter class"""

@@ -18,6 +18,16 @@ class PacketMeta(link.Link):
         super(PacketMeta, self).__init__()
         self._output_stream = self._packet_meta_data()
 
+    @staticmethod
+    def _make_dict(obj):
+        """This method creates a dictionary out of an object"""
+        return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
+
+    @staticmethod
+    def _protocol_name(num):
+        """Generate the protocol name from the number"""
+        return {1:'ICMP', 58:'ICMPv6', 2:'IGMP', 6:'TCP', 17:'UDP'}.get(num, 'UNKNOWN')
+
     def _packet_meta_data(self):
         """Pull out the metadata about each packet from the input_stream
 
@@ -41,33 +51,53 @@ class PacketMeta(link.Link):
             # Unpack the Ethernet frame (mac src/dst, ethertype)
             eth = dpkt.ethernet.Ethernet(buf)
             output['eth'] = {'src': eth.src, 'dst': eth.dst, 'type':eth.type}
+            output['packet_type'] = eth.data.__class__.__name__
 
             # Make sure the Ethernet frame contains an IP packet
             # EtherType (IP, ARP, PPPoE, IP6... see http://en.wikipedia.org/wiki/EtherType)
-            if eth.type != dpkt.ethernet.ETH_TYPE_IP:
-                output['warning'] = 'Non IP Packet type not supported %s\n' % eth.data.__class__.__name__
+            if output['packet_type'] not in ['IP', 'IP6']:
+                output['warning'] = 'Non IP Packet type not supported %s\n' % output['packet_type']
                 logging.warning(output['warning'])
                 yield output
                 continue
 
-            # Now unpack the data within the Ethernet frame (the IP packet)
-            # Pulling out src, dst, length, fragment info, TTL, and Protocol
-            ip = eth.data
+            # Grab packet data
+            packet = eth.data
 
-            # Pull out fragment information (flags and offset all packed into off field, so use bitmasks)
-            df = bool(ip.off & dpkt.ip.IP_DF)
-            mf = bool(ip.off & dpkt.ip.IP_MF)
-            offset = ip.off & dpkt.ip.IP_OFFMASK
+            # Okay now going to split based on IP or IP6
+            if output['packet_type'] == 'IP':
 
-            # IP Packet Info
-            output['ip'] = {'src':ip.src, 'dst':ip.dst, 'len':ip.len, 'ttl':ip.ttl, 'df':df, 'mf': mf, 'offset': offset}
+                # Pull out fragment information (flags and offset all packed into off field, so use bitmasks)
+                df = bool(packet.off & dpkt.ip.IP_DF)
+                mf = bool(packet.off & dpkt.ip.IP_MF)
+                offset = packet.off & dpkt.ip.IP_OFFMASK
+
+                # Pulling out src, dst, length, fragment info, TTL, checksum and Protocol
+                output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
+                                                 'df':df, 'mf': mf, 'offset': offset, 'checksum': packet.sum}
+
+            elif output['packet_type'] == 'IP6':
+
+                # Pulling out the IP6 fields
+                output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim}
+
+            # For the transport layes we're just going to bundle up the object as a dictionary
+            transport = packet.data
+            output['transport_type'] = transport.__class__.__name__
+            output[output['transport_type']] = self._make_dict(transport)
+
+            # For the application layer we're going to set the appliction_type to 'UNKNOWN'. and
+            # hopefully a 'link' upstream will manage the application identification functionality
+            output['application_type'] = 'UNKNOWN'
+
+            # All done
             yield output
 
-def test():
-    import pprint
 
+def test():
     """Test for PacketMeta class"""
     from chains.sources import packet_streamer
+    import pprint
 
     # Create a PacketStreamer and set its output to PacketMeta input
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
