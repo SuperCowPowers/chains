@@ -101,10 +101,11 @@ def test():
 
     # Create a PacketStreamer and set its output to PacketMeta input
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+
     meta = PacketMeta()
-    meta.input_stream = streamer.output_stream
+    meta.link(streamer)
+
     for item in meta.output_stream:
         pprint.pprint(item)
 

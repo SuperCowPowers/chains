@@ -64,8 +64,10 @@ def test():
     printer = PacketPrinter()
 
     # Set up the chain
-    meta.input_stream = streamer.output_stream
-    printer.input_stream = meta.output_stream
+    meta.link(streamer)
+    printer.link(meta)
+
+    # Pull the chain
     printer.pull()
 
 if __name__ == '__main__':

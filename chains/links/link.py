@@ -19,11 +19,13 @@ class Link(object):
         # Call super class init
         super(Link, self).__init__()
 
+    def link(self, stream_object):
+        """Set my input stream"""
+        self.input_stream = stream_object.output_stream
+
     @property
     def input_stream(self):
         """The input stream property"""
-        if not self._input_stream:
-            log_utils.panic_and_throw('No input stream set yet!')
         return self._input_stream
 
     @input_stream.setter
@@ -44,16 +46,13 @@ class Link(object):
 
 def test():
     """Spin up the link class and call the methods"""
-    link = Link()
 
-    # This will raise a RuntimeError (because we haven't set it yet)
-    try:
-        link.input_stream
-    except RuntimeError:
-        pass
-    link.input_stream = [{'foo':5}, {'foo':8}]
-    assert link.input_stream
-    assert link.output_stream == None
+    # Create a couple of dummy classes
+    link1 = Link()
+    link1._output_stream = [{'foo':5, 'bar':3}] # Just for testing
+    link2 = Link()
+    link2.link(link1)
+    print link2.input_stream
 
 
 if __name__ == '__main__':
