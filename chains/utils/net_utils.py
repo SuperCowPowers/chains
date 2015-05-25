@@ -19,7 +19,11 @@ def ip_to_str(address):
        Returns:
            printable IP address
     """
-    return socket.inet_ntop(socket.AF_INET, address)
+    # First try ipv4 and then ipv6
+    try:
+        return socket.inet_ntop(socket.AF_INET, address)
+    except ValueError:
+        return socket.inet_ntop(socket.AF_INET6, address)
 
 def test_utils():
     """Test the utility methods"""

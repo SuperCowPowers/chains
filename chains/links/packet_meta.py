@@ -51,20 +51,14 @@ class PacketMeta(link.Link):
             # Unpack the Ethernet frame (mac src/dst, ethertype)
             eth = dpkt.ethernet.Ethernet(buf)
             output['eth'] = {'src': eth.src, 'dst': eth.dst, 'type':eth.type}
-            output['packet_type'] = eth.data.__class__.__name__
 
-            # Make sure the Ethernet frame contains an IP packet
             # EtherType (IP, ARP, PPPoE, IP6... see http://en.wikipedia.org/wiki/EtherType)
-            if output['packet_type'] not in ['IP', 'IP6']:
-                output['warning'] = 'Non IP Packet type not supported %s\n' % output['packet_type']
-                logging.warning(output['warning'])
-                yield output
-                continue
+            output['packet_type'] = eth.data.__class__.__name__
 
             # Grab packet data
             packet = eth.data
 
-            # Okay now going to split based on IP or IP6
+            # It this an IP packet?
             if output['packet_type'] == 'IP':
 
                 # Pull out fragment information (flags and offset all packed into off field, so use bitmasks)
@@ -76,19 +70,25 @@ class PacketMeta(link.Link):
                 output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
                                                  'df':df, 'mf': mf, 'offset': offset, 'checksum': packet.sum}
 
+            # Is this an IPv6 packet?
             elif output['packet_type'] == 'IP6':
 
                 # Pulling out the IP6 fields
                 output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim}
 
+            # If the packet isn't IP or IPV6 just pack it as a dictionary
+            else:
+                output[output['packet_type']] = self._make_dict(packet)
+
             # For the transport layes we're just going to bundle up the object as a dictionary
             transport = packet.data
-            output['transport_type'] = transport.__class__.__name__
-            output[output['transport_type']] = self._make_dict(transport)
+            output['transport_type'] = transport.__class__.__name__ if transport.__class__.__name__ != 'str' else None
+            if output['transport_type']:
+                output[output['transport_type']] = self._make_dict(transport)
 
-            # For the application layer we're going to set the appliction_type to 'UNKNOWN'. and
+            # For the application layer we're going to set the appliction_type to None. and
             # hopefully a 'link' upstream will manage the application identification functionality
-            output['application_type'] = 'UNKNOWN'
+            output['application_type'] = None
 
             # All done
             yield output
