@@ -23,11 +23,6 @@ class PacketMeta(link.Link):
         """This method creates a dictionary out of an object"""
         return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
 
-    @staticmethod
-    def _protocol_name(num):
-        """Generate the protocol name from the number"""
-        return {1:'ICMP', 58:'ICMPv6', 2:'IGMP', 6:'TCP', 17:'UDP'}.get(num, 'UNKNOWN')
-
     def _packet_meta_data(self):
         """Pull out the metadata about each packet from the input_stream
 
