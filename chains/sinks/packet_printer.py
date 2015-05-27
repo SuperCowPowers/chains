@@ -31,11 +31,15 @@ class PacketPrinter(sink.Sink):
             print 'Packet: %s' % packet_type,
             packet = item[packet_type]
             if packet_type in ['IP', 'IP6']:
-                print '%s --> %s (len:%d ttl:%d)' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']), packet['len'], packet['ttl']),
+                print '%s --> %s (len:%d ttl:%d)' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']),
+                                                     packet['len'], packet['ttl']),
                 if packet_type == 'IP':
                     print '-- Frag(df:%d mf:%d offset:%d)' % (packet['df'], packet['mf'], packet['offset'])
                 else:
                     print
+                # Is there domain info?
+                if 'src_domain' in packet:
+                    print 'Domains: %s --> %s' % (packet['src_domain'], packet['dst_domain'])
             else:
                 print str(packet)
 
@@ -54,6 +58,7 @@ def test():
     """Test for PacketPrinter class"""
     from chains.sources import packet_streamer
     from chains.links import packet_meta
+    from chains.links import reverse_dns
     from chains.utils import file_utils
 
     # Create a PacketStreamer and set its output to PacketPrinter input
@@ -61,11 +66,13 @@ def test():
 
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
     meta = packet_meta.PacketMeta()
+    rdns = reverse_dns.ReverseDNS()
     printer = PacketPrinter()
 
     # Set up the chain
     meta.link(streamer)
-    printer.link(meta)
+    rdns.link(meta)
+    printer.link(rdns)
 
     # Pull the chain
     printer.pull()

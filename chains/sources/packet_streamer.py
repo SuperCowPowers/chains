@@ -13,17 +13,19 @@ class PacketStreamer(source.Source):
             iface_name: the network interface to capture packets from (defaults to None)
                         Note: None (not setting it) will open the first available network interface
                               You can also set this to a filename (iface_name = 'test.pcap')
+            bpf: BPF (Berkeley Packet Filter http://biot.com/capstats/bpf.html) (defaults to '*')
             max_packets: set the maximum number of packets to yield (default to None)
      """
 
 
-    def __init__(self, iface_name=None, max_packets=None):
+    def __init__(self, iface_name=None, bpf='*', max_packets=None):
         """Initialization for PacketStreamer"""
 
         # Call super class init
         super(PacketStreamer, self).__init__()
 
         self.iface_name = iface_name
+        self.bpf = bpf
         self.max_packets = max_packets
         self.pcap = None
         self._output_stream = self._read_interface()
@@ -60,6 +62,8 @@ class PacketStreamer(source.Source):
             self.pcap = pcap.pcap(name=self.iface_name)
         else:
             self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
+            if self.bpf:
+                self.pcap.setfilter(self.bpf)
         print 'listening on %s: %s' % (self.pcap.name, self.pcap.filter)
 
         # For each packet in the pcap process the contents

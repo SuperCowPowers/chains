@@ -24,11 +24,7 @@ class PacketMeta(link.Link):
         return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
 
     def _packet_meta_data(self):
-        """Pull out the metadata about each packet from the input_stream
-
-           Args:
-               packet_stream: a packet_stream yields packets (timestamp, buf)
-        """
+        """Pull out the metadata about each packet from the input_stream"""
 
         # For each packet in the pcap process the contents
         for item in self.input_stream:
@@ -76,10 +72,13 @@ class PacketMeta(link.Link):
                 output[output['packet_type']] = self._make_dict(packet)
 
             # For the transport layes we're just going to bundle up the object as a dictionary
-            transport = packet.data
-            output['transport_type'] = transport.__class__.__name__ if transport.__class__.__name__ != 'str' else None
-            if output['transport_type']:
-                output[output['transport_type']] = self._make_dict(transport)
+            try:
+                transport = packet.data
+                output['transport_type'] = transport.__class__.__name__ if transport.__class__.__name__ != 'str' else None
+                if output['transport_type']:
+                    output[output['transport_type']] = self._make_dict(transport)
+            except AttributeError: # No packet data
+                output['transport_type'] = None
 
             # For the application layer we're going to set the appliction_type to None. and
             # hopefully a 'link' upstream will manage the application identification functionality
