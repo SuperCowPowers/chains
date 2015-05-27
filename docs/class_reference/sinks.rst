@@ -8,6 +8,10 @@ PacketPrinter
 =============
 .. automodule:: chains.sinks.packet_printer
 
+PacketSummary
+=============
+.. automodule:: chains.sinks.packet_summary
+
 Sink BaseClass
 ==============
 .. automodule:: chains.sinks.sink

@@ -8,6 +8,10 @@ PacketMeta
 ==========
 .. automodule:: chains.links.packet_meta
 
+ReverseDNS
+==========
+.. automodule:: chains.links.reverse_dns
+
 Link BaseClass
 ==============
 .. automodule:: chains.links.link

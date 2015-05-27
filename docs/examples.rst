@@ -6,9 +6,17 @@ flexible pipelines of streaming data.
 
 Lets Print some Packets 
 =======================
-Printing packets is about the simplest chain you could have. It takes a PacketStreamer()
-source, a PacketMeta() link, and a PacketPrinter() sink. It links those together in a chain
-(see what I did there) and prints out the packets. 
+Printing packets is about the simplest chain you could have. It takes a 
+
+- PacketStreamer() :py:class:`chains.sources.packet_streamer`
+- PacketMeta() :py:class:`chains.links.packet_meta`
+- ReverseDNS() :py:class:`chains.links.reverse_dns`
+- PacketPrinter() :py:class:`chains.sinks.packet_printer`
+
+We link these together in a chain (see what I did there) and we pull the chain.
+Pulling the chain will stream data from one component to another which only uses
+the memory required to hold one packet. You could literally run this all day every 
+day for a year on your home network and never run out of memory.
 
 **Code from examples/simple_packet_print.py**
 
@@ -17,11 +25,13 @@ source, a PacketMeta() link, and a PacketPrinter() sink. It links those together
     # Create the classes
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
     meta = packet_meta.PacketMeta()
+    rdns = reverse_dns.ReverseDNS()
     printer = packet_printer.PacketPrinter()
 
     # Set up the chain
     meta.link(streamer)
-    printer.link(meta)
+    rdns.link(meta)
+    printer.link(rdns)
 
     # Pull the chain
     printer.pull()
@@ -31,19 +41,18 @@ source, a PacketMeta() link, and a PacketPrinter() sink. It links those together
 
 .. code-block:: json
 
-    Timestamp: 2015-05-25 01:42:41.430436
-    Ethernet Frame: 6c:40:08:89:fc:08 --> e4:f4:c6:06:b2:8d  (type: 2048)
-    Packet: IP 192.168.1.9 --> 157.55.56.170 (len:52 ttl:64) -- Frag(df:1 mf:0 offset:0)
-    Transport: TCP {'off': 8, 'seq': 491703910, 'off_x2': 128, 'ack': 82501583, 'win': 3931, 
-                   'sum': 32580, 'flags': 16, 'dport': 40032, 'urp': 0, 'sport': 54247,
-                   'data': '', 'opts': '\x01\x01\x08\n:\xc4tbU\xa6\x0b\x07'}
+    Timestamp: 2015-05-27 01:17:07.919743
+    Ethernet Frame: 6c:40:08:89:fc:08 --> 01:00:5e:00:00:fb  (type: 2048)
+    Packet: IP 192.168.1.9 --> 224.0.0.251 (len:55 ttl:255) -- Frag(df:0 mf:0 offset:0)
+    Domains: LOCAL --> multicast_dns
+    Transport: UDP {'dport': 5353, 'sum': 59346, 'sport': 5353, 'data': '\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x03CTV\x05local\x00\x00\x1c\x80\x01', 'ulen': 35}
     Application: None
     
-    Timestamp: 2015-05-25 01:42:41.449987
-    Ethernet Frame: e4:f4:c6:06:b2:8d --> 6c:40:08:89:fc:08  (type: 2048)
-    Packet: IP 157.55.130.143 --> 192.168.1.9 (len:48 ttl:51) -- Frag(df:1 mf:0 offset:0)
-    Transport: UDP {'dport': 17887, 'sum': 9425, 'sport': 40008, 
-                    'data': '|\x9a\x02b\x17\x1c\xc07\xd0\xff\x11\xd3:3X\x01\x93\x16\xb8\xd6', 'ulen': 28}
+    Timestamp: 2015-05-27 01:17:07.919926
+    Ethernet Frame: 6c:40:08:89:fc:08 --> 33:33:00:00:00:fb  (type: 34525)
+    Packet: IP6 fe80::6e40:8ff:fe89:fc08 --> ff02::fb (len:35 ttl:255)
+    Domains: LOCAL --> multicast_dns
+    Transport: UDP {'dport': 5353, 'sum': 6703, 'sport': 5353, 'data': '\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x03CTV\x05local\x00\x00\x1c\x80\x01', 'ulen': 35}
     Application: None
     
     ...
