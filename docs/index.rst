@@ -1,6 +1,6 @@
 Chains
 ======
-The Chains project is explorating the use of Python generators on security data
+The Chains project is exploring the use of Python generators on security data
 
 .. include:: badges.rst
 
