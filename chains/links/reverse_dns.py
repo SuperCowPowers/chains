@@ -1,4 +1,4 @@
-"""ReverseDNS: Use dpkt to pull out packet information"""
+"""ReverseDNS: Perform a reverse dns lookup on fields in the ip_field_list"""
 import socket
 import logging
 
@@ -9,7 +9,7 @@ log_utils.log_defaults()
 
 
 class ReverseDNS(link.Link):
-    """Use dpkt to pull out packet information"""
+    """Perform a reverse dns lookup on fields in the ip_field_list"""
 
     def __init__(self, ip_field_list=('IP.src', 'IP.dst', 'IP6.src', 'IP6.dst'), domain_postfix='_domain'):
         """Initialize ReverseDNS Class
@@ -26,8 +26,8 @@ class ReverseDNS(link.Link):
         self.domain_postfix = domain_postfix
         self.ip_lookup_cache = {}
 
-        # This always needs to happen last
-        self._output_stream = self._reverse_dns_lookup()
+        # Set my output
+        self.output_stream = self._reverse_dns_lookup()
 
     def _reverse_dns_lookup(self):
         """Look through my input stream for the fields in ip_field_list and

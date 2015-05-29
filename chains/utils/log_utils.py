@@ -2,7 +2,7 @@
 import os
 import logging
 
-def log_defaults(log_level=logging.INFO):
+def log_defaults(log_level=logging.INFO, color=False):
     """Setup logging output defaults
 
         Args:
@@ -14,6 +14,11 @@ def log_defaults(log_level=logging.INFO):
 
     # Set up all the logging defaults
     logging.basicConfig(datefmt='%Y-%m-%d %H:%M:%S', level=log_level, format=format_str)
+
+    # Do they want colored logs
+    if color:
+        import coloredlogs
+        coloredlogs.install(level=log_level)
 
 def panic_and_throw(mesg):
     """Critical/panic message and raise Runtime Error

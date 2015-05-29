@@ -1,5 +1,5 @@
 """
-   Links take an input_stream and provides an output_stream. 
+   Links take an input_stream and provides an output_stream.
    All streams are enforced to a generator that yields python dictionaries.
 """
 
@@ -15,9 +15,6 @@ class Link(object):
         """Initialize Link Class"""
         self._input_stream = None
         self._output_stream = None
-    
-        # Call super class init
-        super(Link, self).__init__()
 
     def link(self, stream_object):
         """Set my input stream"""
@@ -36,7 +33,7 @@ class Link(object):
                input_stream: a generator that yields dictionaries
         """
         if not input_stream:
-            log_utils.panic_and_throw('The input stream is None!')        
+            log_utils.panic_and_throw('The input stream is None!')
         self._input_stream = input_stream
 
     @property
@@ -44,12 +41,23 @@ class Link(object):
         """The output stream property"""
         return self._output_stream
 
+    @output_stream.setter
+    def output_stream(self, output_stream):
+        """Set the output stream
+
+           Args:
+               output_stream: a generator that yields dictionaries
+        """
+        if not output_stream:
+            log_utils.panic_and_throw('The output stream is None!')
+        self._output_stream = output_stream
+
 def test():
     """Spin up the link class and call the methods"""
 
     # Create a couple of dummy classes
     link1 = Link()
-    link1._output_stream = [{'foo':5, 'bar':3}] # Just for testing
+    link1.output_stream = [{'foo':5, 'bar':3}] # Just for testing
     link2 = Link()
     link2.link(link1)
     print link2.input_stream

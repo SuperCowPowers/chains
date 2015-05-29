@@ -16,7 +16,9 @@ class PacketMeta(link.Link):
 
         # Call super class init
         super(PacketMeta, self).__init__()
-        self._output_stream = self._packet_meta_data()
+
+        # Set my output
+        self.output_stream = self._packet_meta_data()
 
     @staticmethod
     def _make_dict(obj):

@@ -28,7 +28,7 @@ class PacketStreamer(source.Source):
         self.bpf = bpf
         self.max_packets = max_packets
         self.pcap = None
-        self._output_stream = self._read_interface()
+        self.output_stream = self._read_interface()
 
     def get_interface(self):
         """Get the current interface being captured

@@ -24,10 +24,11 @@ class PacketSummary(sink.Sink):
 
             # Transport info
             if item['transport_type']:
-                print str(item['transport_type']),
+                print item['transport_type'],
 
             # Print out the Packet info
             packet_type = item['packet_type']
+            print packet_type,
             packet = item[packet_type]
             if packet_type in ['IP', 'IP6']:
                 # Is there domain info?

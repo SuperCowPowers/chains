@@ -13,6 +13,7 @@ class PacketPrinter(sink.Sink):
         # Call super class init
         super(PacketPrinter, self).__init__()
 
+
     def pull(self):
         """Print out information about each packet from the input_stream"""
 
@@ -43,8 +44,7 @@ class PacketPrinter(sink.Sink):
             else:
                 print str(packet)
 
-
-            # Print out transport and application layers (it's possible they are there)
+            # Print out transport and application layers
             print 'Transport: %s' % item['transport_type'],
             if item['transport_type']:
                 print str(item[item['transport_type']])
