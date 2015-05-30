@@ -98,8 +98,3 @@ Again we simply link these together in a chain and then pull the chain.
     2015-05-30 00:34:45 - TCP IP 12.226.156.82(NXDOMAIN) --> 192.168.1.9(LOCAL) TAGS: ['incoming', 'nxdomain']
     2015-05-30 00:34:45 - TCP IP 192.168.1.9(LOCAL) --> 54.197.119.105(compute-1.amazonaws.com) TAGS: ['outgoing']
     ...
-
-Example Reference
-=================
-.. automodule:: examples.simple_packet_print
-
