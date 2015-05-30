@@ -31,26 +31,6 @@ class Tagger(link.Link):
         # Set my output
         self.output_stream = self._tag_stuff()
 
-    def _tag_stuff(self):
-        """Look through my input stream for the fields to be tagged"""
-
-        # For each packet in the pcap process the contents
-        for item in self.input_stream:
-
-            # Make sure it has a tags field (which is a set)
-            if 'tags' not in item:
-                item['tags'] = set()
-
-            # For each tag_methods run it on the item
-            for name, tag_method in self.tag_methods.iteritems():
-                item['tags'].add(tag_method(item))
-
-            # Not interested in None tags
-            if None in item['tags']:
-                item['tags'].remove(None)
-            # All done
-            yield item
-
     @staticmethod
     def value(data, key):
         """Follow the dot notation to get the proper field, then perform the action
@@ -75,6 +55,26 @@ class Tagger(link.Link):
         # In general KeyErrors are expected
         except KeyError:
             None
+
+    def _tag_stuff(self):
+        """Look through my input stream for the fields to be tagged"""
+
+        # For each packet in the pcap process the contents
+        for item in self.input_stream:
+
+            # Make sure it has a tags field (which is a set)
+            if 'tags' not in item:
+                item['tags'] = set()
+
+            # For each tag_methods run it on the item
+            for name, tag_method in self.tag_methods.iteritems():
+                item['tags'].add(tag_method(item))
+
+            # Not interested in None tags
+            if None in item['tags']:
+                item['tags'].remove(None)
+            # All done
+            yield item
     
     @staticmethod
     def _defaults_tags():

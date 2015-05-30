@@ -1,4 +1,5 @@
 """ Example: Simple Packet Printer """
+import os
 import argparse
 
 # Local imports
@@ -47,8 +48,13 @@ if __name__ == '__main__':
     parser.add_argument('-bpf', type=str, help='BPF Filter for PacketStream Class')
     parser.add_argument('-s','--summary', action="store_true", help='Summary instead of full packet print')
     parser.add_argument('-m','--max-packets', type=int, default=50, help='How many packets to process (0 for infinity)')
+    parser.add_argument('-p','--pcap', type=str, help='Specify a pcap file instead of reading from live network interface')
     args, commands = parser.parse_known_args()
+    if commands:
+        print 'Unrecognized args: %s' % commands
     try:
-        run(bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
+        # Pcap file may have a tilde in it
+        args.pcap = os.path.expanduser(args.pcap)
+        run(iface_name=args.pcap, bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
     except KeyboardInterrupt:
         print 'Goodbye...'
