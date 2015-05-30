@@ -52,6 +52,10 @@ class PacketPrinter(sink.Sink):
             if item['application_type']:
                 print str(item[item['application_type']])
             print
+
+            # Tags
+            if 'tags' in item:
+                print list(item['tags'])
             print
 
 def test():

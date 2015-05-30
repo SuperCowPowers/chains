@@ -2,6 +2,7 @@
    Links take an input_stream and provides an output_stream.
    All streams are enforced to a generator that yields python dictionaries.
 """
+import collections
 
 # Local imports
 from chains.utils import log_utils
@@ -16,9 +17,14 @@ class Link(object):
         self._input_stream = None
         self._output_stream = None
 
-    def link(self, stream_object):
+    def link(self, stream_instance):
         """Set my input stream"""
-        self.input_stream = stream_object.output_stream
+        if isinstance(stream_instance, collections.Iterable):
+            self.input_stream = stream_instance
+        elif getattr(stream_instance, 'output_stream', None):
+            self.input_stream = stream_instance.output_stream
+        else:
+            raise RuntimeError('Calling link() with unknown instance type %s' % type(stream_instance))
 
     @property
     def input_stream(self):

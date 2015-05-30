@@ -12,6 +12,10 @@ ReverseDNS
 ==========
 .. automodule:: chains.links.reverse_dns
 
+Tagger
+======
+.. automodule:: chains.links.tagger
+
 Link BaseClass
 ==============
 .. automodule:: chains.links.link

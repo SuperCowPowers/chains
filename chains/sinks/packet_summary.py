@@ -34,16 +34,20 @@ class PacketSummary(sink.Sink):
                 # Is there domain info?
                 if 'src_domain' in packet:
                     print '%s(%s) --> %s(%s)' % (net_utils.ip_to_str(packet['src']), packet['src_domain'],
-                                                 net_utils.ip_to_str(packet['dst']), packet['dst_domain'])
+                                                 net_utils.ip_to_str(packet['dst']), packet['dst_domain']),
                 else:
-                    print '%s --> %s' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']))
+                    print '%s --> %s' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst'])),
             else:
                 print str(packet)
 
             # Only include application if we have it
             if item['application_type']:
                 print 'Application: %s' % item['application_type'],
-                print str(item[item['application_type']])
+                print str(item[item['application_type']]),
+
+            # Tags
+            if 'tags' in item:
+                print 'TAGS:', list(item['tags'])        
 
 def test():
     """Test for PacketSummary class"""
