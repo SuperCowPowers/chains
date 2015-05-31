@@ -12,9 +12,13 @@ ReverseDNS
 ==========
 .. automodule:: chains.links.reverse_dns
 
-Tagger
-======
-.. automodule:: chains.links.tagger
+PacketTags
+==========
+.. automodule:: chains.links.packet_tags
+
+TransportTags
+=============
+.. automodule:: chains.links.transport_tags
 
 Link BaseClass
 ==============

@@ -25,6 +25,22 @@ def ip_to_str(address):
     except ValueError:
         return socket.inet_ntop(socket.AF_INET6, address)
 
+def is_internal(ip_address):
+    """Determine if the address is an internal ip address
+       Note: This is super bad, improve it
+    """
+    # Local networks 10.0.0.0/8, 172.16.0.0/12, '192.168.0.0/16
+    local_nets = '10.', '172.16.', '192.168.', '169.254', 'fd', 'fe80::'
+    return any([ip_address.startswith(local) for local in local_nets])
+
+def is_special(ip_address):
+    """Determine if the address is SPECIAL
+       Note: This is super bad, improve it
+    """
+    special = {'224.0.0.251': 'multicast_dns',
+               'ff02::fb': 'multicast_dns'}
+    return special[ip_address] if ip_address in special else None
+
 def test_utils():
     """Test the utility methods"""
     print mac_addr('\x00\x00\x01\x00\x00\x00')

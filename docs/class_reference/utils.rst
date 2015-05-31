@@ -15,3 +15,7 @@ File Utils
 Log Utils
 =========
 .. automodule:: chains.utils.log_utils
+
+Data Utils
+==========
+.. automodule:: chains.utils.data_utils

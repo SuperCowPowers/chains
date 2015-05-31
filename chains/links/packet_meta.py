@@ -5,7 +5,7 @@ import logging
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils
+from chains.utils import file_utils, log_utils, net_utils
 log_utils.log_defaults()
 
 class PacketMeta(link.Link):
@@ -73,12 +73,14 @@ class PacketMeta(link.Link):
             else:
                 output[output['packet_type']] = self._make_dict(packet)
 
-            # For the transport layes we're just going to bundle up the object as a dictionary
+            # For the transport layers we're going to make the TCP flags 'human readable' but for
+            # everything else we're just going to bundle up the object as a dictionary
             try:
                 transport = packet.data
-                output['transport_type'] = transport.__class__.__name__ if transport.__class__.__name__ != 'str' else None
+                output['transport_type'] = self._transport(packet)
                 if output['transport_type']:
                     output[output['transport_type']] = self._make_dict(transport)
+                    output[output['transport_type']]['flags'] = self._readable_flags(output[output['transport_type']])
             except AttributeError: # No packet data
                 output['transport_type'] = None
 
@@ -89,6 +91,37 @@ class PacketMeta(link.Link):
             # All done
             yield output
 
+    @staticmethod
+    def _transport(packet):
+        """Give the transport as a string or None if not one"""
+        return packet.data.__class__.__name__  if packet.data.__class__.__name__ != 'str' else None
+
+    @staticmethod
+    def _readable_flags(transport):
+        """Method that turns bit flags into a human readable list
+
+           Args:
+               flags = bit_flags
+           Returns:
+               a list of human readable flags (e.g. ['syn_ack', 'fin', 'rst', ...]
+        """
+        if 'flags' not in transport:
+            return None
+        _flag_list = []
+        flags = transport['flags']
+        if flags & dpkt.tcp.TH_SYN:
+            if flags & dpkt.tcp.TH_ACK:
+                _flag_list.append('syn_ack')
+            else:
+                _flag_list.append('syn')
+        elif flags & dpkt.tcp.TH_FIN:
+            if flags & dpkt.tcp.TH_ACK:
+                _flag_list.append('fin_ack')
+            else:
+                _flag_list.append('fin')
+        elif flags & dpkt.tcp.TH_RST:
+            _flag_list.append('rst')
+        return _flag_list
 
 def test():
     """Test for PacketMeta class"""

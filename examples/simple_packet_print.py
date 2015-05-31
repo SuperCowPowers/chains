@@ -6,7 +6,6 @@ import argparse
 from chains.sources import packet_streamer
 from chains.links import packet_meta
 from chains.links import reverse_dns
-from chains.links import tagger
 from chains.sinks import packet_printer
 from chains.sinks import packet_summary
 
@@ -17,7 +16,6 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, bpf=bpf, max_packets=max_packets)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
-    tags = tagger.Tagger()
     if summary:
         printer = packet_summary.PacketSummary()
     else:
@@ -26,8 +24,7 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     # Set up the chain
     meta.link(streamer)
     rdns.link(meta)
-    tags.link(rdns)
-    printer.link(tags)
+    printer.link(rdns)
 
     # Pull the chain
     printer.pull()
@@ -54,7 +51,8 @@ if __name__ == '__main__':
         print 'Unrecognized args: %s' % commands
     try:
         # Pcap file may have a tilde in it
-        args.pcap = os.path.expanduser(args.pcap)
+        if args.pcap:
+            args.pcap = os.path.expanduser(args.pcap)
         run(iface_name=args.pcap, bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
     except KeyboardInterrupt:
         print 'Goodbye...'
