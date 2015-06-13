@@ -8,7 +8,7 @@ package_name = 'chains'
 description = 'Exploratory Python Chained Generator Project'
 
 author = 'Brian Wylie'
-author_email ='brifordwylie@gmail.com'
+author_email ='briford.wylie@gmail.com'
 
 scripts = []
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
