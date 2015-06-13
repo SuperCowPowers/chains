@@ -7,9 +7,6 @@ from setuptools import setup
 package_name = 'chains'
 description = 'Exploratory Python Chained Generator Project'
 
-author = 'Brian Wylie'
-author_email ='briford.wylie@gmail.com'
-
 scripts = []
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
@@ -27,6 +24,7 @@ setup(
       name=package_name,
       version=package.__version__,
       author=package.__author__,
+      author_email=package.__author_email__,
       url=package.__url__,
       description=description,
       packages=packages,
