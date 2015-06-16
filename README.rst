@@ -18,15 +18,15 @@ Installation
 Documentation
 -------------
 
-**`chains.readthedocs.org <https://chains.readthedocs.org/>`__**
+`chains.readthedocs.org <https://chains.readthedocs.org/>`__
 
 About
 -----
 
-**The Chains project is an exploration of python components that you
+The Chains project is an exploration of python components that you
 'chain' together to process streaming data (network packets). The use of
-native python generators means the project is lightweight and extremely
-efficient (both performance and memory use).**
+native python generators means the code is extremely lightweight and
+efficient.
 
 Example
 -------
@@ -66,13 +66,6 @@ Example Output
     Transport: UDP {'dport': 5353, 'sum': 6703, 'sport': 5353, 'data': '...', 'ulen': 35}
     Application: None
     ...
-
-This is based on `dpkt <https://code.google.com/p/dpkt/>`__ (Google
-Code) lead by Dug Song and is now being maintained and improved by an
-extended set of
-`contributors <https://dpkt.readthedocs.org/en/latest/authors.html>`__
-and
-`developers <https://github.com/kbandla/dpkt/graphs/contributors>`__.
 
 LICENSE
 -------
