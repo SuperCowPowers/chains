@@ -4,8 +4,11 @@ import sys
 from setuptools import setup
 
 # Project Information 
+dist_name = 'py-chains'
 package_name = 'chains'
 description = 'Exploratory Python Chained Generator Project'
+with open('README.rst') as f:
+    long_description = f.read()
 
 scripts = []
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
@@ -21,12 +24,13 @@ version = package.__version__
 package = __import__(package_name)
 
 setup(
-      name=package_name,
+      name=dist_name,
       version=package.__version__,
       author=package.__author__,
       author_email=package.__author_email__,
       url=package.__url__,
       description=description,
+      long_description=long_description,
       packages=packages,
       install_requires=requirements,
       license='MIT',
