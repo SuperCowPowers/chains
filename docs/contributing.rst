@@ -22,11 +22,6 @@ chains uses the 'GitHub Flow' model: `GitHub Flow <http://scottchacon.com/2011/0
 - When you need feedback or help, or you think the branch is ready for merging, open a pull request
 - After someone else has reviewed and signed off on the feature, you can merge it into master
 
-Getting Started
-~~~~~~~~~~~~~~~
-    - Fork the repo on GitHub
-    - git clone git@github.com:your_name_here/chains.git
-
 New Feature or Bug
 ~~~~~~~~~~~~~~~~~~
 
