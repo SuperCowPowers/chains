@@ -1,5 +1,5 @@
 # Chains
-**Python Chained Generators for Security Data:** [Read the Docs](http://chains.rtfd.org)
+**Python Chained Generators for Network Packets:** [Read the Docs](http://chains.rtfd.org)
 
 
 [![travis](https://img.shields.io/travis/SuperCowPowers/chains.svg)](https://travis-ci.org/SuperCowPowers/chains)
@@ -22,7 +22,7 @@
 [chains.readthedocs.org](https://chains.readthedocs.org/)
 
 ## About
-The Chains project is an exploration of python components that you 'chain' together to process streaming data (network packets). The use of native python generators means the code is extremely lightweight and efficient.
+The Chains project is an exploration of python components that you 'chain' together to process streaming network packets. The use of native python generators means the code is extremely lightweight and efficient.
 
 ## Example
 
