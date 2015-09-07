@@ -4,13 +4,14 @@ import sys
 from setuptools import setup
 
 # Project Information 
-dist_name = 'py-chains'
+dist_name = 'chains'
 package_name = 'chains'
 description = 'Exploratory Python Chained Generator Project'
 with open('README.rst') as f:
     long_description = f.read()
 
 scripts = []
+# scripts = ['scripts/net_watch', 'scripts/host_count', 'scripts/protocol_count']
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
 requirements = ['pypcap', 'dpkt']
@@ -31,6 +32,7 @@ setup(
       url=package.__url__,
       description=description,
       long_description=long_description,
+      scripts=scripts,
       packages=packages,
       install_requires=requirements,
       license='MIT',

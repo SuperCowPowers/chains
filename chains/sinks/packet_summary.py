@@ -47,7 +47,10 @@ class PacketSummary(sink.Sink):
 
             # Tags
             if 'tags' in item:
-                print 'TAGS:', list(item['tags'])        
+                print 'TAGS:', list(item['tags']),
+
+            # Just for newline
+            print
 
 def test():
     """Test for PacketSummary class"""
