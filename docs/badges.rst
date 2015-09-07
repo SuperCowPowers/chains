@@ -1,8 +1,5 @@
 
-
-|travis| |Coverage Status| |landscape| |version| |downloads|
-
-|wheel| |supported-versions| |supported-implementations| |gitter|
+|travis| |Coverage Status| |landscape| |version| |downloads| |wheel| |supported-versions| |supported-implementations| |gitter|
 
 .. |travis| image:: https://img.shields.io/travis/SuperCowPowers/chains.svg
    :target: https://travis-ci.org/SuperCowPowers/chains

@@ -45,7 +45,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-bpf', type=str, help='BPF Filter for PacketStream Class')
     parser.add_argument('-s','--summary', action="store_true", help='Summary instead of full packet print')
-    parser.add_argument('-m','--max-packets', type=int, default=50, help='How many packets to process (0 for infinity)')
+    parser.add_argument('-m','--max-packets', type=int, default=100, help='How many packets to process (0 for infinity)')
     parser.add_argument('-p','--pcap', type=str, help='Specify a pcap file instead of reading from live network interface')
     args, commands = parser.parse_known_args()
     if commands:
