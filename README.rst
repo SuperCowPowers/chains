@@ -10,7 +10,7 @@ Docs <http://chains.rtfd.org>`__
 
 Install/Run Stuff
 -----------------
-Want to see what's happening on your network right now? Just install chaings and run 'net_watch'.
+Want to see what's happening on your network right now? Just install chains and run 'net_watch'.
 ::
 
     $ pip install chains
