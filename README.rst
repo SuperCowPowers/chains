@@ -4,8 +4,7 @@ Chains
 **Python Chained Generators for Network Packets:** `Read the
 Docs <http://chains.rtfd.org>`__
 
-|travis| |Coverage Status| |landscape| |version| |downloads|
-
+|travis| |Coverage Status| |landscape| |version| |downloads| 
 |wheel| |supported-versions| |supported-implementations| |gitter|
 
 Install/Run Stuff
