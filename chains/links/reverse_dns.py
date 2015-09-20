@@ -31,11 +31,15 @@ class ReverseDNS(link.Link):
            try to do a reverse dns lookup on those fields.
         """
 
-        # For each packet in the pcap process the contents
+        # For each packet process the contents
         for item in self.input_stream:
 
             # Do for both the src and dst
             for endpoint in ['src', 'dst']:
+
+                # Sanity check (might be an ARP, whatever... without a src/dst)
+                if endpoint not in item[item['packet_type']]:
+                    continue
 
                 # Convert inet_address to str ip_address
                 ip_address = net_utils.ip_to_str(item[item['packet_type']][endpoint])

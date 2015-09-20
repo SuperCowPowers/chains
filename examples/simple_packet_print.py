@@ -4,6 +4,7 @@ import os
 import argparse
 
 # Local imports
+from chains.utils import signal_utils
 from chains.sources import packet_streamer
 from chains.links import packet_meta
 from chains.links import reverse_dns
@@ -39,6 +40,10 @@ def test():
     data_path = file_utils.relative_dir(__file__, '../data/http.pcap')
     run(iface_name = data_path)
 
+def my_exit():
+    """Exit on Signal"""
+    print 'Goodbye...'
+
 if __name__ == '__main__':
 
     # Collect args from the command line
@@ -54,6 +59,8 @@ if __name__ == '__main__':
         # Pcap file may have a tilde in it
         if args.pcap:
             args.pcap = os.path.expanduser(args.pcap)
-        run(iface_name=args.pcap, bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
+
+        with signal_utils.signal_catcher(my_exit):
+            run(iface_name=args.pcap, bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
     except KeyboardInterrupt:
         print 'Goodbye...'
