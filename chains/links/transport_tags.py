@@ -1,5 +1,4 @@
 """TransportTags: Add tags to incoming packet data"""
-import logging
 
 # Local imports
 from chains.links import link
@@ -67,26 +66,27 @@ class TransportTags(link.Link):
         # Now make some educated guesses :)
 
         # IP or IPv6
-        src = data[data['packet_type']]['src']
-        dst = data[data['packet_type']]['dst']
+        if 'src' in data[data['packet_type']] and 'dst' in data[data['packet_type']]:
+            src = data[data['packet_type']]['src']
+            dst = data[data['packet_type']]['dst']
 
-        # Internal talking to external?
-        if net_utils.is_internal(src) and not net_utils.is_internal(dst):
-            return 'cts'
+            # Internal talking to external?
+            if net_utils.is_internal(src) and not net_utils.is_internal(dst):
+                return 'cts'
 
-        # External talking to internal?
-        if net_utils.is_internal(dst) and not net_utils.is_internal(src):
-            return 'stc'
+            # External talking to internal?
+            if net_utils.is_internal(dst) and not net_utils.is_internal(src):
+                return 'stc'
 
         # UDP or TCP
         if 'sport' in data[data['transport_type']]:
             sport = data[data['transport_type']]['sport']
             dport = data[data['transport_type']]['dport']
-    
+
             # High port talking to low port
             if dport < 1024 and sport > dport:
                 return 'cst'
-    
+
             # Low port talking to high port
             if sport < 1024 and sport < dport:
                 return 'stc'

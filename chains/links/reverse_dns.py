@@ -1,6 +1,5 @@
 """ReverseDNS: Perform a reverse dns lookup on fields in the ip_field_list"""
 import socket
-import logging
 
 # Local imports
 from chains.links import link
@@ -39,6 +38,9 @@ class ReverseDNS(link.Link):
 
                 # Sanity check (might be an ARP, whatever... without a src/dst)
                 if endpoint not in item[item['packet_type']]:
+
+                    # Set the domain to None
+                    item[item['packet_type']][endpoint+self.domain_postfix] = None
                     continue
 
                 # Convert inet_address to str ip_address
