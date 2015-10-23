@@ -19,3 +19,7 @@ Log Utils
 Data Utils
 ==========
 .. automodule:: chains.utils.data_utils
+
+Cache
+=====
+.. automodule:: chains.utils.cache
