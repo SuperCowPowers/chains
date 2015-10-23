@@ -3,7 +3,7 @@ import socket
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils
+from chains.utils import file_utils, log_utils, net_utils, cache
 log_utils.log_defaults()
 
 
@@ -20,7 +20,7 @@ class ReverseDNS(link.Link):
         super(ReverseDNS, self).__init__()
 
         self.domain_postfix = domain_postfix
-        self.ip_lookup_cache = {}
+        self.ip_lookup_cache = cache.Cache(timeout=600)
 
         # Set my output
         self.output_stream = self._process_for_rdns()
@@ -47,8 +47,8 @@ class ReverseDNS(link.Link):
                 ip_address = net_utils.ip_to_str(item[item['packet_type']][endpoint])
 
                 # Is this already in our cache
-                if ip_address in self.ip_lookup_cache:
-                    domain = self.ip_lookup_cache[ip_address]
+                if self.ip_lookup_cache.get(ip_address):
+                    domain = self.ip_lookup_cache.get(ip_address)
 
                 # Is the ip_address local or special
                 elif net_utils.is_internal(ip_address):
@@ -64,7 +64,7 @@ class ReverseDNS(link.Link):
                 item[item['packet_type']][endpoint+self.domain_postfix] = domain
 
                 # Cache it
-                self.ip_lookup_cache[ip_address] = domain
+                self.ip_lookup_cache.set(ip_address, domain)
 
             # All done
             yield item

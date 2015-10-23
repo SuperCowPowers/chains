@@ -11,11 +11,11 @@ efficient.
 
 Install/Run Stuff
 -----------------
-Want to see what's happening on your network right now? Just install chains and run 'net_watch'.
+Want to see what's happening on your network right now? Just install chains and run 'netwatch'.
 ::
 
     $ pip install chains
-    $ net_watch -s
+    $ netwatch -s
     2015-09-07 19:08:34 - UDP IP 192.168.1.9(internal) --> 224.0.0.251(multicast_dns)
     2015-09-07 19:08:34 - UDP IP6 fe80::6e40:8ff:fe89:fc08(internal) --> ff02::fb(multicast_dns)
     2015-09-07 19:08:34 - UDP IP 192.168.1.14(internal) --> 224.0.0.251(multicast_dns)
