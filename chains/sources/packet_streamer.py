@@ -20,7 +20,7 @@ class PacketStreamer(source.Source):
      """
 
 
-    def __init__(self, iface_name=None, bpf='*', max_packets=None):
+    def __init__(self, iface_name=None, bpf=None, max_packets=None):
         """Initialization for PacketStreamer"""
 
         # Call super class init
@@ -86,6 +86,10 @@ class PacketStreamer(source.Source):
             yield {'timestamp': timestamp, 'raw_buf': raw_buf, 'packet_num': _packets}
             _packets += 1
             if self.max_packets and _packets >= self.max_packets:
+                try:
+                    print ('Packet stats: %d  received, %d dropped,  %d dropped by interface') % self.pcap.stats()
+                except OSError:
+                    print ('No stats available...')
                 raise StopIteration
 
 def test():

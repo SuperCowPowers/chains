@@ -101,9 +101,9 @@ class PacketMeta(link.Link):
         """Method that turns bit flags into a human readable list
 
            Args:
-               flags = bit_flags
+               transport (dict): transport info, specifically needs a 'flags' key with bit_flags
            Returns:
-               a list of human readable flags (e.g. ['syn_ack', 'fin', 'rst', ...]
+               list: a list of human readable flags (e.g. ['syn_ack', 'fin', 'rst', ...]
         """
         if 'flags' not in transport:
             return None

@@ -7,12 +7,14 @@ from chains.utils import net_utils
 class PacketPrinter(sink.Sink):
     """Print packet information"""
 
-    def __init__(self):
+    def __init__(self, color_output=True):
         """Initialize PacketPrinter Class"""
 
         # Call super class init
         super(PacketPrinter, self).__init__()
 
+        # Should we add color on the output
+        self._color = color_output
 
     def pull(self):
         """Print out information about each packet from the input_stream"""
@@ -45,9 +47,22 @@ class PacketPrinter(sink.Sink):
                 print str(packet)
 
             # Print out transport and application layers
-            print 'Transport: %s' % item['transport_type'],
+            print 'Transport: %s ' % item['transport_type'],
             if item['transport_type']:
-                print str(item[item['transport_type']])
+                transport_info = item[item['transport_type']]
+                for key, value in transport_info.iteritems():
+                    if key != 'data':
+                        print key+':'+repr(value),
+
+                # Give summary info about data
+                data = transport_info['data']
+                print '\nData: %d bytes' % len(data),
+                if data:
+                    print '(%s...)' % repr(data)[:30]
+                else:
+                    print
+
+            # Application data
             print 'Application: %s' % item['application_type'],
             if item['application_type']:
                 print str(item[item['application_type']])
