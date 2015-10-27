@@ -37,14 +37,14 @@ class ReverseDNS(link.Link):
             for endpoint in ['src', 'dst']:
 
                 # Sanity check (might be an ARP, whatever... without a src/dst)
-                if endpoint not in item[item['packet_type']]:
+                if endpoint not in item['packet']:
 
                     # Set the domain to None
-                    item[item['packet_type']][endpoint+self.domain_postfix] = None
+                    item['packet'][endpoint+self.domain_postfix] = None
                     continue
 
                 # Convert inet_address to str ip_address
-                ip_address = net_utils.ip_to_str(item[item['packet_type']][endpoint])
+                ip_address = net_utils.ip_to_str(item['packet'][endpoint])
 
                 # Is this already in our cache
                 if self.ip_lookup_cache.get(ip_address):
@@ -61,7 +61,7 @@ class ReverseDNS(link.Link):
                     domain = self._reverse_dns_lookup(ip_address)
 
                 # Set the domain
-                item[item['packet_type']][endpoint+self.domain_postfix] = domain
+                item['packet'][endpoint+self.domain_postfix] = domain
 
                 # Cache it
                 self.ip_lookup_cache.set(ip_address, domain)

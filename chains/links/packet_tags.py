@@ -53,8 +53,8 @@ class PacketTags(link.Link):
         """Create a tag based on the direction of the traffic"""
 
         # IP or IPv6
-        src = data[data['packet_type']]['src_domain']
-        dst = data[data['packet_type']]['dst_domain']
+        src = data['packet']['src_domain']
+        dst = data['packet']['dst_domain']
         if src == 'internal':
             if dst == 'internal' or 'multicast' in dst or 'broadcast' in dst:
                 return 'internal'
@@ -70,8 +70,8 @@ class PacketTags(link.Link):
         """Create a tag based on whether there's an nxdomain present"""
 
         # IP or IPv6
-        src = data[data['packet_type']]['src_domain']
-        dst = data[data['packet_type']]['dst_domain']
+        src = data['packet']['src_domain']
+        dst = data['packet']['dst_domain']
         if src == 'nxdomain' or dst == 'nxdomain':
             return 'nxdomain'
         else:
@@ -104,8 +104,8 @@ def test():
 
     # Print out the tags
     for item in tags.output_stream:
-        src = item[item['packet_type']]['src']
-        dst = item[item['packet_type']]['dst']
+        src = item['packet']['src']
+        dst = item['packet']['dst']
         print '%s --> %s  Tags: %s' % (net_utils.ip_to_str(src), net_utils.ip_to_str(dst), str(list(item['tags'])))
 
 if __name__ == '__main__':

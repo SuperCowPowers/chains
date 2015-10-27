@@ -6,6 +6,10 @@ import logging
 from chains.utils import log_utils
 log_utils.log_defaults()
 
+def make_dict(obj):
+    """This method creates a dictionary out of an object"""
+    return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
+
 def get_value(data, key):
     """Follow the dot notation to get the proper field, then perform the action
 

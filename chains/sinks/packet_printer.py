@@ -32,7 +32,7 @@ class PacketPrinter(sink.Sink):
             # Print out the Packet info
             packet_type = item['packet_type']
             print 'Packet: %s' % packet_type,
-            packet = item[packet_type]
+            packet = item['packet']
             if packet_type in ['IP', 'IP6']:
                 print '%s --> %s (len:%d ttl:%d)' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']),
                                                      packet['len'], packet['ttl']),
@@ -49,7 +49,7 @@ class PacketPrinter(sink.Sink):
             # Print out transport and application layers
             print 'Transport: %s ' % item['transport_type'],
             if item['transport_type']:
-                transport_info = item[item['transport_type']]
+                transport_info = item['transport']
                 for key, value in transport_info.iteritems():
                     if key != 'data':
                         print key+':'+repr(value),

@@ -29,7 +29,7 @@ class PacketSummary(sink.Sink):
             # Print out the Packet info
             packet_type = item['packet_type']
             print packet_type,
-            packet = item[packet_type]
+            packet = item['packet']
             if packet_type in ['IP', 'IP6']:
                 # Is there domain info?
                 if 'src_domain' in packet:

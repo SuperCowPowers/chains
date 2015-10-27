@@ -5,7 +5,7 @@ import logging
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils
+from chains.utils import file_utils, log_utils, net_utils, data_utils
 log_utils.log_defaults()
 
 class PacketMeta(link.Link):
@@ -19,11 +19,6 @@ class PacketMeta(link.Link):
 
         # Set my output
         self.output_stream = self._packet_meta_data()
-
-    @staticmethod
-    def _make_dict(obj):
-        """This method creates a dictionary out of an object"""
-        return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
 
     def _packet_meta_data(self):
         """Pull out the metadata about each packet from the input_stream"""
@@ -60,18 +55,18 @@ class PacketMeta(link.Link):
                 offset = packet.off & dpkt.ip.IP_OFFMASK
 
                 # Pulling out src, dst, length, fragment info, TTL, checksum and Protocol
-                output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
+                output['packet'] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
                                                  'df':df, 'mf': mf, 'offset': offset, 'checksum': packet.sum}
 
             # Is this an IPv6 packet?
             elif output['packet_type'] == 'IP6':
 
                 # Pulling out the IP6 fields
-                output[output['packet_type']] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim}
+                output['packet'] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim}
 
             # If the packet isn't IP or IPV6 just pack it as a dictionary
             else:
-                output[output['packet_type']] = self._make_dict(packet)
+                output['packet'] = data_utils.make_dict(packet)
 
             # For the transport layers we're going to make the TCP flags 'human readable' but for
             # everything else we're just going to bundle up the object as a dictionary
@@ -79,8 +74,8 @@ class PacketMeta(link.Link):
                 transport = packet.data
                 output['transport_type'] = self._transport(packet)
                 if output['transport_type']:
-                    output[output['transport_type']] = self._make_dict(transport)
-                    output[output['transport_type']]['flags'] = self._readable_flags(output[output['transport_type']])
+                    output['transport'] = data_utils.make_dict(transport)
+                    output['transport']['flags'] = self._readable_flags(output['transport'])
             except AttributeError: # No packet data
                 output['transport_type'] = None
 

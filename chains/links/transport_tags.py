@@ -53,7 +53,7 @@ class TransportTags(link.Link):
 
         # Tests for TCP
         if data['transport_type'] == 'TCP':
-            flags = data[data['transport_type']]['flags']
+            flags = data['transport']['flags']
 
             # Syn/Ack or fin/ack is a server response
             if 'syn_ack' in flags or 'fin_ack' in flags:
@@ -66,9 +66,9 @@ class TransportTags(link.Link):
         # Now make some educated guesses :)
 
         # IP or IPv6
-        if 'src' in data[data['packet_type']] and 'dst' in data[data['packet_type']]:
-            src = data[data['packet_type']]['src']
-            dst = data[data['packet_type']]['dst']
+        if 'src' in data['packet'] and 'dst' in data['packet']:
+            src = net_utils.ip_to_str(data['packet']['src'])
+            dst = net_utils.ip_to_str(data['packet']['dst'])
 
             # Internal talking to external?
             if net_utils.is_internal(src) and not net_utils.is_internal(dst):
@@ -79,9 +79,9 @@ class TransportTags(link.Link):
                 return 'stc'
 
         # UDP or TCP
-        if 'sport' in data[data['transport_type']]:
-            sport = data[data['transport_type']]['sport']
-            dport = data[data['transport_type']]['dport']
+        if 'sport' in data['transport']:
+            sport = data['transport']['sport']
+            dport = data['transport']['dport']
 
             # High port talking to low port
             if dport < 1024 and sport > dport:
@@ -91,8 +91,8 @@ class TransportTags(link.Link):
             if sport < 1024 and sport < dport:
                 return 'stc'
 
-        # Okay we have no idea
-        return None
+        # Okay we have no idea so just return cts
+        return 'cts'
 
 def test():
     """Test for TransportTags class"""
@@ -116,8 +116,8 @@ def test():
 
     # Print out the tags
     for item in tags.output_stream:
-        src = item[item['packet_type']]['src']
-        dst = item[item['packet_type']]['dst']
+        src = item['packet']['src']
+        dst = item['packet']['dst']
         print '%s --> %s  Tags: %s' % (net_utils.ip_to_str(src), net_utils.ip_to_str(dst), str(list(item['tags'])))
 
 if __name__ == '__main__':
