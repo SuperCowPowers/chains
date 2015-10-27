@@ -6,10 +6,8 @@ import argparse
 # Local imports
 from chains.utils import signal_utils
 from chains.sources import packet_streamer
-from chains.links import packet_meta
-from chains.links import reverse_dns
-from chains.sinks import packet_printer
-from chains.sinks import packet_summary
+from chains.links import packet_meta, reverse_dns
+from chains.sinks import packet_printer, packet_summary
 
 def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     """Run the Simple Packet Printer Example"""
