@@ -45,10 +45,6 @@ class PacketSummary(sink.Sink):
                 print 'Application: %s' % item['application_type'],
                 print str(item[item['application_type']]),
 
-            # Tags
-            if 'tags' in item:
-                print 'TAGS:', list(item['tags']),
-
             # Just for newline
             print
 
