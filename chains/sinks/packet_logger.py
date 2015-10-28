@@ -23,11 +23,11 @@ class PacketLogger(sink.Sink):
             print '%s -' % item['timestamp'].strftime("%Y-%m-%d %H:%M:%S"),
 
             # Transport info
-            if item['transport_type']:
-                print item['transport_type'],
+            if item['transport']:
+                print item['transport']['type'],
 
             # Print out the Packet info
-            packet_type = item['packet_type']
+            packet_type = item['packet']['type']
             print packet_type,
             packet = item['packet']
             if packet_type in ['IP', 'IP6']:
@@ -41,9 +41,9 @@ class PacketLogger(sink.Sink):
                 print str(packet)
 
             # Only include application if we have it
-            if item['application_type']:
-                print 'Application: %s' % item['application_type'],
-                print str(item[item['application_type']])
+            if item['application']:
+                print 'Application: %s' % item['application']['type'],
+                print str(item[item['application']])
 
 def test():
     """Test for PacketLogger class"""

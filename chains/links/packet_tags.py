@@ -93,7 +93,7 @@ def test():
 
     # Have the PacketTags use its default tagging methods + my silly example
     def tag_is_tcp(data):
-        return 'TCP' if data['transport_type'] == 'TCP' else None
+        return 'Wow! IP' if data['packet']['type'] == 'IP' else None
 
     tags = PacketTags(add_tag_methods=[tag_is_tcp]) # Add my silly tag
 

@@ -3,10 +3,7 @@ import argparse
 
 # Local imports
 from chains.sources import packet_streamer
-from chains.links import packet_meta
-from chains.links import reverse_dns
-from chains.links import packet_tags
-from chains.links import transport_tags
+from chains.links import packet_meta, reverse_dns, packet_tags, transport_meta
 from chains.sinks import packet_printer
 from chains.sinks import packet_summary
 
@@ -18,15 +15,15 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     tags = packet_tags.PacketTags() 
-    tags2 = transport_tags.TransportTags()
+    tmeta = transport_meta.TransportMeta()
     printer = packet_summary.PacketSummary()
 
     # Set up the chain
     meta.link(streamer)
     rdns.link(meta)
     tags.link(rdns)
-    tags2.link(tags)
-    printer.link(tags2)
+    tmeta.link(tags)
+    printer.link(tmeta)
 
     # Pull the chain
     printer.pull()

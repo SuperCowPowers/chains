@@ -40,14 +40,14 @@ class PacketMeta(link.Link):
             eth = dpkt.ethernet.Ethernet(buf)
             output['eth'] = {'src': eth.src, 'dst': eth.dst, 'type':eth.type}
 
-            # EtherType (IP, ARP, PPPoE, IP6... see http://en.wikipedia.org/wiki/EtherType)
-            output['packet_type'] = eth.data.__class__.__name__
-
             # Grab packet data
             packet = eth.data
 
+            # Packet Type ('EtherType') (IP, ARP, PPPoE, IP6... see http://en.wikipedia.org/wiki/EtherType)
+            output['packet'] = {'type': packet.__class__.__name__, 'data': packet.data}
+
             # It this an IP packet?
-            if output['packet_type'] == 'IP':
+            if output['packet']['type'] == 'IP':
 
                 # Pull out fragment information (flags and offset all packed into off field, so use bitmasks)
                 df = bool(packet.off & dpkt.ip.IP_DF)
@@ -55,68 +55,29 @@ class PacketMeta(link.Link):
                 offset = packet.off & dpkt.ip.IP_OFFMASK
 
                 # Pulling out src, dst, length, fragment info, TTL, checksum and Protocol
-                output['packet'] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
-                                                 'df':df, 'mf': mf, 'offset': offset, 'checksum': packet.sum}
+                output['packet'].update({'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.len, 'ttl':packet.ttl,
+                                         'df':df, 'mf': mf, 'offset': offset, 'checksum': packet.sum})
 
             # Is this an IPv6 packet?
-            elif output['packet_type'] == 'IP6':
+            elif output['packet']['type'] == 'IP6':
 
                 # Pulling out the IP6 fields
-                output['packet'] = {'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim}
+                output['packet'].update({'src':packet.src, 'dst':packet.dst, 'p': packet.p, 'len':packet.plen, 'ttl':packet.hlim})
 
             # If the packet isn't IP or IPV6 just pack it as a dictionary
             else:
-                output['packet'] = data_utils.make_dict(packet)
+                output['packet'].update(data_utils.make_dict(packet))
 
-            # For the transport layers we're going to make the TCP flags 'human readable' but for
-            # everything else we're just going to bundle up the object as a dictionary
-            try:
-                transport = packet.data
-                output['transport_type'] = self._transport(packet)
-                if output['transport_type']:
-                    output['transport'] = data_utils.make_dict(transport)
-                    output['transport']['flags'] = self._readable_flags(output['transport'])
-            except AttributeError: # No packet data
-                output['transport_type'] = None
+            # For the transport layer we're going to set the transport to None. and
+            # hopefully a 'link' upstream will manage the transport functionality
+            output['transport'] = None
 
-            # For the application layer we're going to set the appliction_type to None. and
-            # hopefully a 'link' upstream will manage the application identification functionality
-            output['application_type'] = None
+            # For the application layer we're going to set the application to None. and
+            # hopefully a 'link' upstream will manage the application functionality
+            output['application'] = None
 
             # All done
             yield output
-
-    @staticmethod
-    def _transport(packet):
-        """Give the transport as a string or None if not one"""
-        return packet.data.__class__.__name__  if packet.data.__class__.__name__ != 'str' else None
-
-    @staticmethod
-    def _readable_flags(transport):
-        """Method that turns bit flags into a human readable list
-
-           Args:
-               transport (dict): transport info, specifically needs a 'flags' key with bit_flags
-           Returns:
-               list: a list of human readable flags (e.g. ['syn_ack', 'fin', 'rst', ...]
-        """
-        if 'flags' not in transport:
-            return None
-        _flag_list = []
-        flags = transport['flags']
-        if flags & dpkt.tcp.TH_SYN:
-            if flags & dpkt.tcp.TH_ACK:
-                _flag_list.append('syn_ack')
-            else:
-                _flag_list.append('syn')
-        elif flags & dpkt.tcp.TH_FIN:
-            if flags & dpkt.tcp.TH_ACK:
-                _flag_list.append('fin_ack')
-            else:
-                _flag_list.append('fin')
-        elif flags & dpkt.tcp.TH_RST:
-            _flag_list.append('rst')
-        return _flag_list
 
 def test():
     """Test for PacketMeta class"""

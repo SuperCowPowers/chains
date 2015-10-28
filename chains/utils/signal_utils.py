@@ -24,7 +24,7 @@ def my_exit():
 def test():
     """Test the SignalCatcher"""
     with signal_catcher(my_exit):
-        time.sleep(10)
+        time.sleep(1)
 
 if __name__ == '__main__':
     test()

@@ -6,7 +6,7 @@ import argparse
 # Local imports
 from chains.utils import signal_utils
 from chains.sources import packet_streamer
-from chains.links import packet_meta, reverse_dns, transport_tags
+from chains.links import packet_meta, reverse_dns, transport_meta
 from chains.sinks import packet_printer, packet_summary
 
 def run(iface_name=None, bpf=None, summary=None, max_packets=100):
@@ -16,7 +16,7 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, bpf=bpf, max_packets=max_packets)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
-    tags = transport_tags.TransportTags()
+    tags = transport_meta.TransportMeta()
     if summary:
         printer = packet_summary.PacketSummary()
     else:

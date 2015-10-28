@@ -30,7 +30,7 @@ class PacketPrinter(sink.Sink):
                   (net_utils.mac_addr(item['eth']['src']), net_utils.mac_addr(item['eth']['dst']), item['eth']['type'])
 
             # Print out the Packet info
-            packet_type = item['packet_type']
+            packet_type = item['packet']['type']
             print 'Packet: %s' % packet_type,
             packet = item['packet']
             if packet_type in ['IP', 'IP6']:
@@ -47,8 +47,8 @@ class PacketPrinter(sink.Sink):
                 print str(packet)
 
             # Print out transport and application layers
-            print 'Transport: %s ' % item['transport_type'],
-            if item['transport_type']:
+            if item['transport']:
+                print 'Transport: %s ' % item['transport']['type'],
                 transport_info = item['transport']
                 for key, value in transport_info.iteritems():
                     if key != 'data':
@@ -63,9 +63,9 @@ class PacketPrinter(sink.Sink):
                     print
 
             # Application data
-            print 'Application: %s' % item['application_type'],
-            if item['application_type']:
-                print str(item[item['application_type']])
+            if item['application']:
+                print 'Application: %s' % item['application']['type'],
+                print str(item['application'])
             print
 
             # Tags
