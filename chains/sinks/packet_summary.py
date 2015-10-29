@@ -20,7 +20,7 @@ class PacketSummary(sink.Sink):
         for item in self.input_stream:
 
             # Print out the timestamp in UTC
-            print '%s -' % item['timestamp'].strftime("%Y-%m-%d %H:%M:%S"),
+            print '%s -' % item['timestamp'],
 
             # Transport info
             if item['transport']:
@@ -58,7 +58,7 @@ def test():
     # Create a PacketStreamer and set its output to PacketSummary input
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
 
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     printer = PacketSummary()

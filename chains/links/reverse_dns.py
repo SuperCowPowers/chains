@@ -93,7 +93,7 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to ReverseDNS
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     dns = ReverseDNS()
 

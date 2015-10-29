@@ -23,7 +23,7 @@ day for a year on your home network and never run out of memory.
 .. code-block:: python
 
     # Create the classes
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     printer = packet_printer.PacketPrinter()
@@ -74,7 +74,7 @@ Again we simply link these together in a chain and then pull the chain.
 .. code-block:: python
 
     # Create the classes
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     tags = tagger.Tagger() 

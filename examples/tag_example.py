@@ -7,7 +7,7 @@ from chains.links import packet_meta, reverse_dns, packet_tags, transport_meta
 from chains.sinks import packet_printer
 from chains.sinks import packet_summary
 
-def run(iface_name=None, bpf=None, summary=None, max_packets=100):
+def run(iface_name=None, bpf=None, summary=None, max_packets=50):
     """Run the Simple Packet Printer Example"""
 
     # Create the classes

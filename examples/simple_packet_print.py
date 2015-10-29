@@ -16,7 +16,7 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, bpf=bpf, max_packets=max_packets)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
-    tags = transport_meta.TransportMeta()
+    tmeta = transport_meta.TransportMeta()
     if summary:
         printer = packet_summary.PacketSummary()
     else:
@@ -25,8 +25,8 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=100):
     # Set up the chain
     meta.link(streamer)
     rdns.link(meta)
-    tags.link(rdns)
-    printer.link(tags)
+    tmeta.link(rdns)
+    printer.link(tmeta)
 
     # Pull the chain
     printer.pull()

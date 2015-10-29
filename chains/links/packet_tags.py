@@ -87,7 +87,7 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to PacketTags
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=100)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
 

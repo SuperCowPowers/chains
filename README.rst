@@ -43,7 +43,7 @@ Example
 ::
 
     # Create the classes
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     printer = packet_printer.PacketPrinter()

@@ -95,7 +95,7 @@ class PacketStreamer(source.Source):
 def test():
     """Open up a test pcap file and stream the packets"""
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    streamer = PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = PacketStreamer(iface_name=data_path, max_packets=50)
     for packet in streamer.output_stream:
         print packet
 

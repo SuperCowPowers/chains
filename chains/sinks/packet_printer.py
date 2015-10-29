@@ -23,7 +23,7 @@ class PacketPrinter(sink.Sink):
         for item in self.input_stream:
 
             # Print out the timestamp in UTC
-            print 'Timestamp: %s' % str(item['timestamp'])
+            print 'Timestamp: %s' % item['timestamp']
 
             # Unpack the Ethernet frame (mac src/dst, ethertype)
             print 'Ethernet Frame: %s --> %s  (type: %d)' % \
@@ -40,16 +40,13 @@ class PacketPrinter(sink.Sink):
                     print '-- Frag(df:%d mf:%d offset:%d)' % (packet['df'], packet['mf'], packet['offset'])
                 else:
                     print
-                # Is there domain info?
-                if 'src_domain' in packet:
-                    print 'Domains: %s --> %s' % (packet['src_domain'], packet['dst_domain'])
             else:
                 print str(packet)
 
             # Print out transport and application layers
             if item['transport']:
-                print 'Transport: %s ' % item['transport']['type'],
                 transport_info = item['transport']
+                print 'Transport: %s ' % transport_info['type'],
                 for key, value in transport_info.iteritems():
                     if key != 'data':
                         print key+':'+repr(value),
@@ -66,7 +63,10 @@ class PacketPrinter(sink.Sink):
             if item['application']:
                 print 'Application: %s' % item['application']['type'],
                 print str(item['application'])
-            print
+
+            # Is there domain info?
+            if 'src_domain' in packet:
+                print 'Domains: %s --> %s' % (packet['src_domain'], packet['dst_domain'])
 
             # Tags
             if 'tags' in item:
@@ -83,7 +83,7 @@ def test():
     # Create a PacketStreamer and set its output to PacketPrinter input
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
 
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     printer = PacketPrinter()
