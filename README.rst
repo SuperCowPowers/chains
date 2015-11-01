@@ -14,17 +14,17 @@ Want to see what's happening on your network right now? Just install chains and 
 
     $ pip install chains
     $ netwatch -s
-    2015-09-07 19:08:34 - UDP IP 192.168.1.9(internal) --> 224.0.0.251(multicast_dns)
+    2015-09-07 19:08:34 - UDP IP 192.168.1.9(internal)--> 224.0.0.251(multicast_dns)
     2015-09-07 19:08:34 - UDP IP6 fe80::6e40:8ff:fe89:fc08(internal) --> ff02::fb(multicast_dns)
-    2015-09-07 19:08:34 - UDP IP 192.168.1.14(internal) --> 224.0.0.251(multicast_dns)
-    2015-09-07 19:08:34 - UDP IP6 fe80::8a0:4946:3c8a:e6a1(internal) --> ff02::fb(multicast_dns)
-    2015-09-07 19:08:34 - TCP IP 192.168.1.9(internal) --> 49.75.183.151(nxdomain)
-    2015-09-07 19:08:36 - TCP IP 192.168.1.9(internal) --> 54.164.252.174(compute-1.amazonaws.com)
-    2015-09-07 19:08:36 - UDP IP 192.168.1.1(internal) --> 192.168.1.9(internal)
-    2015-09-07 19:08:36 - TCP IP 54.164.252.174(compute-1.amazonaws.com) --> 192.168.1.9(internal)
+    2015-09-07 19:08:34 - UDP IP 192.168.1.14(internal)--> 224.0.0.251(multicast_dns)
+    2015-09-07 19:08:34 - UDP IP6 fe80::8a0:4946:3c8a:e6a1(internal)--> ff02::fb(multicast_dns)
+    2015-09-07 19:08:34 - TCP IP 192.168.1.9(internal)--> 49.75.183.151(nxdomain)
+    2015-09-07 19:08:36 - TCP IP 192.168.1.9(internal)--> 54.164.252.174(compute-1.amazonaws.com)
+    2015-09-07 19:08:36 - UDP IP 192.168.1.1(internal)--> 192.168.1.9(internal)
+    2015-09-07 19:08:36 - TCP IP 54.164.252.174(compute-1.amazonaws.com)--> 192.168.1.9(internal)
     ...
 
-What to go to coffee shop and see http(s) requests floating about?
+Want to go to coffee shop and see http(s) requests floating about?
 ::
 
    $ urlwatch
