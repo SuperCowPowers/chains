@@ -16,9 +16,13 @@ PacketTags
 ==========
 .. automodule:: chains.links.packet_tags
 
-TransportTags
+TransportMeta
 =============
-.. automodule:: chains.links.transport_tags
+.. automodule:: chains.links.transport_meta
+
+HTTPMeta
+=============
+.. automodule:: chains.links.http_meta
 
 Link BaseClass
 ==============
