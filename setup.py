@@ -10,7 +10,7 @@ description = 'Exploratory Python Chained Generator Project'
 with open('README.rst') as f:
     long_description = f.read()
 
-scripts = ['scripts/netwatch']
+scripts = ['scripts/netwatch', 'scripts/urlwatch']
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
 requirements = ['pypcap', 'dpkt']

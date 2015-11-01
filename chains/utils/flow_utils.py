@@ -9,8 +9,12 @@ from chains.utils import file_utils, net_utils
 # Helper methods
 def flow_tuple(data):
     """Tuple for flow (src, dst, sport, dport, proto)"""
-    return (data['packet']['src'], data['packet']['dst'], data['transport'].get('sport'),
-            data['transport'].get('dport'), data['transport']['type'])
+    src = net_utils.ip_to_str(data['packet'].get('src')) if data['packet'].get('src') else None
+    dst = net_utils.ip_to_str(data['packet'].get('dst')) if data['packet'].get('dst') else None
+    sport = data['transport'].get('sport') if data.get('transport') else None
+    dport = data['transport'].get('dport') if data.get('transport') else None
+    proto = data['transport'].get('type') if data.get('transport') else data['packet']['type']
+    return (src, dst, sport, dport, proto)
 
 def _flow_tuple_reversed(f_tuple):
     """Reversed tuple for flow (dst, src, dport, sport, proto)"""
@@ -23,66 +27,121 @@ class Flow(object):
         """Initialize Flow Class"""
 
         # Set up my meta data
-        self._flow_id = None
-        self._protocol = None
-        self._direction = None
-        self._packet_list = []
-        self._payload = ''
-        self._start = None
-        self._end = None
-        self._timeout = datetime.now() + timedelta(seconds=1)
+        self.meta = {}
+        self.meta['flow_id'] = None
+        self.meta['src'] = None
+        self.meta['dst'] = None
+        self.meta['src_domain'] = None
+        self.meta['dst_domain'] = None
+        self.meta['sport'] = None
+        self.meta['dport'] = None
+        self.meta['protocol'] = None
+        self.meta['direction'] = None
+        self.meta['packet_list'] = []
+        self.meta['payload'] = ''
+        self.meta['start'] = None
+        self.meta['end'] = None
+        self.meta['state'] = 'partial'
+        self.meta['timeout'] = datetime.now() + timedelta(seconds=10)
 
     def add_packet(self, packet):
         """Add a packet to this flow"""
 
         # First packet?
-        if not self._flow_id:
-            self._flow_id = flow_tuple(packet)
-            self._protocol = packet['transport']['type']
-            self._direction = self._cts_or_stc(packet)
-            self._start = packet['timestamp']
-            self._end = packet['timestamp']
+        if not self.meta['flow_id']:
+            self.meta['flow_id'] = flow_tuple(packet)
+            self.meta['src'] = self.meta['flow_id'][0]
+            self.meta['dst'] = self.meta['flow_id'][1]
+            self.meta['src_domain'] = packet['packet']['src_domain']
+            self.meta['dst_domain'] = packet['packet']['dst_domain']
+            self.meta['sport'] = self.meta['flow_id'][2]
+            self.meta['dport'] = self.meta['flow_id'][3]
+            self.meta['protocol'] = self.meta['flow_id'][4]
+            self.meta['direction'] = self._cts_or_stc(packet)
+            self.meta['start'] = packet['timestamp']
+            self.meta['end'] = packet['timestamp']
 
         # Add the packet
-        self._packet_list.append(packet)
-        if packet['timestamp'] < self._start:
-            self._start = packet['timestamp']
-        if packet['timestamp'] > self._end:
-            self._end = packet['timestamp']
+        self.meta['packet_list'].append(packet)
+        if packet['timestamp'] < self.meta['start']:
+            self.meta['start'] = packet['timestamp']
+        if packet['timestamp'] > self.meta['end']:
+            self.meta['end'] = packet['timestamp']
+
+        # State of connection/flow
+        if self.meta['protocol'] == 'TCP':
+            flags = packet['transport']['flags']
+            if 'syn' in flags:
+                self.meta['state'] = 'partial_syn'
+                self.meta['direction'] = 'CTS'
+            elif 'fin' in flags:
+                # print '--- FIN RECEIVED %s ---'  % str(self.meta['flow_id)
+                self.meta['state'] = 'complete' if self.meta['state'] == 'partial_syn' else 'partial'
+                self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
+            elif 'syn_ack' in flags:
+                self.meta['state'] = 'partial_syn'
+                self.meta['direction'] = 'STC'
+            elif 'fin_ack'in flags:
+                # print '--- FIN_ACK RECEIVED %s ---' % str(self.meta['flow_id)
+                self.meta['state'] = 'complete' if self.meta['state'] == 'partial_syn' else 'partial'
+                self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
+            elif 'rst' in flags:
+                # print '--- RESET RECEIVED %s ---' % str(self.meta['flow_id)
+                self.meta['state'] = 'partial'
+                self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
+
+        # Only collect UDP and TCP
+        if self.meta['protocol'] not in ['UDP', 'TCP']:
+            self.meta['timeout'] = datetime.now()
 
     def get_flow(self):
         """Reassemble the flow and return all the info/data"""
-        if self._protocol == 'TCP':
-            self._packet_list.sort(key=lambda packet: packet['transport']['seq'])
+        if self.meta['protocol'] == 'TCP':
+            self.meta['packet_list'].sort(key=lambda packet: packet['transport']['seq'])
+            for packet in self.meta['packet_list']:
+                self.meta['payload'] += packet['transport']['data']
 
-        # Join the packet data into one payload
-        for packet in self._packet_list:
-            self._payload += packet['transport']['data']
+        return self.meta
 
-        return {'flow': self._flow_id, 'num_packets': len(self._packet_list), 'bytes': len(self._payload), 'payload': self._payload,
-                'start_time': self._start, 'end_time': self._end}
-
-    def timeout(self):
-        """Has this flow been timed out?"""
-        return  datetime.now() > self._timeout
+    def ready(self):
+        """Is this flow ready to go?"""
+        return datetime.now() > self.meta['timeout']
 
     @staticmethod
     def _cts_or_stc(data):
         """Does the data look like a Client to Server (cts) or Server to Client (stc) traffic?"""
 
-        # Tests for TCP
-        if data['transport']['type'] == 'TCP':
-            flags = data['transport']['flags']
+        # UDP/TCP
+        if data['transport']:
 
-            # Syn/Ack or fin/ack is a server response
-            if 'syn_ack' in flags or 'fin_ack' in flags:
-                return 'stc'
+            # TCP flags
+            if data['transport']['type'] == 'TCP':
+                flags = data['transport']['flags']
 
-            # Syn or fin is a client response
-            if 'syn' in flags or 'fin' in flags:
-                return 'cts'
+                # Syn/Ack or fin/ack is a server response
+                if 'syn_ack' in flags or 'fin_ack' in flags:
+                    return 'STC'
 
-        # Now make some educated guesses :)
+                # Syn or fin is a client response
+                if 'syn' in flags or 'fin' in flags:
+                    return 'CTS'
+
+            # Source Port/Destination Port
+            if 'sport' in data['transport']:
+                sport = data['transport']['sport']
+                dport = data['transport']['dport']
+
+                # High port talking to low port
+                if dport < 1024 and sport > dport:
+                    return 'CTS'
+
+                # Low port talking to high port
+                if sport < 1024 and sport < dport:
+                    return 'STC'
+
+                # Wow... guessing
+                return 'STC' if sport < dport else 'CTS'
+
         # Internal/External
         if 'src' in data['packet'] and 'dst' in data['packet']:
             src = net_utils.ip_to_str(data['packet']['src'])
@@ -90,27 +149,14 @@ class Flow(object):
 
             # Internal talking to external?
             if net_utils.is_internal(src) and not net_utils.is_internal(dst):
-                return 'cts'
+                return 'CTS'
 
             # External talking to internal?
             if net_utils.is_internal(dst) and not net_utils.is_internal(src):
-                return 'stc'
+                return 'STC'
 
-        # Source Port/Destination Port
-        if 'sport' in data['transport']:
-            sport = data['transport']['sport']
-            dport = data['transport']['dport']
-
-            # High port talking to low port
-            if dport < 1024 and sport > dport:
-                return 'cst'
-
-            # Low port talking to high port
-            if sport < 1024 and sport < dport:
-                return 'stc'
-
-        # Okay we have no idea so just return cts
-        return 'cts'
+        # Okay we have no idea
+        return 'CTS'
 
 def test():
     """Test for the Flow class"""
@@ -121,7 +167,7 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to TransportMeta
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=100)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     tmeta = transport_meta.TransportMeta()
@@ -140,7 +186,8 @@ def test():
     # Print out flow information
     for flow in flows.values():
         fd = flow.get_flow()
-        print 'Flow %s -- Packets:%d Bytes:%d Payload: %s' % (fd['flow'], fd['num_packets'], fd['bytes'], fd['payload'][:20])
+        print 'Flow %s -- Packets:%d Bytes:%d Payload: %s' % (fd['flow_id'], len(fd['packet_list']),
+                                                              len(fd['payload']), repr(fd['payload'])[:20])
 
 if __name__ == '__main__':
 

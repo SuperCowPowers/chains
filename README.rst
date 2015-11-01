@@ -19,10 +19,35 @@ Want to see what's happening on your network right now? Just install chains and 
     2015-09-07 19:08:34 - UDP IP 192.168.1.14(internal) --> 224.0.0.251(multicast_dns)
     2015-09-07 19:08:34 - UDP IP6 fe80::8a0:4946:3c8a:e6a1(internal) --> ff02::fb(multicast_dns)
     2015-09-07 19:08:34 - TCP IP 192.168.1.9(internal) --> 49.75.183.151(nxdomain)
-    2015-09-07 19:08:36 - TCP IP 192.168.1.9(internal) --> 54.164.252.174(ec2-54-164-252-174.compute-1.amazonaws.com)
+    2015-09-07 19:08:36 - TCP IP 192.168.1.9(internal) --> 54.164.252.174(compute-1.amazonaws.com)
     2015-09-07 19:08:36 - UDP IP 192.168.1.1(internal) --> 192.168.1.9(internal)
-    2015-09-07 19:08:36 - TCP IP 54.164.252.174(ec2-54-164-252-174.compute-1.amazonaws.com) --> 192.168.1.9(internal)
+    2015-09-07 19:08:36 - TCP IP 54.164.252.174(compute-1.amazonaws.com) --> 192.168.1.9(internal)
     ...
+
+What to go to coffee shop and see http(s) requests floating about?
+::
+
+   $ urlwatch
+
+   HTTP_REQUEST
+   192.168.1.9 --> Host: clc.stackoverflow.com
+   URI: /j/p.js?d=hireme&ac=891012&tags=python;attributes&lw=5913&bw=1539
+   Referer: http://stackoverflow.com/questions/610883/attribute-in-python
+   Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36
+
+   HTTP_REQUEST
+   192.168.1.9 --> Host: ajax.googleapis.com
+   URI: /ajax/libs/jquery/1.7.1/jquery.min.js
+   Referer: http://stackoverflow.com/questions/610883/attribute-in-python
+   Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36
+
+   HTTPS_REQUEST
+   192.168.1.9 --> 199.166.0.200(sc.iasds01.com) tls_records(5)
+   TLSRecord(length=512, version=769, type=22, data='\x01\x00\x01\xfc\x03\x03K\t\xf8_\x8...
+   TLSRecord(length=262, version=771, type=22, data='\x10\x00\x01\x02\x01\x00Vfd\x8f8a\x...
+   TLSRecord(length=1, version=771, type=20, data='\x01')
+   TLSRecord(length=64, version=771, type=22, data="l\xd0\xce\x96\xf5\x1a\xf8\xcf\xcc\x1...
+   TLSRecord(length=560, version=771, type=23, data='\x1d\x942K\xfb\x87\x19v\xba\x13\x14...
 
 Documentation
 -------------

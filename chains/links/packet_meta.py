@@ -44,7 +44,10 @@ class PacketMeta(link.Link):
             packet = eth.data
 
             # Packet Type ('EtherType') (IP, ARP, PPPoE, IP6... see http://en.wikipedia.org/wiki/EtherType)
-            output['packet'] = {'type': packet.__class__.__name__, 'data': packet.data}
+            if hasattr(packet, 'data'):
+                output['packet'] = {'type': packet.__class__.__name__, 'data': packet.data}
+            else:
+                output['packet'] = {'type': None, 'data': None}
 
             # It this an IP packet?
             if output['packet']['type'] == 'IP':

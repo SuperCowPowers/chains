@@ -34,12 +34,12 @@ class Flows(link.Link):
             flow_id = flow_utils.flow_tuple(packet)
             self._flows[flow_id].add_packet(packet)
 
-            # Yield flows that hit timeout
+            # Yield flows that are ready to go
             for flow in self._flows.values():
-                if flow.timeout():
+                if flow.ready():
                     flow_info = flow.get_flow()
                     yield flow_info
-                    del self._flows[flow_info['flow']]
+                    del self._flows[flow_info['flow_id']]
 
         # All done so just dump what we have left
         print '---- NO MORE INPUT ----'
@@ -57,7 +57,7 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to TransportMeta
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=50)
+    streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=1000)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
     tmeta = transport_meta.TransportMeta()
@@ -71,7 +71,7 @@ def test():
 
     # Print out the flow information
     for flow in flows.output_stream:
-        print 'Flow %s -- Packets:%d Bytes:%d Payload: %s' % (flow['flow'], flow['num_packets'], flow['bytes'], flow['payload'][:20])
+        print 'Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s' % (flow['flow_id'], flow['direction'], len(flow['packet_list']), len(flow['payload']), repr(flow['payload'])[:20])
 
 if __name__ == '__main__':
     test()

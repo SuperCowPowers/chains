@@ -28,9 +28,9 @@ class TransportMeta(link.Link):
             # Get the transport data and type
             trans_data = item['packet']['data']
             trans_type = self._get_transport_type(trans_data)
-            if trans_type:
-                item['transport'] = {'type': trans_type}
-                item['transport'].update(data_utils.make_dict(trans_data))
+            if trans_type and trans_data:
+                item['transport'] = data_utils.make_dict(trans_data)
+                item['transport']['type'] = trans_type
                 item['transport']['flags'] = self._readable_flags(item['transport'])
                 item['transport']['data'] = trans_data['data']
 
