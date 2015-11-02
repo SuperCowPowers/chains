@@ -1,4 +1,7 @@
-"""Flows: Combine packets into flows"""
+"""Flows: Takes an input_stream of packets and provides an output_stream of flows
+          based on (src, dst, src_port, dst_port, protocol) flow ids.
+"""
+
 
 import time
 from collections import defaultdict
@@ -10,7 +13,9 @@ log_utils.log_defaults()
 
 
 class Flows(link.Link):
-    """Combine packets into flows"""
+    """Flows: Takes an input_stream of packets and provides an output_stream of flows
+              based on (src, dst, src_port, dst_port, protocol) flow ids.
+    """
 
     def __init__(self):
         """Initialize Flows Class"""

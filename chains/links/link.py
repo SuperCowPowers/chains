@@ -1,6 +1,6 @@
 """
-   Links take an input_stream and provides an output_stream.
-   All streams are enforced to a generator that yields python dictionaries.
+   Links take an input_stream and provides an output_stream. All streams
+   are required to be a generator that yields python dictionaries.
 """
 import collections
 
@@ -10,7 +10,7 @@ log_utils.log_defaults()
 
 class Link(object):
     """Link classes take an input_stream and provide an output_stream. All streams
-       are expected to be a generator that yields python dictionaries.
+       are required to be a generator that yields python dictionaries.
     """
     def __init__(self):
         """Initialize Link Class"""

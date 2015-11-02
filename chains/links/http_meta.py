@@ -43,7 +43,7 @@ class HTTPMeta(link.Link):
                     flow['http'] = {'type':'HTTP_REQUEST', 'data':request_data}
                 except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError):
                     try:
-                        tls_records, bytes_consumed = dpkt.ssl.TLSMultiFactory(flow['payload'])
+                        tls_records, bytes_consumed = dpkt.ssl.tls_multi_factory(flow['payload'])
                         flow['http'] = {'type':'HTTPS_REQUEST', 'data':{'tls_records': tls_records, 'uri':None, 'headers':None}}
                     except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError, dpkt.ssl.SSL3Exception):
                         flow['http'] = None

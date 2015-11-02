@@ -2,7 +2,6 @@
 """ Example: Simple Packet Printer """
 import os
 import argparse
-from pprint import pprint
 
 # Local imports
 from chains.utils import signal_utils
@@ -44,7 +43,7 @@ def run(iface_name=None, max_packets=10000):
             print item['http']['type']
             print '%s --> %s(%s) tls_records(%d)' % (item['src'], item['dst'], item['dst_domain'], len(tls_records))
             for record in tls_records:
-                pprint(record)
+                print repr(record)[:100]+'...'
             print
 
 def test():

@@ -20,6 +20,10 @@ TransportMeta
 =============
 .. automodule:: chains.links.transport_meta
 
+Flows
+=============
+.. automodule:: chains.links.flows
+
 HTTPMeta
 =============
 .. automodule:: chains.links.http_meta
