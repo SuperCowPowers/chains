@@ -43,5 +43,13 @@ def test_utils():
     assert get_value(bad, 'IP.src') == None
     assert get_value(bad2, 'IP.src') == None
 
+    class bla(object):
+        def func_foo(self):
+            pass
+    bla.a = 'foo'
+    bla.b = 'bar'
+    print make_dict(bla)
+    print 'Success!'
+
 if __name__ == '__main__':
     test_utils()
