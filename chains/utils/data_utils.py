@@ -1,10 +1,9 @@
 """Data utilities that might be useful"""
 import os
-import logging
 
 # Local imports
 from chains.utils import log_utils
-log_utils.log_defaults()
+logger = log_utils.get_logger()
 
 def make_dict(obj):
     """This method creates a dictionary out of an object"""
@@ -26,7 +25,7 @@ def get_value(data, key):
             if isinstance(ref, dict):
                 ref = ref[subkey]
             else:
-                logging.critical('Cannot use subkey %s on non-dictionary element', subkey)
+                logger.critical('Cannot use subkey %s on non-dictionary element', subkey)
                 return None
         return ref
 

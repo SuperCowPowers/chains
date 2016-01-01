@@ -5,7 +5,7 @@ import urllib2
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, data_utils
-log_utils.log_defaults()
+logger = log_utils.get_logger()
 
 
 class HTTPMeta(link.Link):
@@ -32,21 +32,13 @@ class HTTPMeta(link.Link):
 
             # Client to Server
             if flow['direction'] == 'CTS':
-
-                # Try both HTTP and HTTPS
                 try:
                     request = dpkt.http.Request(flow['payload'])
-
-                    # Convert and clean
                     request_data = data_utils.make_dict(request)
                     request_data['uri'] = self._clean_uri(request['uri'])
                     flow['http'] = {'type':'HTTP_REQUEST', 'data':request_data}
                 except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError):
-                    try:
-                        tls_records, bytes_consumed = dpkt.ssl.tls_multi_factory(flow['payload'])
-                        flow['http'] = {'type':'HTTPS_REQUEST', 'data':{'tls_records': tls_records, 'uri':None, 'headers':None}}
-                    except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError, dpkt.ssl.SSL3Exception):
-                        flow['http'] = None
+                    flow['http'] = None
 
             # Server to Client
             else:
@@ -64,11 +56,6 @@ class HTTPMeta(link.Link):
         """Clean the URI string"""
         return urllib2.unquote(uri).replace('+', ' ')
 
-    @staticmethod
-    def _get_application_type(application):
-        """Give the application as a string or None if not one"""
-        return application.__class__.__name__  if application.__class__.__name__ != 'str' else None
-
 
 def test():
     """Test for HTTPMeta class"""
@@ -79,7 +66,6 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to HTTPMeta
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
-    #data_path = file_utils.relative_dir(__file__, '../../data/sqli.pcap')
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10000)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()

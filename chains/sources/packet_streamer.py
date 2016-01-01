@@ -1,12 +1,11 @@
 """ PacketStreamer: Stream packets from a network interface """
 import os
 import pcap
-import logging
 
 # Local imports
 from chains.sources import source
 from chains.utils import file_utils, log_utils
-log_utils.log_defaults()
+logger = log_utils.get_logger()
 
 class PacketStreamer(source.Source):
     """Stream out the packets from the given network interface
@@ -67,14 +66,14 @@ class PacketStreamer(source.Source):
                 self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
             except OSError:
                 try:
-                    logging.warning('Could not get immediate mode, turning flag off')
+                    logger.warning('Could not get immediate mode, turning flag off')
                     self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=False)
                 except OSError:
                     try:
-                        logging.warning('Could not get promisc  mode, turning flag off')
+                        logger.warning('Could not get promisc  mode, turning flag off')
                         self.pcap = pcap.pcap(name=self.iface_name, promisc=False, immediate=False)
                     except OSError:
-                        log_utils.panic_and_throw('Could no open interface with any options (may need to be sudo)')
+                        log_utils.panic('Could no open interface with any options (may need to be sudo)')
 
             if self.bpf:
                 self.pcap.setfilter(self.bpf)

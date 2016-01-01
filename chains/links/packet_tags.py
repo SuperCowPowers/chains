@@ -1,10 +1,9 @@
 """PacketTags: Add tags to incoming packet data"""
-import logging
 
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, net_utils
-log_utils.log_defaults()
+logger = log_utils.get_logger()
 
 
 class PacketTags(link.Link):

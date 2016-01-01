@@ -2,14 +2,15 @@
 """ Example: Simple Packet Printer """
 import os
 import argparse
+import itertools
 
 # Local imports
 from chains.utils import signal_utils
 from chains.sources import packet_streamer
-from chains.links import packet_meta, reverse_dns, transport_meta, flows, http_meta
+from chains.links import packet_meta, reverse_dns, transport_meta, flows, http_meta, tls_meta
 
 def run(iface_name=None, max_packets=10000):
-    """Run the Simple Packet Printer Example"""
+    """Run the Simple URL Watcher Script"""
 
     # Create the classes
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, max_packets=max_packets)
@@ -18,41 +19,61 @@ def run(iface_name=None, max_packets=10000):
     tmeta = transport_meta.TransportMeta()
     fmeta = flows.Flows()
     hmeta = http_meta.HTTPMeta()
+    tlsmeta = tls_meta.TLSMeta()
 
     # Set up chain
     meta.link(streamer)
     rdns.link(meta)
     tmeta.link(rdns)
     fmeta.link(tmeta)
-    hmeta.link(fmeta)
+
+    # Put in a tee as incoming data may be HTTP or TLS/HTTPS
+    flow1, flow2 = itertools.tee(fmeta.output_stream)
+    hmeta.link(flow1)
+    tlsmeta.link(flow2)
 
     # Print out the URIs
-    for item in hmeta.output_stream:
-        if not item['http']:
+    for http_output, tls_output in itertools.izip(hmeta.output_stream, tlsmeta.output_stream):
+
+        # Check for Empty Payload
+        if not http_output['payload']:
             continue
 
-        # Get both HTTP and HTTPS requests
-        if item['http']['type'] == 'HTTP_REQUEST':
-            uri = item['http']['data']['uri']
-            headers = item['http']['data']['headers']
-            referer = headers['referer'] if 'referer' in headers else '-'
-            print item['http']['type']
-            print '%s --> Host: %s \nURI: %s \nReferer: %s \nAgent: %s\n' % (item['src'], headers['host'], uri, referer, headers['user-agent'])
-        elif item['http']['type'] == 'HTTPS_REQUEST':
-            tls_records = item['http']['data']['tls_records']
-            print item['http']['type']
-            print '%s --> %s(%s) tls_records(%d)' % (item['src'], item['dst'], item['dst_domain'], len(tls_records))
-            for record in tls_records:
-                print repr(record)[:100]+'...'
-            print
+        # HTTP
+        if http_output['http']:
+            if http_output['http']['type'] == 'HTTP_REQUEST':
+                uri = http_output['http']['data'].get('uri')
+                headers = http_output['http']['data']['headers']
+                referer = headers.get('referer') or '-'
+                print http_output['http']['type']
+                print '\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % (http_output['src'], headers['host'], uri,
+                                                                                         referer, headers['user-agent'])
+            else: # Response
+                headers = http_output['http']['data']['headers']
+                uri = headers.get('application-url') or '-'
+                print http_output['http']['type']
+                print '\t%s --> %s \n\tURI: %s \n\tHeaders: %s\n' % (http_output['src'], http_output['dst'], uri, repr(headers))
+
+        # TLS/HTTPS
+        elif tls_output['tls']:
+            tls_records = tls_output['tls']['data']['tls_records']
+            if tls_output['tls']['type'] == 'TLS_CTS':
+                print 'HTTPS_REQUEST'
+                print '\t%s --> %s (%s) tls_records(%d)\n' % (tls_output['src'], tls_output['dst'], tls_output['dst_domain'], len(tls_records))
+            else:
+                print 'HTTPS_RESPONSE'
+                print '\t%s (%s) --> %s tls_records(%d)\n' % (tls_output['src'], tls_output['src_domain'], tls_output['dst'], len(tls_records))
+            #for record in tls_records:
+            #    print repr(record)[:100]+'...'
+            #print
 
 def test():
-    """Test the Simple Packet Printer Example"""
+    """Test the Simple URL Watcher Script"""
     from chains.utils import file_utils
 
     # For the test we grab a file, but if you don't specify a
     # it will grab from the first active interface
-    data_path = file_utils.relative_dir(__file__, '../data/http.pcap')
+    data_path = file_utils.relative_dir(__file__, '../data/https.pcap')
     run(iface_name = data_path)
 
 def my_exit():

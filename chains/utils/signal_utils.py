@@ -1,6 +1,5 @@
 """Signal Catching utility"""
 import signal
-import logging
 import sys
 import time
 from contextlib import contextmanager

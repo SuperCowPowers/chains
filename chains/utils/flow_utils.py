@@ -42,7 +42,7 @@ class Flow(object):
         self.meta['start'] = None
         self.meta['end'] = None
         self.meta['state'] = 'partial'
-        self.meta['timeout'] = datetime.now() + timedelta(seconds=10)
+        self.meta['timeout'] = datetime.now() + timedelta(seconds=5)
 
     def add_packet(self, packet):
         """Add a packet to this flow"""

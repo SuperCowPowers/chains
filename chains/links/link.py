@@ -6,7 +6,7 @@ import collections
 
 # Local imports
 from chains.utils import log_utils
-log_utils.log_defaults()
+log_utils.get_logger()
 
 class Link(object):
     """Link classes take an input_stream and provide an output_stream. All streams
@@ -39,7 +39,7 @@ class Link(object):
                input_stream: a generator that yields dictionaries
         """
         if not input_stream:
-            log_utils.panic_and_throw('The input stream is None!')
+            log_utils.panic('The input stream is None!')
         self._input_stream = input_stream
 
     @property
@@ -55,7 +55,7 @@ class Link(object):
                output_stream: a generator that yields dictionaries
         """
         if not output_stream:
-            log_utils.panic_and_throw('The output stream is None!')
+            log_utils.panic('The output stream is None!')
         self._output_stream = output_stream
 
 def test():

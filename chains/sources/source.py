@@ -5,7 +5,7 @@
 # Local imports
 from chains.links import link
 from chains.utils import log_utils
-log_utils.log_defaults()
+log_utils.get_logger()
 
 class Source(link.Link):
     """Sources provide an output_stream but do not take in input stream"""
@@ -13,12 +13,12 @@ class Source(link.Link):
         """Initialize Source Class"""
 
         # Call super class init
-        super(Source, self).__init__()        
+        super(Source, self).__init__()
 
     @property
     def input_stream(self):
         """The input stream property (not provided for a source)"""
-        log_utils.panic_and_throw('Sources do not provice input streams')
+        log_utils.panic('Sources do not provice input streams')
 
 
 def test():

@@ -6,7 +6,7 @@
 # Local imports
 from chains.links import link
 from chains.utils import log_utils
-log_utils.log_defaults()
+log_utils.get_logger()
 
 class Sink(link.Link):
     """Sinks take an input_stream and provides a pull() method
@@ -14,14 +14,14 @@ class Sink(link.Link):
     """
     def __init__(self):
         """Initialize Sink Class"""
-    
+
         # Call super class init
         super(Sink, self).__init__()
 
     @property
     def output_stream(self):
         """The output stream property"""
-        log_utils.panic_and_throw('Sinks do not provice output streams')
+        log_utils.panic('Sinks do not provice output streams')
 
     def pull(self):
         """Process the input stream"""

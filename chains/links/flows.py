@@ -9,7 +9,7 @@ from collections import defaultdict
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, net_utils, flow_utils
-log_utils.log_defaults()
+log_utils.get_logger()
 
 
 class Flows(link.Link):
@@ -48,9 +48,13 @@ class Flows(link.Link):
 
         # All done so just dump what we have left
         print '---- NO MORE INPUT ----'
-        for flow in self._flows.values():
+        for flow in sorted(self._flows.values(), key=lambda x: x.meta['start']):
             yield flow.get_flow()
 
+def print_flow_info(flow):
+    """Print a summary of the flow inforamtion"""
+    print 'Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s...' % (flow['flow_id'], flow['direction'], len(flow['packet_list']),
+                                                              len(flow['payload']), repr(flow['payload'])[:30])
 
 def test():
     """Test for Flows class"""
@@ -76,7 +80,7 @@ def test():
 
     # Print out the flow information
     for flow in flows.output_stream:
-        print 'Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s' % (flow['flow_id'], flow['direction'], len(flow['packet_list']), len(flow['payload']), repr(flow['payload'])[:20])
+        print_flow_info(flow)
 
 if __name__ == '__main__':
     test()

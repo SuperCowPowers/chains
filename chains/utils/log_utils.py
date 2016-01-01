@@ -2,48 +2,34 @@
 import os
 import logging
 
-def log_defaults(log_level=logging.INFO, color=False):
-    """Setup logging output defaults
+def get_logger():
+    """Setup logging output defaults"""
 
-        Args:
-            log_level: set the log level (defaults to logging.INFO)
-    """
+    # Grab the logger
+    if not hasattr(get_logger, 'logger'):
 
-    # Log format string
-    format_str = '%(asctime)s [%(levelname)s] - %(module)s: %(message)s'
+        # Setup the default logging config
+        get_logger.logger = logging.getLogger('chains')
+        format_str = '%(asctime)s [%(levelname)s] - %(module)s: %(message)s'
+        logging.basicConfig(datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO, format=format_str)
 
-    # Set up all the logging defaults
-    logging.basicConfig(datefmt='%Y-%m-%d %H:%M:%S', level=log_level, format=format_str)
+    # Return the logger
+    return get_logger.logger
 
-    # Do they want colored logs
-    if color:
-        import coloredlogs
-        coloredlogs.install(level=log_level)
-
-def panic_and_throw(mesg):
-    """Critical/panic message and raise Runtime Error
-
-        Args:
-            mesg: the message to send to logging.critical
-        Returns:
-            Raises a Runtime Error
-    """
-    logging.critical('PANIC: '+ mesg)
+def panic(mesg):
+    """Throw a critical message and raise a runtime exceptions"""
+    get_logger().critical(mesg)
     raise RuntimeError(mesg)
 
 def test_utils():
     """Test the utility methods"""
-    log_defaults()
-    logging.debug('Test debug log message')
-    logging.info('Test information log message')
-    logging.warn('Test warning log message')
-    logging.error('Test error log message')
-    logging.critical('Test critical log message')
-    try:
-        panic_and_throw('Remain Calm... nothing to see...')
-        assert 0 # Getting here is 'wrong'
-    except RuntimeError:
-        print 'Success!'
+    logger = get_logger()
+    logger.debug('Test debug log message')
+    logger.info('Test information log message')
+    logger.warn('Test warning log message')
+    logger.error('Test error log message')
+    logger.critical('Test critical log message')
+    print 'Success!'
 
 if __name__ == '__main__':
     test_utils()

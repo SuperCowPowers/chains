@@ -1,12 +1,11 @@
 """PacketMeta: Use dpkt to pull out packet information"""
 import dpkt
 import datetime
-import logging
 
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, net_utils, data_utils
-log_utils.log_defaults()
+logger = log_utils.get_logger()
 
 class PacketMeta(link.Link):
     """Use dpkt to pull out packet information"""
