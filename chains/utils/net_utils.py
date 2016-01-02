@@ -1,29 +1,29 @@
 """Network utilities that might be useful"""
 import socket
 
-def mac_addr(mac_string):
-    """Print out MAC address given a string
+def mac_to_str(address):
+    """Convert a MAC address to a readable/printable string
 
        Args:
-           mac_string: the string representation of a MAC address
+           address: a MAC address
        Returns:
-           printable MAC address
+           str: Printable/readable MAC address
     """
-    return ':'.join('%02x' % ord(b) for b in mac_string)
+    return ':'.join('%02x' % ord(b) for b in address)
 
-def ip_to_str(address):
-    """Print out an IP address given a string
+def ip_to_str(inet):
+    """Convert inet object to a string
 
-       Args:
-           address: the string representation of a MAC address
-       Returns:
-           printable IP address
+        Args:
+            inet (inet struct): inet network address
+        Returns:
+            str: Printable/readable IP address
     """
     # First try ipv4 and then ipv6
     try:
-        return socket.inet_ntop(socket.AF_INET, address)
+        return socket.inet_ntop(socket.AF_INET, inet)
     except ValueError:
-        return socket.inet_ntop(socket.AF_INET6, address)
+        return socket.inet_ntop(socket.AF_INET6, inet)
 
 def is_internal(ip_address):
     """Determine if the address is an internal ip address
@@ -39,12 +39,18 @@ def is_special(ip_address):
     """
     special = {'224.0.0.251': 'multicast_dns',
                'ff02::fb': 'multicast_dns'}
-    return special[ip_address] if ip_address in special else None
+    return special[ip_address] if ip_address in special else False
 
 def test_utils():
     """Test the utility methods"""
-    print mac_addr('\x00\x00\x01\x00\x00\x00')
+    print mac_to_str('\x01\x02\x03\x04\x05\x06')
+    assert mac_to_str('\x01\x02\x03\x04\x05\x06') == '01:02:03:04:05:06'
     print ip_to_str('\x91\xfe\xa0\xed')
+    assert ip_to_str('\x91\xfe\xa0\xed') == '145.254.160.237'
+    assert is_internal('10.0.0.1')
+    assert is_internal('222.2.2.2') == False
+    assert is_special('224.0.0.251')
+    assert is_special('224.0.0.252') == False
     print 'Success!'
 
 if __name__ == '__main__':

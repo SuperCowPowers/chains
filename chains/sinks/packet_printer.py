@@ -27,7 +27,7 @@ class PacketPrinter(sink.Sink):
 
             # Unpack the Ethernet frame (mac src/dst, ethertype)
             print 'Ethernet Frame: %s --> %s  (type: %d)' % \
-                  (net_utils.mac_addr(item['eth']['src']), net_utils.mac_addr(item['eth']['dst']), item['eth']['type'])
+                  (net_utils.mac_to_str(item['eth']['src']), net_utils.mac_to_str(item['eth']['dst']), item['eth']['type'])
 
             # Print out the Packet info
             packet_type = item['packet']['type']
