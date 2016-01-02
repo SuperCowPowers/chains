@@ -1,5 +1,9 @@
 """Network utilities that might be useful"""
 import socket
+import json
+
+# Local imports
+from chains.utils import file_utils
 
 def mac_to_str(address):
     """Convert a MAC address to a readable/printable string
@@ -9,7 +13,27 @@ def mac_to_str(address):
        Returns:
            str: Printable/readable MAC address
     """
-    return ':'.join('%02x' % ord(b) for b in address)
+    return ':'.join('%02X' % ord(b) for b in address)
+
+def mac_to_host(address):
+    """Lookup host with a MAC address (requires a hosts.json file)
+
+       Args:
+           address: a MAC address
+       Returns:
+           str: Hostname if found else None
+    """
+    # Try to load the host_map
+    if not hasattr(mac_to_host, 'host_map'):
+        data_path = file_utils.relative_dir(__file__, '../../data/hosts.json')
+        try:
+            with open(data_path) as host_fp:
+                mac_to_host.host_map = json.load(host_fp)
+        except IOError:
+            mac_to_host.host_map = {}
+
+    # Return the host associated with this MAC address
+    return mac_to_host.host_map.get(address)
 
 def ip_to_str(inet):
     """Convert inet object to a string
@@ -45,6 +69,8 @@ def test_utils():
     """Test the utility methods"""
     print mac_to_str('\x01\x02\x03\x04\x05\x06')
     assert mac_to_str('\x01\x02\x03\x04\x05\x06') == '01:02:03:04:05:06'
+    print mac_to_host('\x01\x02\x03\x04\x05\x06')
+    assert mac_to_host('\x01\x02\x03\x04\x05\x06') == None
     print ip_to_str('\x91\xfe\xa0\xed')
     assert ip_to_str('\x91\xfe\xa0\xed') == '145.254.160.237'
     assert is_internal('10.0.0.1')
