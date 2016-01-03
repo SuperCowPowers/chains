@@ -34,7 +34,7 @@ class PacketPrinter(sink.Sink):
             print 'Packet: %s' % packet_type,
             packet = item['packet']
             if packet_type in ['IP', 'IP6']:
-                print '%s --> %s (len:%d ttl:%d)' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst']),
+                print '%s --> %s (len:%d ttl:%d)' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst']),
                                                      packet['len'], packet['ttl']),
                 if packet_type == 'IP':
                     print '-- Frag(df:%d mf:%d offset:%d)' % (packet['df'], packet['mf'], packet['offset'])

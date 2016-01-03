@@ -9,8 +9,8 @@ from chains.utils import file_utils, net_utils
 # Helper methods
 def flow_tuple(data):
     """Tuple for flow (src, dst, sport, dport, proto)"""
-    src = net_utils.ip_to_str(data['packet'].get('src')) if data['packet'].get('src') else None
-    dst = net_utils.ip_to_str(data['packet'].get('dst')) if data['packet'].get('dst') else None
+    src = net_utils.inet_to_str(data['packet'].get('src')) if data['packet'].get('src') else None
+    dst = net_utils.inet_to_str(data['packet'].get('dst')) if data['packet'].get('dst') else None
     sport = data['transport'].get('sport') if data.get('transport') else None
     dport = data['transport'].get('dport') if data.get('transport') else None
     proto = data['transport'].get('type') if data.get('transport') else data['packet']['type']
@@ -144,8 +144,8 @@ class Flow(object):
 
         # Internal/External
         if 'src' in data['packet'] and 'dst' in data['packet']:
-            src = net_utils.ip_to_str(data['packet']['src'])
-            dst = net_utils.ip_to_str(data['packet']['dst'])
+            src = net_utils.inet_to_str(data['packet']['src'])
+            dst = net_utils.inet_to_str(data['packet']['dst'])
 
             # Internal talking to external?
             if net_utils.is_internal(src) and not net_utils.is_internal(dst):

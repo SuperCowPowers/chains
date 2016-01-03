@@ -44,7 +44,7 @@ class ReverseDNS(link.Link):
                     continue
 
                 # Convert inet_address to str ip_address
-                ip_address = net_utils.ip_to_str(item['packet'][endpoint])
+                ip_address = net_utils.inet_to_str(item['packet'][endpoint])
 
                 # Is this already in our cache
                 if self.ip_lookup_cache.get(ip_address):

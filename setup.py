@@ -13,7 +13,7 @@ with open('README.rst') as f:
 scripts = ['scripts/netwatch', 'scripts/urlwatch']
 packages = ['chains', 'chains.links', 'chains.sinks', 'chains.sources', 'chains.utils']
 
-requirements = ['pypcap', 'dpkt']
+requirements = ['pypcap', 'dpkt', 'netifaces']
 test_requirements = []
 
 # Pull in the version from the package

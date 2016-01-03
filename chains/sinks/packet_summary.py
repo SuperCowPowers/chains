@@ -33,10 +33,10 @@ class PacketSummary(sink.Sink):
             if packet_type in ['IP', 'IP6']:
                 # Is there domain info?
                 if 'src_domain' in packet:
-                    print '%s(%s) --> %s(%s)' % (net_utils.ip_to_str(packet['src']), packet['src_domain'],
-                                                 net_utils.ip_to_str(packet['dst']), packet['dst_domain']),
+                    print '%s(%s) --> %s(%s)' % (net_utils.inet_to_str(packet['src']), packet['src_domain'],
+                                                 net_utils.inet_to_str(packet['dst']), packet['dst_domain']),
                 else:
-                    print '%s --> %s' % (net_utils.ip_to_str(packet['src']), net_utils.ip_to_str(packet['dst'])),
+                    print '%s --> %s' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst'])),
             else:
                 print str(packet)
 
