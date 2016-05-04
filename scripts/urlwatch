@@ -48,11 +48,15 @@ def run(iface_name=None, max_packets=10000):
                 print http_output['http']['type']
                 print '\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % (http_output['src'], headers['host'], uri,
                                                                                          referer, headers['user-agent'])
+                if http_output['http'].get('weird'):
+                    print '\tWEIRD %s' % http_output['http']['weird']
             else: # Response
                 headers = http_output['http']['data']['headers']
                 uri = headers.get('application-url') or '-'
                 print http_output['http']['type']
                 print '\t%s --> %s \n\tURI: %s \n\tHeaders: %s\n' % (http_output['src'], http_output['dst'], uri, repr(headers))
+                if http_output['http'].get('weird'):
+                    print '\tWEIRD %s' % http_output['http']['weird']
 
         # TLS/HTTPS
         elif tls_output['tls']:

@@ -26,10 +26,6 @@ class HTTPMeta(link.Link):
         # For each flow process the contents
         for flow in self.input_stream:
 
-            # Just TCP for now
-            if flow['protocol'] != 'TCP':
-                continue
-
             # Client to Server
             if flow['direction'] == 'CTS':
                 try:
@@ -47,6 +43,10 @@ class HTTPMeta(link.Link):
                     flow['http'] = {'type': 'HTTP_RESPONSE', 'data': data_utils.make_dict(response)}
                 except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError):
                     flow['http'] = None
+
+            # Mark non-TCP HTTP
+            if flow['http'] and flow['protocol'] != 'TCP':
+                flow['http'].update({'weird': 'UDP-HTTP'})
 
             # All done
             yield flow
