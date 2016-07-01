@@ -7,8 +7,9 @@ from contextlib import contextmanager
 @contextmanager
 def signal_catcher(callback):
     """Catch signals and invoke the callback method"""
-    def _catch_exit_signal(sig_num, frame):
-        callback
+    def _catch_exit_signal(sig_num, _frame):
+        print 'Received signal {:d} invoking callback...'.format(sig_num)
+        callback()
 
     signal.signal(signal.SIGINT, _catch_exit_signal)
     signal.signal(signal.SIGQUIT, _catch_exit_signal)
