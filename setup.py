@@ -20,9 +20,6 @@ test_requirements = []
 package = __import__(package_name)
 version = package.__version__
 
-# Pull in the package
-package = __import__(package_name)
-
 setup(
       name=dist_name,
       version=package.__version__,

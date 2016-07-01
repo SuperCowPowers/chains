@@ -18,7 +18,6 @@ class PacketStreamer(source.Source):
             max_packets: set the maximum number of packets to yield (default to None)
      """
 
-
     def __init__(self, iface_name=None, bpf=None, max_packets=None):
         """Initialization for PacketStreamer"""
 
@@ -75,8 +74,9 @@ class PacketStreamer(source.Source):
                     except OSError:
                         log_utils.panic('Could no open interface with any options (may need to be sudo)')
 
-            if self.bpf:
-                self.pcap.setfilter(self.bpf)
+        # Add the BPF if it's specified
+        if self.bpf:
+            self.pcap.setfilter(self.bpf)
         print 'listening on %s: %s' % (self.pcap.name, self.pcap.filter)
 
         # For each packet in the pcap process the contents
