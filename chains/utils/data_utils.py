@@ -6,8 +6,29 @@ from chains.utils import log_utils
 logger = log_utils.get_logger()
 
 def make_dict(obj):
-    """This method creates a dictionary out of an object"""
-    return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
+    """This method creates a dictionary out of a non-builtin object"""
+
+    # Recursion base case
+    if is_builtin(obj):
+        return obj
+
+    output_dict = {}
+    for key in dir(obj):
+        if not key.startswith('__') and not callable(getattr(obj, key)):
+            attr = getattr(obj, key)
+            if isinstance(attr, list):
+                output_dict[key] = []
+                for item in attr:
+                    output_dict[key].append(make_dict(item))
+            else:
+                output_dict[key] = make_dict(attr)
+
+    # All done
+    return output_dict
+    # return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
+
+def is_builtin(obj):
+    return obj.__class__.__module__ == '__builtin__'
 
 def get_value(data, key):
     """Follow the dot notation to get the proper field, then perform the action
