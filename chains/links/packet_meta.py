@@ -37,7 +37,7 @@ class PacketMeta(link.Link):
 
             # Unpack the Ethernet frame (mac src/dst, ethertype)
             eth = dpkt.ethernet.Ethernet(buf)
-            output['eth'] = {'src': eth.src, 'dst': eth.dst, 'type':eth.type}
+            output['eth'] = {'src': eth.src, 'dst': eth.dst, 'type':eth.type, 'len': len(eth)}
 
             # Grab packet data
             packet = eth.data
