@@ -170,10 +170,10 @@ class DNSMeta(link.Link):
             subdomain = query['name'].split('.')[0]
             length = len(subdomain)
             entropy = self.entropy(subdomain)
-            if length > 15:
+            if length > 30:
                 weird['subdomain_length'] = length
                 weird['subdomain'] = subdomain
-            if entropy > 4.0:
+            if entropy > 3.5 and length > 15:
                 weird['subdomain_entropy'] = entropy
                 weird['subdomain'] = subdomain
 
@@ -182,9 +182,10 @@ class DNSMeta(link.Link):
 
 
     @staticmethod
-    def entropy(s):
+    def entropy(string):
         """Compute entropy on the string"""
-        p, lns = Counter(s), float(len(s))
+        u_string = unicode(string, errors='ignore')
+        p, lns = Counter(u_string), float(len(u_string))
         return -sum(count/lns * math.log(count/lns, 2) for count in p.values())
 
     @staticmethod
