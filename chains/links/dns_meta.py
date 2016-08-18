@@ -206,8 +206,6 @@ def test():
 
     # Create a PacketStreamer, a PacketMeta, and link them to DNSMeta
     data_path = file_utils.relative_dir(__file__, '../../data/dns.pcap')
-    #data_path = '/Users/briford/software/sandbox/hidden_tunnel/data/dnscat2/dnscat2_ls_cd_upload.pcap'
-    data_path = '/Users/briford/software/sandbox/hidden_tunnel/data/iodine/dns_tunnel_iodine.pcap'
     streamer = packet_streamer.PacketStreamer(iface_name=data_path, max_packets=10000)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
