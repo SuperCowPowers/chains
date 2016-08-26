@@ -4,8 +4,8 @@ Chains
 **Python Chained Generators for Network Packets:** `Read the
 Docs <http://chains.rtfd.org>`__
 
-|travis| |Coverage Status| |landscape| |version| |downloads| 
-|wheel| |supported-versions| |supported-implementations| |gitter|
+|travis| |Coverage Status| |landscape| |version| |downloads|
+|wheel| |supported-versions| |supported-implementations|
 
 Install/Run Stuff
 -----------------
@@ -122,5 +122,3 @@ MIT Licensed
    :target: https://pypi.python.org/pypi/chains
 .. |supported-implementations| image:: https://img.shields.io/pypi/implementation/chains.svg
    :target: https://pypi.python.org/pypi/chains
-.. |gitter| image:: https://badges.gitter.im/Chat.svg
-   :target: https://gitter.im/SuperCowPowers/chains?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
