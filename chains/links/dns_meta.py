@@ -167,7 +167,7 @@ class DNSMeta(link.Link):
 
         # Is the subdomain name especially long or have high entropy?
         for query in record['queries']:
-            subdomain = query['name'].split('.')[0]
+            subdomain = '.'.join(query['name'].split('.')[:-2])
             length = len(subdomain)
             entropy = self.entropy(subdomain)
             if length > 30:
@@ -220,7 +220,7 @@ def test():
 
     # Print out the DNS meta data
     for item in dns_meta.output_stream:
-        if item['dns']:
+        if 'dns' in item:
             print
             pprint.pprint(item['dns'])
         else:
