@@ -133,22 +133,18 @@ class DNSMeta(link.Link):
         if record['flags']['zero'] != 0:
             weird['zero'] = record['flags']['zero']
 
-        # Trucated my indicate an exfil
+        # Trucated may indicate an exfil
         if record['flags']['truncated']:
             weird['trucnated'] = True
 
-        # More than one query
-        if len(record['queries']) > 1:
-            weird['queries'] = len(record['queries'])
-
         # Weird Query Types
-        weird_types = set(['DNS_SOA', 'DNS_NULL', 'DNS_HINFO', 'DNS_TXT', 'DNS_SRV', 'DNS_OPT', 'UNKNOWN'])
+        weird_types = set(['DNS_NULL', 'DNS_HINFO', 'DNS_TXT', 'UNKNOWN'])
         for query in record['queries']:
             if query['type'] in weird_types:
                 weird['query_type'] = query['type']
 
         # Weird Query Classes
-        weird_classes = set(['DNS_CHAOS', 'DNS_HESIOD', 'DNS_NONE', 'DNS_ANY', 'UNKNOWN'])
+        weird_classes = set(['DNS_CHAOS', 'DNS_HESIOD', 'DNS_NONE', 'DNS_ANY'])
         for query in record['queries']:
             if query['class'] in weird_classes:
                 weird['query_class'] = query['class']
@@ -170,10 +166,9 @@ class DNSMeta(link.Link):
             subdomain = '.'.join(query['name'].split('.')[:-2])
             length = len(subdomain)
             entropy = self.entropy(subdomain)
-            if length > 30:
+            if length > 35 and entropy > 3.5:
                 weird['subdomain_length'] = length
                 weird['subdomain'] = subdomain
-            if entropy > 3.5 and length > 15:
                 weird['subdomain_entropy'] = entropy
                 weird['subdomain'] = subdomain
 
@@ -191,7 +186,7 @@ class DNSMeta(link.Link):
     @staticmethod
     def _get_rdata_field(answer):
         """Helper method to find the rdata field for various answer types"""
-        for field in ['mxname', 'nsname', 'cname', 'txt', 'rname', 'null', 'ptrname']:
+        for field in ['mxname', 'nsname', 'cname', 'text', 'rname', 'null', 'ptrname']:
             if field in answer:
                 return field
         return 'unknown'

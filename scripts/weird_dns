@@ -6,12 +6,13 @@ import argparse
 from pprint import pprint
 
 # Local imports
-from chains.utils import signal_utils
+from chains.utils import signal_utils, net_utils
 from chains.sources import packet_streamer
 from chains.links import packet_meta, reverse_dns, transport_meta, dns_meta
+from chains.sinks import packet_summary, packet_printer
 
 def run(iface_name=None, bpf=None, verbose=None, max_packets=100):
-    """Run the Simple Packet Printer Example"""
+    """Run the Weird DNS Example"""
 
     # Create the classes
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, bpf=bpf, max_packets=max_packets)
@@ -19,6 +20,7 @@ def run(iface_name=None, bpf=None, verbose=None, max_packets=100):
     rdns = reverse_dns.ReverseDNS()
     tmeta = transport_meta.TransportMeta()
     dmeta = dns_meta.DNSMeta()
+    printer = packet_summary.PacketSummary()
 
     # Set up the chain
     meta.link(streamer)
@@ -26,14 +28,31 @@ def run(iface_name=None, bpf=None, verbose=None, max_packets=100):
     tmeta.link(rdns)
     dmeta.link(tmeta)
 
-    # Pull the chain (here since the we don't have a 'sink' we need to pull manually)
-    for packet in dmeta.output_stream:
-        if 'dns' in packet and  'weird' in packet['dns']:
+    # Pull the chain (here since we have a 'condition' we pull and 'push' manually)
+    for item in dmeta.output_stream:
+
+        # Does this have dns and weird in the dns
+        if 'dns' in item and  'weird' in item['dns']:
+
+            # Print out packet info
+            packet = item['packet']
+            if 'src_domain' in packet:
+                print('%s(%s) --> %s(%s)' % (net_utils.inet_to_str(packet['src']), packet['src_domain'],
+                    net_utils.inet_to_str(packet['dst']), packet['dst_domain']))
+            else:
+                print('%s --> %s' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst'])))
+
+            # Print DNS Info
             print('Weird DNS: ')
-            pprint(packet['dns']['weird'])
-            if verbose:
-                pprint(packet['dns'])
-            print()
+            for key, value in item['dns']['weird'].iteritems():
+                print('\t{:s} = {:s}'.format(key, str(value)))
+            print('Queries:')
+            pprint(item['dns']['queries'])
+            print('Asnwers:')
+            pprint(item['dns']['answers'])
+            print('Flags:')
+            pprint(item['dns']['flags'])
+            print('\n')
 
 def test():
     """Test the Simple Packet Printer Example"""
