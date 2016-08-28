@@ -4,10 +4,6 @@
 """
 import collections
 
-# Local imports
-from chains.utils import log_utils
-log_utils.get_logger()
-
 class Link(object):
     """Link classes take an input_stream and provide an output_stream. All streams
        are required to be a generator that yields python dictionaries.

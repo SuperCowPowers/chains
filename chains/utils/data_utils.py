@@ -1,9 +1,7 @@
 """Data utilities that might be useful"""
-import os
 
 # Local imports
 from chains.utils import log_utils
-logger = log_utils.get_logger()
 
 def make_dict(obj):
     """This method creates a dictionary out of a non-builtin object"""
@@ -25,7 +23,6 @@ def make_dict(obj):
 
     # All done
     return output_dict
-    # return {key: getattr(obj, key) for key in dir(obj) if not key.startswith('__') and not callable(getattr(obj, key))}
 
 def is_builtin(obj):
     return obj.__class__.__module__ == '__builtin__'
@@ -46,7 +43,7 @@ def get_value(data, key):
             if isinstance(ref, dict):
                 ref = ref[subkey]
             else:
-                logger.critical('Cannot use subkey %s on non-dictionary element', subkey)
+                print 'CRITICAL: Cannot use subkey %s on non-dictionary element' % subkey
                 return None
         return ref
 

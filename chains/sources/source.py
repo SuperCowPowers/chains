@@ -3,7 +3,6 @@
 # Local imports
 from chains.links import link
 from chains.utils import log_utils
-log_utils.get_logger()
 
 class Source(link.Link):
     """Sources provide an output_stream but do not take in input stream"""

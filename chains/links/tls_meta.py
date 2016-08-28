@@ -3,8 +3,7 @@ import dpkt
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, data_utils
-logger = log_utils.get_logger()
+from chains.utils import file_utils, data_utils
 
 
 class TLSMeta(link.Link):

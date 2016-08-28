@@ -1,15 +1,12 @@
 """Flows, Takes an input_stream of packets and provides an output_stream of flows
           based on (src, dst, src_port, dst_port, protocol) flow ids.
 """
-
-
 import time
 from collections import defaultdict
 
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, net_utils, flow_utils
-log_utils.get_logger()
 
 
 class Flows(link.Link):

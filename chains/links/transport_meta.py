@@ -4,7 +4,6 @@ import dpkt
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, data_utils
-log_utils.get_logger()
 
 
 class TransportMeta(link.Link):

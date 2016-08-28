@@ -5,7 +5,6 @@ import urllib2
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, data_utils
-logger = log_utils.get_logger()
 
 
 class HTTPMeta(link.Link):

@@ -6,7 +6,6 @@
 # Local imports
 from chains.links import link
 from chains.utils import log_utils
-log_utils.get_logger()
 
 class Sink(link.Link):
     """Sinks take an input_stream and provides a pull() method
