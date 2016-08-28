@@ -1,4 +1,7 @@
-"""PacketMeta: Use dpkt to pull out packet information"""
+"""
+    PacketMeta: Use DPKT to pull out packet information and convert those
+    attributes to a dictionary based output.
+"""
 import dpkt
 import datetime
 
@@ -8,7 +11,8 @@ from chains.utils import file_utils, log_utils, net_utils, data_utils
 logger = log_utils.get_logger()
 
 class PacketMeta(link.Link):
-    """Use dpkt to pull out packet information"""
+    """PacketMeta: Use DPKT to pull out packet information and convert those
+       attributes to a dictionary based output. """
 
     def __init__(self):
         """Initialize PacketMeta Class"""
@@ -17,9 +21,9 @@ class PacketMeta(link.Link):
         super(PacketMeta, self).__init__()
 
         # Set my output
-        self.output_stream = self._packet_meta_data()
+        self.output_stream = self.packet_meta_data()
 
-    def _packet_meta_data(self):
+    def packet_meta_data(self):
         """Pull out the metadata about each packet from the input_stream"""
 
         # For each packet in the pcap process the contents

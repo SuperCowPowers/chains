@@ -18,9 +18,9 @@ class HTTPMeta(link.Link):
         super(HTTPMeta, self).__init__()
 
         # Set my output
-        self.output_stream = self._http_meta_data()
+        self.output_stream = self.http_meta_data()
 
-    def _http_meta_data(self):
+    def http_meta_data(self):
         """Pull out the application metadata for each flow in the input_stream"""
 
         # For each flow process the contents

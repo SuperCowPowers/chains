@@ -23,9 +23,9 @@ class ReverseDNS(link.Link):
         self.ip_lookup_cache = cache.Cache(timeout=600)
 
         # Set my output
-        self.output_stream = self._process_for_rdns()
+        self.output_stream = self.process_for_rdns()
 
-    def _process_for_rdns(self):
+    def process_for_rdns(self):
         """Look through my input stream for the fields in ip_field_list and
            try to do a reverse dns lookup on those fields.
         """

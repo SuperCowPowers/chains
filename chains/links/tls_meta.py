@@ -17,9 +17,9 @@ class TLSMeta(link.Link):
         super(TLSMeta, self).__init__()
 
         # Set my output
-        self.output_stream = self._tls_meta_data()
+        self.output_stream = self.tls_meta_data()
 
-    def _tls_meta_data(self):
+    def tls_meta_data(self):
         """Pull out the TLS metadata for each flow in the input_stream"""
 
         # For each flow process the contents

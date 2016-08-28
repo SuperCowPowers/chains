@@ -27,9 +27,9 @@ class Flows(link.Link):
         self._flows = defaultdict(flow_utils.Flow)
 
         # Set my output
-        self.output_stream = self._packets_to_flows()
+        self.output_stream = self.packets_to_flows()
 
-    def _packets_to_flows(self):
+    def packets_to_flows(self):
         """Combine packets into flows"""
 
         # For each packet, place it into either an existing flow or a new flow

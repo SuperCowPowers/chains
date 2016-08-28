@@ -17,9 +17,9 @@ class TransportMeta(link.Link):
         super(TransportMeta, self).__init__()
 
         # Set my output
-        self.output_stream = self._transport_meta_data()
+        self.output_stream = self.transport_meta_data()
 
-    def _transport_meta_data(self):
+    def transport_meta_data(self):
         """Pull out the transport metadata for each packet in the input_stream"""
 
         # For each packet in the pcap process the contents

@@ -25,9 +25,9 @@ class PacketTags(link.Link):
             self.tag_methods += add_tag_methods
 
         # Set my output
-        self.output_stream = self._tag_stuff()
+        self.output_stream = self.tag_stuff()
 
-    def _tag_stuff(self):
+    def tag_stuff(self):
         """Look through my input stream for the fields to be tagged"""
 
         # For each packet in the pcap process the contents

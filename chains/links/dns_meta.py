@@ -19,7 +19,7 @@ class DNSMeta(link.Link):
         super(DNSMeta, self).__init__()
 
         # Set my output
-        self.output_stream = self._dns_meta_data()
+        self.output_stream = self.dns_meta_data()
 
         #
         # Maps for various flags/response codes
@@ -40,7 +40,7 @@ class DNSMeta(link.Link):
         # Query classes
         self.query_classes = {1:'DNS_IN', 3:'DNS_CHAOS', 4:'DNS_HESIOD', 254:'DNS_NONE', 255:'DNS_ANY'}
 
-    def _dns_meta_data(self):
+    def dns_meta_data(self):
         """Pull out the dns metadata for packet/transport in the input_stream"""
 
         # For each packet process the contents
