@@ -6,7 +6,6 @@ import dpkt
 # Local imports
 from chains.links import link
 from chains.utils import file_utils, log_utils, data_utils
-logger = log_utils.get_logger()
 
 class PacketMeta(link.Link):
     """PacketMeta, Use DPKT to pull out packet information and convert those
