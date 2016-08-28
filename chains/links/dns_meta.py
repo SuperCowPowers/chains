@@ -1,4 +1,4 @@
-"""DNSMeta: Pull out DNS meta data from incoming transport data"""
+"""DNSMeta, Pull out DNS meta data from incoming transport data"""
 import math
 from collections import Counter
 import dpkt

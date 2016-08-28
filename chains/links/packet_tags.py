@@ -1,4 +1,4 @@
-"""PacketTags: Add tags to incoming packet data"""
+"""PacketTags, Add tags to incoming packet data"""
 
 # Local imports
 from chains.links import link

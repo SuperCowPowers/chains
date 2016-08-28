@@ -1,4 +1,4 @@
-"""Flows: Takes an input_stream of packets and provides an output_stream of flows
+"""Flows, Takes an input_stream of packets and provides an output_stream of flows
           based on (src, dst, src_port, dst_port, protocol) flow ids.
 """
 
@@ -13,7 +13,7 @@ log_utils.get_logger()
 
 
 class Flows(link.Link):
-    """Flows: Takes an input_stream of packets and provides an output_stream of flows
+    """Flows, Takes an input_stream of packets and provides an output_stream of flows
               based on (src, dst, src_port, dst_port, protocol) flow ids.
     """
 

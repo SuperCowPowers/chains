@@ -1,4 +1,4 @@
-"""TLSMeta: Pull out HTTP meta data from incoming flow data"""
+"""TLSMeta, Pull out HTTP meta data from incoming flow data"""
 import dpkt
 
 # Local imports

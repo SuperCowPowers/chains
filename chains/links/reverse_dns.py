@@ -1,4 +1,4 @@
-"""ReverseDNS: Perform a reverse dns lookup on fields in the ip_field_list"""
+"""ReverseDNS, Perform a reverse dns lookup on fields in the ip_field_list"""
 import socket
 
 # Local imports
