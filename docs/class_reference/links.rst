@@ -5,7 +5,7 @@ Links are classes that consume an input_stream and produce an output_stream.
 
 PacketMeta
 ==========
-.. automodule:: chains.sources.packet_streamer
+.. automodule:: chains.links.packet_meta
 
 ReverseDNS
 ==========
