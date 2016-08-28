@@ -24,7 +24,11 @@ class PacketMeta(link.Link):
         self.output_stream = self.packet_meta_data()
 
     def packet_meta_data(self):
-        """Pull out the metadata about each packet from the input_stream"""
+        """Pull out the metadata about each packet from the input_stream
+           Args:
+               None
+           Returns:
+               generator (dictionary): a generator that contain packet meta data in the form of a dictionary"""
 
         # For each packet in the pcap process the contents
         for item in self.input_stream:

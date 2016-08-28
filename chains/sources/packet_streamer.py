@@ -11,11 +11,10 @@ class PacketStreamer(source.Source):
     """Stream out the packets from the given network interface
 
        Args:
-            iface_name: the network interface to capture packets from (defaults to None)
-                        Note: None (not setting it) will open the first available network interface
-                              You can also set this to a filename (iface_name = 'test.pcap')
-            bpf: BPF (Berkeley Packet Filter http://biot.com/capstats/bpf.html) (defaults to '*')
-            max_packets: set the maximum number of packets to yield (default to None)
+            iface_name (str): The network interface to capture packets from (defaults to None). Note, by default it will
+                              open the first available network interface. You can also set this to a filename (iface_name = 'test.pcap')
+            bpf (str): BPF (Berkeley Packet Filter http://biot.com/capstats/bpf.html) (defaults to '*')
+            max_packets (int): Set the maximum number of packets to yield (default to None)
      """
 
     def __init__(self, iface_name=None, bpf=None, max_packets=None):

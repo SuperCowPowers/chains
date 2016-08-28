@@ -1,7 +1,6 @@
 =====
 Links
 =====
-
 Links are classes that consume an input_stream and produce an output_stream.
 
 PacketMeta
@@ -21,11 +20,11 @@ TransportMeta
 .. automodule:: chains.links.transport_meta
 
 Flows
-=============
+=====
 .. automodule:: chains.links.flows
 
 HTTPMeta
-=============
+========
 .. automodule:: chains.links.http_meta
 
 Link BaseClass
