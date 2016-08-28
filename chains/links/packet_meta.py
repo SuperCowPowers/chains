@@ -5,11 +5,11 @@ import dpkt
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, data_utils
+from chains.utils import file_utils, data_utils
 
 class PacketMeta(link.Link):
     """PacketMeta, Use DPKT to pull out packet information and convert those
-       attributes to a dictionary based output. """
+       attributes to a dictionary based output."""
 
     def __init__(self):
         """Initialize PacketMeta Class"""
@@ -25,7 +25,7 @@ class PacketMeta(link.Link):
            Args:
                None
            Returns:
-               generator (dictionary): a generator that contain packet meta data in the form of a dictionary"""
+               generator (dictionary): a generator that contains packet meta data in the form of a dictionary"""
 
         # For each packet in the pcap process the contents
         for item in self.input_stream:

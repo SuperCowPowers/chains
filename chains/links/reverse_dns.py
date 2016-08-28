@@ -1,4 +1,4 @@
-"""ReverseDNS, Perform a reverse dns lookup on fields in the ip_field_list"""
+"""ReverseDNS, Perform a reverse dns lookup on fields in the ip_field_list."""
 import socket
 
 # Local imports
@@ -6,7 +6,7 @@ from chains.links import link
 from chains.utils import file_utils, net_utils, cache
 
 class ReverseDNS(link.Link):
-    """Perform a reverse dns lookup on fields in the ip_field_list"""
+    """Perform a reverse dns lookup on fields in the ip_field_list."""
 
     def __init__(self, domain_postfix='_domain'):
         """Initialize ReverseDNS Class
