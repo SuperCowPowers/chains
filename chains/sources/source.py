@@ -1,6 +1,4 @@
-"""
-   Sources provide an output_stream but do not take in input stream,
-"""
+"""Sources provide an output_stream but do not take in input stream"""
 
 # Local imports
 from chains.links import link

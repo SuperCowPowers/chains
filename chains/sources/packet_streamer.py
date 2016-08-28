@@ -1,4 +1,4 @@
-""" PacketStreamer: Stream packets from a network interface """
+"""PacketStreamer: Stream packets from a network interface"""
 import os
 import pcap
 

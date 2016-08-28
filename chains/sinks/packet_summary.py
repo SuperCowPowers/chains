@@ -1,4 +1,4 @@
-""" PacketSummary: Prints out packet information """
+"""PacketSummary: Prints out packet information"""
 
 # Local imports
 from chains.sinks import sink
