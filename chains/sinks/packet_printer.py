@@ -1,4 +1,4 @@
-"""PacketPrinter: Prints out packet information"""
+"""PacketPrinter, Prints out packet information"""
 
 # Local imports
 from chains.sinks import sink

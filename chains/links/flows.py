@@ -6,7 +6,7 @@ from collections import defaultdict
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils, flow_utils
+from chains.utils import file_utils, net_utils, flow_utils
 
 
 class Flows(link.Link):

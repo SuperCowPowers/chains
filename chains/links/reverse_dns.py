@@ -3,7 +3,7 @@ import socket
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils, cache
+from chains.utils import file_utils, net_utils, cache
 
 class ReverseDNS(link.Link):
     """Perform a reverse dns lookup on fields in the ip_field_list"""

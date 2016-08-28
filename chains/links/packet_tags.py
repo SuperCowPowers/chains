@@ -2,7 +2,7 @@
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils
+from chains.utils import file_utils, net_utils
 
 class PacketTags(link.Link):
     """Add tags to incoming packet data"""
