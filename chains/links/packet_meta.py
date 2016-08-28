@@ -1,13 +1,11 @@
-"""
-    PacketMeta, Use DPKT to pull out packet information and convert those
-    attributes to a dictionary based output.
-"""
-import dpkt
+"""PacketMeta, Use DPKT to pull out packet information and convert those
+   attributes to a dictionary based output."""
 import datetime
+import dpkt
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, net_utils, data_utils
+from chains.utils import file_utils, log_utils, data_utils
 logger = log_utils.get_logger()
 
 class PacketMeta(link.Link):
