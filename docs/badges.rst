@@ -1,6 +1,6 @@
 
 |travis| |Coverage Status| |landscape| |version| |downloads|
-|wheel| |supported-versions| |supported-implementations|
+|wheel| |supported-versions| |supported-implementations| |license|
 
 .. |travis| image:: https://img.shields.io/travis/SuperCowPowers/chains.svg
    :target: https://travis-ci.org/SuperCowPowers/chains
@@ -18,4 +18,5 @@
    :target: https://pypi.python.org/pypi/chains
 .. |supported-implementations| image:: https://img.shields.io/pypi/implementation/chains.svg
    :target: https://pypi.python.org/pypi/chains
-
+.. |license| image:: https://img.shields.io/badge/license-MIT-green.svg
+   :target: http://choosealicense.com/licenses/mit
