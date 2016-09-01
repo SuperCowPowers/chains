@@ -4,7 +4,8 @@ import pcap
 
 # Local imports
 from chains.sources import source
-from chains.utils import file_utils
+from chains.utils import file_utils, log_utils
+logger = log_utils.get_logger()
 
 class PacketStreamer(source.Source):
     """Stream out the packets from the given network interface

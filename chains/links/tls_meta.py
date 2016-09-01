@@ -3,8 +3,8 @@ import dpkt
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, data_utils
-
+from chains.utils import file_utils, data_utils, log_utils
+logger = log_utils.get_logger()
 
 class TLSMeta(link.Link):
     """Pull out application meta data from incoming flow data"""
