@@ -52,7 +52,7 @@ class DNSMeta(link.Link):
                 _raw_info = data_utils.make_dict(dns_meta)
                 packet['dns'] = self._dns_info_mapper(_raw_info)
                 packet['dns']['_raw'] = _raw_info
-            except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError, TypeError):
+            except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError):
                 if 'dns' in packet:
                     del packet['dns']
 
