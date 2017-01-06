@@ -49,7 +49,7 @@ class Flows(link.Link):
             yield flow.get_flow()
 
 def print_flow_info(flow):
-    """Print a summary of the flow inforamtion"""
+    """Print a summary of the flow information"""
     print 'Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s...' % (flow['flow_id'], flow['direction'], len(flow['packet_list']),
                                                               len(flow['payload']), repr(flow['payload'])[:30])
 
