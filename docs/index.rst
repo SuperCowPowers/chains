@@ -47,6 +47,13 @@ Want to go to coffee shop and see http(s) requests floating about?
    TLSRecord(length=560, version=771, type=23, data='\x1d\x942K\xfb\x87\x19v\xba\x13\x14...
    ...
 
+FAQ
+---
+.. toctree::
+    :maxdepth: 3
+
+    faq
+
 Examples and References
 -----------------------
 .. toctree::
