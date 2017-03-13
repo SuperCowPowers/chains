@@ -1,4 +1,6 @@
 """Network utilities that might be useful"""
+from __future__ import print_function
+
 import socket
 import json
 import binascii
@@ -91,13 +93,14 @@ def is_special(ip_address):
 
 def test_utils():
     """Test the utility methods"""
-    print mac_to_str('\x01\x02\x03\x04\x05\x06')
+
+    print(mac_to_str('\x01\x02\x03\x04\x05\x06'))
     assert mac_to_str('\x01\x02\x03\x04\x05\x06') == '01:02:03:04:05:06'
     assert str_to_mac('01:02:03:04:05:06') == '\x01\x02\x03\x04\x05\x06'
     foo = '\x01\x02\x03\x04\x05\x06'
     bar = mac_to_str(foo)
     assert str_to_mac(bar) == foo
-    print inet_to_str('\x91\xfe\xa0\xed')
+    print(inet_to_str('\x91\xfe\xa0\xed'))
     assert inet_to_str('\x91\xfe\xa0\xed') == '145.254.160.237'
     assert str_to_inet('145.254.160.237') == '\x91\xfe\xa0\xed'
     assert is_internal('10.0.0.1')
@@ -106,8 +109,8 @@ def test_utils():
     assert is_special('224.0.0.252') == False
 
     my_iface = get_default_interface()
-    print get_mac_address(my_iface)
-    print 'Success!'
+    print(get_mac_address(my_iface))
+    print('Success!')
 
 if __name__ == '__main__':
     test_utils()

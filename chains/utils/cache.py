@@ -1,4 +1,5 @@
 """Cache class for key/value pairs"""
+from __future__ import print_function
 import time
 from collections import OrderedDict
 
@@ -59,7 +60,7 @@ class Cache(object):
     def dump(self):
         """Dump the cache (for debugging)"""
         for key in self._store.keys():
-            print key, ':', self.get(key)
+            print(key, ':', self.get(key))
 
 def test():
     """Test for the Cache class"""

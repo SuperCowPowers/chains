@@ -1,4 +1,6 @@
 """Log utilities that might be useful"""
+from __future__ import print_function
+
 import os
 import logging
 
@@ -23,13 +25,14 @@ def panic(mesg):
 
 def test_utils():
     """Test the utility methods"""
+
     logger = get_logger()
     logger.debug('Test debug log message')
     logger.info('Test information log message')
     logger.warn('Test warning log message')
     logger.error('Test error log message')
     logger.critical('Test critical log message')
-    print 'Success!'
+    print('Success!')
 
 if __name__ == '__main__':
     test_utils()

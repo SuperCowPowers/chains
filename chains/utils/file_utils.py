@@ -1,4 +1,6 @@
 """File utilities that might be useful"""
+from __future__ import print_function
+
 import os
 
 def all_files_in_directory(path):
@@ -39,10 +41,11 @@ def relative_dir(file_path, rel_dir):
 
 def test_utils():
     """Test the utility methods"""
+
     path = relative_dir(__file__, '.')
-    print 'Path: %s' % path
+    print('Path: %s' % path)
     for my_file in all_files_in_directory(path):
-        print '\t%s' % my_file
+        print('\t%s' % my_file)
 
 if __name__ == '__main__':
     test_utils()

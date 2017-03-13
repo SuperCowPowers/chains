@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 """ Example: Simple Packet Printer """
+from __future__ import print_function
+
 import os
 import argparse
 
@@ -42,7 +44,7 @@ def test():
 
 def my_exit():
     """Exit on Signal"""
-    print 'Goodbye...'
+    print('Goodbye...')
 
 if __name__ == '__main__':
 
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     parser.add_argument('-p','--pcap', type=str, help='Specify a pcap file instead of reading from live network interface')
     args, commands = parser.parse_known_args()
     if commands:
-        print 'Unrecognized args: %s' % commands
+        print('Unrecognized args: %s' % commands)
     try:
         # Pcap file may have a tilde in it
         if args.pcap:
@@ -63,4 +65,4 @@ if __name__ == '__main__':
         with signal_utils.signal_catcher(my_exit):
             run(iface_name=args.pcap, bpf=args.bpf, summary=args.summary, max_packets=args.max_packets)
     except KeyboardInterrupt:
-        print 'Goodbye...'
+        print('Goodbye...')

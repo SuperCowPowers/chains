@@ -1,6 +1,11 @@
 """HTTPMeta: Pull out HTTP meta data from incoming flow data"""
+from __future__ import print_function
+
 import dpkt
-import urllib2
+try:
+    import urllib2
+except ImportError:
+    import urllib.request
 
 # Local imports
 from chains.links import link
@@ -82,7 +87,7 @@ def test():
     # Print out the tags
     for item in http_meta.output_stream:
         if item['http']:
-            print '%s %s --> %s  %s' % (item['http']['type'], item['src'], item['dst'], item['http']['data'])
+            print('%s %s --> %s  %s' % (item['http']['type'], item['src'], item['dst'], item['http']['data']))
 
 if __name__ == '__main__':
     test()

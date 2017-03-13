@@ -1,6 +1,7 @@
 """PacketStreamer: Stream packets from a network interface"""
+from __future__ import print_function
 import os
-import pcap
+import pcapy
 
 # Local imports
 from chains.sources import source
@@ -58,10 +59,16 @@ class PacketStreamer(source.Source):
 
         # Spin up the packet capture
         if self._iface_is_file():
-            self.pcap = pcap.pcap(name=self.iface_name)
+            # self.pcap = pcap.pcap(name=self.iface_name)
+            #   snaplen (maximum number of bytes to capture _per_packet_)
+            #   promiscious mode (1 for true)
+            #   timeout (in milliseconds)
+            self.pcap = pcapy.open_offline(self.iface_name)
         else:
             try:
-                self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
+                # self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
+                self.pcap = pcapy.open_live(self.iface_name)
+                self.pcap.setnonblock(True)
             except OSError:
                 try:
                     logger.warning('Could not get immediate mode, turning flag off')
@@ -76,26 +83,28 @@ class PacketStreamer(source.Source):
         # Add the BPF if it's specified
         if self.bpf:
             self.pcap.setfilter(self.bpf)
-        print 'listening on %s: %s' % (self.pcap.name, self.pcap.filter)
+        print('listening on %s: %s' % (self.iface_name, self.bpf))
 
         # For each packet in the pcap process the contents
         _packets = 0
-        for timestamp, raw_buf in self.pcap:
-            yield {'timestamp': timestamp, 'raw_buf': raw_buf, 'packet_num': _packets}
+        while True:
+            header, raw_buf = self.pcap.next()
+            yield {'header': header, 'raw_buf': raw_buf, 'packet_num': _packets}
             _packets += 1
             if self.max_packets and _packets >= self.max_packets:
                 try:
-                    print ('Packet stats: %d  received, %d dropped,  %d dropped by interface') % self.pcap.stats()
+                    print('Packet stats: %d  received, %d dropped,  %d dropped by interface' % self.pcap.stats())
                 except OSError:
-                    print ('No stats available...')
+                    print('No stats available...')
                 raise StopIteration
 
 def test():
     """Open up a test pcap file and stream the packets"""
+
     data_path = file_utils.relative_dir(__file__, '../../data/http.pcap')
     streamer = PacketStreamer(iface_name=data_path, max_packets=50)
     for packet in streamer.output_stream:
-        print packet
+        print(packet)
 
 if __name__ == '__main__':
     test()

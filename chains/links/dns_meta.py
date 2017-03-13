@@ -1,4 +1,5 @@
 """DNSMeta, Pull out DNS meta data from incoming transport data"""
+from __future__ import print_function
 import math
 from collections import Counter
 import dpkt
@@ -215,7 +216,7 @@ def test():
     # Print out the DNS meta data
     for item in dns_meta.output_stream:
         if 'dns' in item:
-            print
+            print()
             pprint.pprint(item['dns'])
         else:
             print('.'),

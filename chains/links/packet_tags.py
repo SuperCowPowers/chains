@@ -1,4 +1,5 @@
 """PacketTags, Add tags to incoming packet data"""
+from __future__ import print_function
 
 # Local imports
 from chains.links import link
@@ -103,7 +104,7 @@ def test():
     for item in tags.output_stream:
         src = item['packet']['src']
         dst = item['packet']['dst']
-        print '%s --> %s  Tags: %s' % (net_utils.inet_to_str(src), net_utils.inet_to_str(dst), str(list(item['tags'])))
+        print('%s --> %s  Tags: %s' % (net_utils.inet_to_str(src), net_utils.inet_to_str(dst), str(list(item['tags']))))
 
 if __name__ == '__main__':
     test()

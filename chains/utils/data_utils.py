@@ -1,5 +1,7 @@
 """Data utilities that might be useful"""
 
+from __future__ import print_function
+
 # Local imports
 from chains.utils import log_utils
 
@@ -43,7 +45,7 @@ def get_value(data, key):
             if isinstance(ref, dict):
                 ref = ref[subkey]
             else:
-                print 'CRITICAL: Cannot use subkey %s on non-dictionary element' % subkey
+                print('CRITICAL: Cannot use subkey %s on non-dictionary element' % subkey)
                 return None
         return ref
 
@@ -65,8 +67,8 @@ def test_utils():
             pass
     bla.a = 'foo'
     bla.b = 'bar'
-    print make_dict(bla)
-    print 'Success!'
+    print(make_dict(bla))
+    print('Success!')
 
 if __name__ == '__main__':
     test_utils()
