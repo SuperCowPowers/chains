@@ -2,14 +2,10 @@
 from __future__ import print_function
 
 import dpkt
-try:
-    import urllib2
-except ImportError:
-    import urllib.request
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, data_utils
+from chains.utils import file_utils, log_utils, data_utils, compat
 
 
 class HTTPMeta(link.Link):
@@ -58,7 +54,7 @@ class HTTPMeta(link.Link):
     @staticmethod
     def _clean_uri(uri):
         """Clean the URI string"""
-        return urllib2.unquote(uri).replace('+', ' ')
+        return compat.unquote(uri).replace('+', ' ')
 
 
 def test():

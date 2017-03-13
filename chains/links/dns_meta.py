@@ -179,8 +179,7 @@ class DNSMeta(link.Link):
     @staticmethod
     def entropy(string):
         """Compute entropy on the string"""
-        u_string = unicode(string, errors='ignore')
-        p, lns = Counter(u_string), float(len(u_string))
+        p, lns = Counter(string), float(len(string))
         return -sum(count/lns * math.log(count/lns, 2) for count in p.values())
 
     @staticmethod
@@ -219,7 +218,7 @@ def test():
             print()
             pprint.pprint(item['dns'])
         else:
-            print('.'),
+            print('.', end='')
 
 if __name__ == '__main__':
     test()

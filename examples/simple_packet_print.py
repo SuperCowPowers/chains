@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+import sys
 import argparse
 
 # Local imports
@@ -45,6 +46,7 @@ def test():
 def my_exit():
     """Exit on Signal"""
     print('Goodbye...')
+    sys.exit()
 
 if __name__ == '__main__':
 

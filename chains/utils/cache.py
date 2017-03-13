@@ -73,12 +73,12 @@ def test():
     assert my_cache.get('foo') == 'bar'
 
     # Test timeout
-    time.sleep(1)
+    time.sleep(1.1)
     assert my_cache.get('foo') is None
 
     # Test max_size
     my_cache = Cache(max_size=5)
-    for i in xrange(6):
+    for i in range(6):
         my_cache.set(str(i), i)
 
     # So the '0' key should no longer be there FIFO

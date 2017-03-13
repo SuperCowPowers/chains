@@ -24,6 +24,13 @@ class PacketStreamer(source.Source):
         # Call super class init
         super(PacketStreamer, self).__init__()
 
+        # Check if the interface name was specified, if not set it to the first device
+        if not iface_name:
+            devices = pcapy.findalldevs()
+            iface_name = devices[0]
+            print('Auto Setting Interface to: {:s}'.format(iface_name))
+
+        # Set parameters for capture interface
         self.iface_name = iface_name
         self.bpf = bpf
         self.max_packets = max_packets
@@ -36,7 +43,7 @@ class PacketStreamer(source.Source):
            Returns:
                The interface name as a str
         """
-        return self.pcap.name
+        return self.iface_name
 
     def get_filter(self):
         """Get the current filter (BSP) being used (if any)
@@ -59,26 +66,20 @@ class PacketStreamer(source.Source):
 
         # Spin up the packet capture
         if self._iface_is_file():
-            # self.pcap = pcap.pcap(name=self.iface_name)
-            #   snaplen (maximum number of bytes to capture _per_packet_)
-            #   promiscious mode (1 for true)
-            #   timeout (in milliseconds)
             self.pcap = pcapy.open_offline(self.iface_name)
         else:
             try:
                 # self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=True)
-                self.pcap = pcapy.open_live(self.iface_name)
-                self.pcap.setnonblock(True)
+                #   snaplen (maximum number of bytes to capture _per_packet_)
+                #   promiscious mode (1 for true)
+                #   timeout (in milliseconds)
+                self.pcap = pcapy.open_live(self.iface_name, 65536 , 1 , 0)
             except OSError:
                 try:
-                    logger.warning('Could not get immediate mode, turning flag off')
-                    self.pcap = pcap.pcap(name=self.iface_name, promisc=True, immediate=False)
+                    logger.warning('Could not get promisc mode, turning flag off')
+                    self.pcap = pcapy.open_live(self.iface_name, 65536 , 0 , 0)
                 except OSError:
-                    try:
-                        logger.warning('Could not get promisc  mode, turning flag off')
-                        self.pcap = pcap.pcap(name=self.iface_name, promisc=False, immediate=False)
-                    except OSError:
-                        log_utils.panic('Could no open interface with any options (may need to be sudo)')
+                    log_utils.panic('Could no open interface with any options (may need to be sudo)')
 
         # Add the BPF if it's specified
         if self.bpf:
@@ -88,17 +89,29 @@ class PacketStreamer(source.Source):
         # For each packet in the pcap process the contents
         _packets = 0
         while True:
+            # Grab the next header and packet buffer
             header, raw_buf = self.pcap.next()
+
+            # If we don't get a packet header break out of the loop
+            if not header:
+                break;
+
+            # Extract the timestamp from the header and yield the packet
             seconds, micro_sec = header.getts()
             timestamp = seconds + micro_sec * 10**-6
             yield {'timestamp': timestamp, 'raw_buf': raw_buf, 'packet_num': _packets}
             _packets += 1
+
+            # Is there a max packets set if so break on it
             if self.max_packets and _packets >= self.max_packets:
-                try:
-                    print('Packet stats: %d  received, %d dropped,  %d dropped by interface' % self.pcap.stats())
-                except OSError:
-                    print('No stats available...')
-                raise StopIteration
+                break
+
+        # All done so report and raise a StopIteration
+        try:
+            print('Packet stats: %d  received, %d dropped,  %d dropped by interface' % self.pcap.stats())
+        except pcapy.PcapError:
+            print('No stats available...')
+        raise StopIteration
 
 def test():
     """Open up a test pcap file and stream the packets"""

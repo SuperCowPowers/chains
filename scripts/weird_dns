@@ -6,7 +6,7 @@ import argparse
 from pprint import pprint
 
 # Local imports
-from chains.utils import signal_utils, net_utils
+from chains.utils import signal_utils, net_utils, compat
 from chains.sources import packet_streamer
 from chains.links import packet_meta, reverse_dns, transport_meta, dns_meta
 from chains.sinks import packet_summary, packet_printer
@@ -44,7 +44,7 @@ def run(iface_name=None, bpf=None, verbose=None, max_packets=100):
 
             # Print DNS Info
             print('Weird DNS: ')
-            for key, value in item['dns']['weird'].iteritems():
+            for key, value in compat.iteritems(item['dns']['weird']):
                 print('\t{:s} = {:s}'.format(key, str(value)))
             print('Queries:')
             pprint(item['dns']['queries'])

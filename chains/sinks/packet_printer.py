@@ -4,7 +4,7 @@ from __future__ import print_function
 
 # Local imports
 from chains.sinks import sink
-from chains.utils import net_utils
+from chains.utils import net_utils, compat
 
 class PacketPrinter(sink.Sink):
     """Print packet information"""
@@ -33,11 +33,11 @@ class PacketPrinter(sink.Sink):
 
             # Print out the Packet info
             packet_type = item['packet']['type']
-            print('Packet: %s' % packet_type),
+            print('Packet: %s ' % packet_type, end='')
             packet = item['packet']
             if packet_type in ['IP', 'IP6']:
                 print('%s --> %s (len:%d ttl:%d)' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst']),
-                                                     packet['len'], packet['ttl'])),
+                                                     packet['len'], packet['ttl']), end='')
                 if packet_type == 'IP':
                     print('-- Frag(df:%d mf:%d offset:%d)' % (packet['df'], packet['mf'], packet['offset']))
                 else:
@@ -48,14 +48,14 @@ class PacketPrinter(sink.Sink):
             # Print out transport and application layers
             if item['transport']:
                 transport_info = item['transport']
-                print('Transport: %s ' % transport_info['type']),
-                for key, value in transport_info.iteritems():
+                print('Transport: %s ' % transport_info['type'], end='')
+                for key, value in compat.iteritems(transport_info):
                     if key != 'data':
-                        print(key+':'+repr(value)),
+                        print(key+':'+repr(value), end=' ')
 
                 # Give summary info about data
                 data = transport_info['data']
-                print('\nData: %d bytes' % len(data)),
+                print('\nData: %d bytes' % len(data), end='')
                 if data:
                     print('(%s...)' % repr(data)[:30])
                 else:
@@ -63,7 +63,7 @@ class PacketPrinter(sink.Sink):
 
             # Application data
             if item['application']:
-                print('Application: %s' % item['application']['type']),
+                print('Application: %s' % item['application']['type'], end='')
                 print(str(item['application']))
 
             # Is there domain info?

@@ -39,7 +39,7 @@ class Flow(object):
         self.meta['protocol'] = None
         self.meta['direction'] = None
         self.meta['packet_list'] = []
-        self.meta['payload'] = ''
+        self.meta['payload'] = b''
         self.meta['start'] = None
         self.meta['end'] = None
         self.meta['state'] = 'partial'

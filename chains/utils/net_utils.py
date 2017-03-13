@@ -1,13 +1,14 @@
 """Network utilities that might be useful"""
 from __future__ import print_function
 
+import sys
 import socket
 import json
 import binascii
 import netifaces
 
 # Local imports
-from chains.utils import file_utils
+from chains.utils import file_utils, compat
 
 def get_default_interface():
     """Grab the name of the local default network interface"""
@@ -33,7 +34,7 @@ def mac_to_str(address):
        Returns:
            str: Printable/readable MAC address
     """
-    return ':'.join('%02x' % ord(b) for b in address)
+    return ':'.join('%02x' % compat.ord(b) for b in address)
 
 def str_to_mac(mac_string):
     """Convert a readable string to a MAC address
@@ -94,15 +95,15 @@ def is_special(ip_address):
 def test_utils():
     """Test the utility methods"""
 
-    print(mac_to_str('\x01\x02\x03\x04\x05\x06'))
-    assert mac_to_str('\x01\x02\x03\x04\x05\x06') == '01:02:03:04:05:06'
-    assert str_to_mac('01:02:03:04:05:06') == '\x01\x02\x03\x04\x05\x06'
-    foo = '\x01\x02\x03\x04\x05\x06'
+    print(mac_to_str(b'\x01\x02\x03\x04\x05\x06'))
+    assert mac_to_str(b'\x01\x02\x03\x04\x05\x06') == '01:02:03:04:05:06'
+    assert str_to_mac('01:02:03:04:05:06') == b'\x01\x02\x03\x04\x05\x06'
+    foo = b'\x01\x02\x03\x04\x05\x06'
     bar = mac_to_str(foo)
     assert str_to_mac(bar) == foo
-    print(inet_to_str('\x91\xfe\xa0\xed'))
-    assert inet_to_str('\x91\xfe\xa0\xed') == '145.254.160.237'
-    assert str_to_inet('145.254.160.237') == '\x91\xfe\xa0\xed'
+    print(inet_to_str(b'\x91\xfe\xa0\xed'))
+    assert inet_to_str(b'\x91\xfe\xa0\xed') == '145.254.160.237'
+    assert str_to_inet('145.254.160.237') == b'\x91\xfe\xa0\xed'
     assert is_internal('10.0.0.1')
     assert is_internal('222.2.2.2') == False
     assert is_special('224.0.0.251')

@@ -38,7 +38,7 @@ class Flows(link.Link):
             self._flows[flow_id].add_packet(packet)
 
             # Yield flows that are ready to go
-            for flow in self._flows.values():
+            for flow in list(self._flows.values()):
                 if flow.ready():
                     flow_info = flow.get_flow()
                     yield flow_info

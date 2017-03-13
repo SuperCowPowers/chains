@@ -27,7 +27,7 @@ def make_dict(obj):
     return output_dict
 
 def is_builtin(obj):
-    return obj.__class__.__module__ == '__builtin__'
+    return obj.__class__.__module__ in ['__builtin__', 'builtins']
 
 def get_value(data, key):
     """Follow the dot notation to get the proper field, then perform the action
