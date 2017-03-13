@@ -89,7 +89,9 @@ class PacketStreamer(source.Source):
         _packets = 0
         while True:
             header, raw_buf = self.pcap.next()
-            yield {'header': header, 'raw_buf': raw_buf, 'packet_num': _packets}
+            seconds, micro_sec = header.getts()
+            timestamp = seconds + micro_sec * 10**-6
+            yield {'timestamp': timestamp, 'raw_buf': raw_buf, 'packet_num': _packets}
             _packets += 1
             if self.max_packets and _packets >= self.max_packets:
                 try:
