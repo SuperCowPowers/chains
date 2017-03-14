@@ -1,12 +1,17 @@
 language: python
-python: 2.7
-env:
+matrix:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
-  matrix:
-    - TOXENV=py27,coveralls
-    - TOXENV=pypy,coveralls
-    - TOXENV=docs
+  include:
+    - python: "2.7"
+      env: TOXENV=py27
+    - python: "3.5"
+      env: TOXENV=py35
+    - python: "3.6"
+      env: TOXENV=py36,coveralls, docs
+    - python: "pypy"
+      env: TOXENV=pypy
+
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libpcap-dev
