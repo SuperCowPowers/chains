@@ -121,5 +121,11 @@ def test():
     for packet in streamer.output_stream:
         print(packet)
 
+    # Test BPF Filter
+    data_path = file_utils.relative_dir(__file__, '../../data/dns.pcap')
+    streamer = PacketStreamer(iface_name=data_path, bpf='udp and dst port 53', max_packets=50)
+    for packet in streamer.output_stream:
+        print(packet)
+
 if __name__ == '__main__':
     test()
