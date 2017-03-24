@@ -1,4 +1,5 @@
 """PacketSummary, Prints out packet information"""
+from __future__ import print_function
 
 # Local imports
 from chains.sinks import sink
@@ -20,33 +21,33 @@ class PacketSummary(sink.Sink):
         for item in self.input_stream:
 
             # Print out the timestamp in UTC
-            print '%s -' % item['timestamp'],
+            print('%s -' % item['timestamp'], end='')
 
             # Transport info
             if item['transport']:
-                print item['transport']['type'],
+                print(item['transport']['type'], end='')
 
             # Print out the Packet info
             packet_type = item['packet']['type']
-            print packet_type,
+            print(packet_type, end='')
             packet = item['packet']
             if packet_type in ['IP', 'IP6']:
                 # Is there domain info?
                 if 'src_domain' in packet:
-                    print '%s(%s) --> %s(%s)' % (net_utils.inet_to_str(packet['src']), packet['src_domain'],
-                                                 net_utils.inet_to_str(packet['dst']), packet['dst_domain']),
+                    print('%s(%s) --> %s(%s)' % (net_utils.inet_to_str(packet['src']), packet['src_domain'],
+                                                 net_utils.inet_to_str(packet['dst']), packet['dst_domain']), end='')
                 else:
-                    print '%s --> %s' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst'])),
+                    print('%s --> %s' % (net_utils.inet_to_str(packet['src']), net_utils.inet_to_str(packet['dst'])), end='')
             else:
-                print str(packet)
+                print(str(packet))
 
             # Only include application if we have it
             if item['application']:
-                print 'Application: %s' % item['application']['type'],
-                print str(item['application']),
+                print('Application: %s' % item['application']['type'], end='')
+                print(str(item['application']), end='')
 
             # Just for newline
-            print
+            print()
 
 def test():
     """Test for PacketSummary class"""

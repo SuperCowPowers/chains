@@ -14,7 +14,7 @@ def run(iface_name=None, bpf=None, summary=None, max_packets=50):
     streamer = packet_streamer.PacketStreamer(iface_name=iface_name, bpf=bpf, max_packets=max_packets)
     meta = packet_meta.PacketMeta()
     rdns = reverse_dns.ReverseDNS()
-    tags = packet_tags.PacketTags() 
+    tags = packet_tags.PacketTags()
     tmeta = transport_meta.TransportMeta()
     printer = packet_summary.PacketSummary()
 
@@ -47,4 +47,4 @@ if __name__ == '__main__':
     try:
         run(bpf=args.bpf, max_packets=args.max_packets)
     except KeyboardInterrupt:
-        print 'Goodbye...'
+        print('Goodbye...')

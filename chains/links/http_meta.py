@@ -1,10 +1,11 @@
 """HTTPMeta: Pull out HTTP meta data from incoming flow data"""
+from __future__ import print_function
+
 import dpkt
-import urllib2
 
 # Local imports
 from chains.links import link
-from chains.utils import file_utils, log_utils, data_utils
+from chains.utils import file_utils, log_utils, data_utils, compat
 
 
 class HTTPMeta(link.Link):
@@ -53,7 +54,7 @@ class HTTPMeta(link.Link):
     @staticmethod
     def _clean_uri(uri):
         """Clean the URI string"""
-        return urllib2.unquote(uri).replace('+', ' ')
+        return compat.unquote(uri).replace('+', ' ')
 
 
 def test():
@@ -82,7 +83,7 @@ def test():
     # Print out the tags
     for item in http_meta.output_stream:
         if item['http']:
-            print '%s %s --> %s  %s' % (item['http']['type'], item['src'], item['dst'], item['http']['data'])
+            print('%s %s --> %s  %s' % (item['http']['type'], item['src'], item['dst'], item['http']['data']))
 
 if __name__ == '__main__':
     test()

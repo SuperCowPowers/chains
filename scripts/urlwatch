@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 """ Example: Simple Packet Printer """
+from __future__ import print_function
 import os
+import sys
 import argparse
 import itertools
 
 # Local imports
-from chains.utils import signal_utils
+from chains.utils import signal_utils, compat
 from chains.sources import packet_streamer
 from chains.links import packet_meta, reverse_dns, transport_meta, flows, http_meta, tls_meta
+
 
 def run(iface_name=None, max_packets=10000):
     """Run the Simple URL Watcher Script"""
@@ -33,7 +36,7 @@ def run(iface_name=None, max_packets=10000):
     tlsmeta.link(flow2)
 
     # Print out the URIs
-    for http_output, tls_output in itertools.izip(hmeta.output_stream, tlsmeta.output_stream):
+    for http_output, tls_output in compat.izip(hmeta.output_stream, tlsmeta.output_stream):
 
         # Check for Empty Payload
         if not http_output['payload']:
@@ -45,31 +48,31 @@ def run(iface_name=None, max_packets=10000):
                 uri = http_output['http']['data'].get('uri')
                 headers = http_output['http']['data']['headers']
                 referer = headers.get('referer') or '-'
-                print http_output['http']['type']
-                print '\tPayload Size: %d' % len(http_output['payload'])
-                print '\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % (http_output['src'], headers['host'], uri,
-                                                                                         referer, headers['user-agent'])
+                print(http_output['http']['type'])
+                print('\tPayload Size: %d' % len(http_output['payload']))
+                print('\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % (http_output['src'], headers['host'], uri,
+                                                                                         referer, headers['user-agent']))
 
                 if http_output['http'].get('weird'):
-                    print '\tWEIRD %s' % http_output['http']['weird']
+                    print('\tWEIRD %s' % http_output['http']['weird'])
             else: # Response
                 headers = http_output['http']['data']['headers']
                 uri = headers.get('application-url') or '-'
-                print http_output['http']['type']
-                print '\tPayload Size: %d' % len(http_output['payload'])
-                print '\t%s --> %s \n\tURI: %s \n\tHeaders: %s\n' % (http_output['src'], http_output['dst'], uri, repr(headers))
+                print(http_output['http']['type'])
+                print('\tPayload Size: %d' % len(http_output['payload']))
+                print('\t%s --> %s \n\tURI: %s \n\tHeaders: %s\n' % (http_output['src'], http_output['dst'], uri, repr(headers)))
                 if http_output['http'].get('weird'):
-                    print '\tWEIRD %s' % http_output['http']['weird']
+                    print('\tWEIRD %s' % http_output['http']['weird'])
 
         # TLS/HTTPS
         elif tls_output['tls']:
             tls_records = tls_output['tls']['data']['tls_records']
             if tls_output['tls']['type'] == 'TLS_CTS':
-                print 'HTTPS_REQUEST'
-                print '\t%s --> %s (%s) tls_records(%d)\n' % (tls_output['src'], tls_output['dst'], tls_output['dst_domain'], len(tls_records))
+                print('HTTPS_REQUEST')
+                print('\t%s --> %s (%s) tls_records(%d)\n' % (tls_output['src'], tls_output['dst'], tls_output['dst_domain'], len(tls_records)))
             else:
-                print 'HTTPS_RESPONSE'
-                print '\t%s (%s) --> %s tls_records(%d)\n' % (tls_output['src'], tls_output['src_domain'], tls_output['dst'], len(tls_records))
+                print('HTTPS_RESPONSE')
+                print('\t%s (%s) --> %s tls_records(%d)\n' % (tls_output['src'], tls_output['src_domain'], tls_output['dst'], len(tls_records)))
             #for record in tls_records:
             #    print repr(record)[:100]+'...'
             #print
@@ -85,7 +88,8 @@ def test():
 
 def my_exit():
     """Exit on Signal"""
-    print 'Goodbye...'
+    print('Goodbye...')
+    sys.exit()
 
 if __name__ == '__main__':
 
@@ -95,7 +99,7 @@ if __name__ == '__main__':
     parser.add_argument('-p','--pcap', type=str, help='Specify a pcap file instead of reading from live network interface')
     args, commands = parser.parse_known_args()
     if commands:
-        print 'Unrecognized args: %s' % commands
+        print('Unrecognized args: %s' % commands)
     try:
         # Pcap file may have a tilde in it
         if args.pcap:
@@ -104,4 +108,4 @@ if __name__ == '__main__':
         with signal_utils.signal_catcher(my_exit):
             run(iface_name=args.pcap, max_packets=args.max_packets)
     except KeyboardInterrupt:
-        print 'Goodbye...'
+        print('Goodbye...')

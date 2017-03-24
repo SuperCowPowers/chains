@@ -1,4 +1,5 @@
 """Cache class for key/value pairs"""
+from __future__ import print_function
 import time
 from collections import OrderedDict
 
@@ -59,7 +60,7 @@ class Cache(object):
     def dump(self):
         """Dump the cache (for debugging)"""
         for key in self._store.keys():
-            print key, ':', self.get(key)
+            print(key, ':', self.get(key))
 
 def test():
     """Test for the Cache class"""
@@ -72,12 +73,12 @@ def test():
     assert my_cache.get('foo') == 'bar'
 
     # Test timeout
-    time.sleep(1)
+    time.sleep(1.1)
     assert my_cache.get('foo') is None
 
     # Test max_size
     my_cache = Cache(max_size=5)
-    for i in xrange(6):
+    for i in range(6):
         my_cache.set(str(i), i)
 
     # So the '0' key should no longer be there FIFO

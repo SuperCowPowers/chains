@@ -1,5 +1,7 @@
 """Data utilities that might be useful"""
 
+from __future__ import print_function
+
 # Local imports
 from chains.utils import log_utils
 
@@ -25,7 +27,7 @@ def make_dict(obj):
     return output_dict
 
 def is_builtin(obj):
-    return obj.__class__.__module__ == '__builtin__'
+    return obj.__class__.__module__ in ['__builtin__', 'builtins']
 
 def get_value(data, key):
     """Follow the dot notation to get the proper field, then perform the action
@@ -43,7 +45,7 @@ def get_value(data, key):
             if isinstance(ref, dict):
                 ref = ref[subkey]
             else:
-                print 'CRITICAL: Cannot use subkey %s on non-dictionary element' % subkey
+                print('CRITICAL: Cannot use subkey %s on non-dictionary element' % subkey)
                 return None
         return ref
 
@@ -65,8 +67,8 @@ def test_utils():
             pass
     bla.a = 'foo'
     bla.b = 'bar'
-    print make_dict(bla)
-    print 'Success!'
+    print(make_dict(bla))
+    print('Success!')
 
 if __name__ == '__main__':
     test_utils()

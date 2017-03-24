@@ -2,6 +2,8 @@
    Links take an input_stream and provides an output_stream. All streams
    are required to be a generator that yields python dictionaries.
 """
+from __future__ import print_function
+
 import collections
 
 class Link(object):
@@ -62,7 +64,7 @@ def test():
     link1.output_stream = [{'foo':5, 'bar':3}] # Just for testing
     link2 = Link()
     link2.link(link1)
-    print link2.input_stream
+    print(link2.input_stream)
 
 
 if __name__ == '__main__':

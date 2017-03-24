@@ -1,6 +1,7 @@
 """Flows, Takes an input_stream of packets and provides an output_stream of flows
           based on (src, dst, src_port, dst_port, protocol) flow ids.
 """
+from __future__ import print_function
 import time
 from collections import defaultdict
 
@@ -37,21 +38,21 @@ class Flows(link.Link):
             self._flows[flow_id].add_packet(packet)
 
             # Yield flows that are ready to go
-            for flow in self._flows.values():
+            for flow in list(self._flows.values()):
                 if flow.ready():
                     flow_info = flow.get_flow()
                     yield flow_info
                     del self._flows[flow_info['flow_id']]
 
         # All done so just dump what we have left
-        print '---- NO MORE INPUT ----'
+        print('---- NO MORE INPUT ----')
         for flow in sorted(self._flows.values(), key=lambda x: x.meta['start']):
             yield flow.get_flow()
 
 def print_flow_info(flow):
     """Print a summary of the flow information"""
-    print 'Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s...' % (flow['flow_id'], flow['direction'], len(flow['packet_list']),
-                                                              len(flow['payload']), repr(flow['payload'])[:30])
+    print('Flow %s (%s)-- Packets:%d Bytes:%d Payload: %s...' % (flow['flow_id'], flow['direction'], len(flow['packet_list']),
+                                                              len(flow['payload']), repr(flow['payload'])[:30]))
 
 def test():
     """Test for Flows class"""

@@ -1,4 +1,5 @@
 """TLSMeta, Pull out HTTP meta data from incoming flow data"""
+from __future__ import print_function
 import dpkt
 
 # Local imports
@@ -94,11 +95,11 @@ def test():
         if item['tls']:
             tls_records = item['tls']['data']['tls_records']
             if item['tls']['type'] == 'TLS_CTS':
-                print 'HTTPS_REQUEST'
-                print '\t%s --> %s (%s) tls_records(%d)\n' % (item['src'], item['dst'], item['dst_domain'], len(tls_records))
+                print('HTTPS_REQUEST')
+                print('\t%s --> %s (%s) tls_records(%d)\n' % (item['src'], item['dst'], item['dst_domain'], len(tls_records)))
             else:
-                print 'HTTPS_RESPONSE'
-                print '\t%s (%s) --> %s tls_records(%d)\n' % (item['src'], item['src_domain'], item['dst'], len(tls_records))
+                print('HTTPS_RESPONSE')
+                print('\t%s (%s) --> %s tls_records(%d)\n' % (item['src'], item['src_domain'], item['dst'], len(tls_records)))
         else:
             logger.info('Could not find TLS in Flow:')
             flows.print_flow_info(item)

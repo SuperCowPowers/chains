@@ -1,4 +1,5 @@
 """Flow class for aggregating packets into a Flow"""
+from __future__ import print_function
 
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -38,7 +39,7 @@ class Flow(object):
         self.meta['protocol'] = None
         self.meta['direction'] = None
         self.meta['packet_list'] = []
-        self.meta['payload'] = ''
+        self.meta['payload'] = b''
         self.meta['start'] = None
         self.meta['end'] = None
         self.meta['state'] = 'partial'
@@ -75,18 +76,18 @@ class Flow(object):
                 self.meta['state'] = 'partial_syn'
                 self.meta['direction'] = 'CTS'
             elif 'fin' in flags:
-                # print '--- FIN RECEIVED %s ---'  % str(self.meta['flow_id)
+                # print('--- FIN RECEIVED %s ---'  % str(self.meta['flow_id))
                 self.meta['state'] = 'complete' if self.meta['state'] == 'partial_syn' else 'partial'
                 self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
             elif 'syn_ack' in flags:
                 self.meta['state'] = 'partial_syn'
                 self.meta['direction'] = 'STC'
             elif 'fin_ack'in flags:
-                # print '--- FIN_ACK RECEIVED %s ---' % str(self.meta['flow_id)
+                # print('--- FIN_ACK RECEIVED %s ---' % str(self.meta['flow_id))
                 self.meta['state'] = 'complete' if self.meta['state'] == 'partial_syn' else 'partial'
                 self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
             elif 'rst' in flags:
-                # print '--- RESET RECEIVED %s ---' % str(self.meta['flow_id)
+                # print('--- RESET RECEIVED %s ---' % str(self.meta['flow_id))
                 self.meta['state'] = 'partial'
                 self.meta['timeout'] = datetime.now() + timedelta(seconds=1)
 
@@ -186,8 +187,8 @@ def test():
     # Print out flow information
     for flow in flows.values():
         fd = flow.get_flow()
-        print 'Flow %s -- Packets:%d Bytes:%d Payload: %s' % (fd['flow_id'], len(fd['packet_list']),
-                                                              len(fd['payload']), repr(fd['payload'])[:20])
+        print('Flow %s -- Packets:%d Bytes:%d Payload: %s' % (fd['flow_id'], len(fd['packet_list']),
+                                                              len(fd['payload']), repr(fd['payload'])[:20]))
 
 if __name__ == '__main__':
 
