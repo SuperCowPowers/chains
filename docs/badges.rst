@@ -1,5 +1,5 @@
 
-|travis| |Coverage Status| |landscape| |version| |downloads|
+|travis| |Coverage Status| |landscape| |version|
 |wheel| |supported-versions| |supported-implementations| |license|
 
 .. |travis| image:: https://img.shields.io/travis/SuperCowPowers/chains.svg
