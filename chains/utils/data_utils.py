@@ -1,6 +1,7 @@
 """Data utilities that might be useful"""
 
 from __future__ import print_function
+from collections import OrderedDict
 
 # Local imports
 from chains.utils import log_utils
@@ -9,7 +10,7 @@ def make_dict(obj):
     """This method creates a dictionary out of a non-builtin object"""
 
     # Recursion base case
-    if is_builtin(obj):
+    if is_builtin(obj) or isinstance(obj, OrderedDict):
         return obj
 
     output_dict = {}

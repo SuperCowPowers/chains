@@ -50,8 +50,8 @@ def run(iface_name=None, max_packets=10000):
                 referer = headers.get('referer') or '-'
                 print(http_output['http']['type'])
                 print('\tPayload Size: %d' % len(http_output['payload']))
-                print('\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % (http_output['src'], headers['host'], uri,
-                                                                                         referer, headers['user-agent']))
+                print('\t%s --> Host: %s \n\tURI: %s \n\tReferer: %s \n\tAgent: %s\n' % 
+                         (http_output['src'], headers['host'], uri, referer, headers['user-agent']))
 
                 if http_output['http'].get('weird'):
                     print('\tWEIRD %s' % http_output['http']['weird'])
