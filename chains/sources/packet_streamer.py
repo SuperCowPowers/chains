@@ -8,6 +8,7 @@ from chains.sources import source
 from chains.utils import file_utils, log_utils
 logger = log_utils.get_logger()
 
+
 class PacketStreamer(source.Source):
     """Stream out the packets from the given network interface
 
@@ -73,11 +74,11 @@ class PacketStreamer(source.Source):
                 #   snaplen (maximum number of bytes to capture _per_packet_)
                 #   promiscious mode (1 for true)
                 #   timeout (in milliseconds)
-                self.pcap = pcapy.open_live(self.iface_name, 65536 , 1 , 0)
+                self.pcap = pcapy.open_live(self.iface_name, 65536, 1, 0)
             except OSError:
                 try:
                     logger.warning('Could not get promisc mode, turning flag off')
-                    self.pcap = pcapy.open_live(self.iface_name, 65536 , 0 , 0)
+                    self.pcap = pcapy.open_live(self.iface_name, 65536, 0, 0)
                 except OSError:
                     log_utils.panic('Could no open interface with any options (may need to be sudo)')
 
@@ -94,7 +95,7 @@ class PacketStreamer(source.Source):
 
             # If we don't get a packet header break out of the loop
             if not header:
-                break;
+                break
 
             # Extract the timestamp from the header and yield the packet
             seconds, micro_sec = header.getts()
@@ -106,12 +107,12 @@ class PacketStreamer(source.Source):
             if self.max_packets and _packets >= self.max_packets:
                 break
 
-        # All done so report and raise a StopIteration
+        # All done so print out a small report
         try:
             print('Packet stats: %d  received, %d dropped,  %d dropped by interface' % self.pcap.stats())
         except pcapy.PcapError:
             print('No stats available...')
-        raise StopIteration
+
 
 def test():
     """Open up a test pcap file and stream the packets"""
@@ -126,6 +127,7 @@ def test():
     streamer = PacketStreamer(iface_name=data_path, bpf='udp and dst port 53', max_packets=50)
     for packet in streamer.output_stream:
         print(packet)
+
 
 if __name__ == '__main__':
     test()
